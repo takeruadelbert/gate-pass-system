@@ -1,0 +1,62 @@
+msgid "Keluar"
+msgstr "Logout"
+
+msgid "Ubah"
+msgstr "Edit"
+
+msgid "Hapus"
+msgstr "Delete"
+
+msgid "Simpan"
+msgstr "Save"
+
+msgid "Kembali"
+msgstr "Back"
+
+msgid "Tambah"
+msgstr "Add"
+
+msgid "Aksi"
+msgstr "Action"
+
+msgid "Cari"
+msgstr "Find"
+
+msgid "Profil Perusahaan"
+msgstr "Company Profile"
+
+msgid "Pengguna"
+msgstr "User"
+
+msgid "Nama Akun"
+msgstr "Username"
+
+msgid "Nama Depan"
+msgstr "Firstname"
+
+msgid "Nama Belakang"
+msgstr "Lastname"
+
+msgid "Alamat"
+msgstr "Address"
+
+msgid "Posisi"
+msgstr "Position"
+
+msgid "Tambah Data"
+msgstr "Add Data"
+
+msgid "Hapus Data"
+msgstr "Delete Data"
+
+msgid "Cetak"
+msgstr "Print"
+
+msgid "Menampilkan"
+msgstr "Showing"
+
+msgid "Profil"
+msgstr "Profile"
+
+msgid "locale0001"
+msgstr "Showing {:start} to {:end} of {:count} entries. Page {:page} from {:pages} pages."

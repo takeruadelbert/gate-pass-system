@@ -1,0 +1,73 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 25, 2015, 6:58:40 PM
+    Author     : Surya Wono
+*/
+.row-table { padding:5px 0; line-height:15px; font-size:12px;margin:0 0 10px 0;border-bottom:1px solid #eeeeee}
+.datatable-scroll{overflow-y:auto}
+.datatable-scroll td{white-space:nowrap;}
+.label-required:after{
+    content:'*';
+}
+.sidebar-narrow .footer{
+    margin-left:79px;
+}
+
+@media(min-width:992px){
+    .footer{
+        margin:0 25px 0 265px;
+    }
+
+    .sidebar-hidden .footer{
+        margin:0 25px 0 25px;
+    }
+}
+@media(min-width:768px){
+    .page-content{
+        min-height: 768px;
+    }
+}
+@media(min-width:850px){
+    .page-content{
+        min-height: 885px;
+    }
+}
+
+.stn-table th{
+    text-align:center;
+    background-color:#FFFFCC;
+}
+
+.language .flag-icon{
+    margin:6px 6px 0 0;
+    border: 1px solid gray;
+    background-size: cover;
+}
+
+.breadcrumb{
+    margin-top:5px;
+}
+
+.stn-selectable.selected{
+    background-color: #F2FCF7;
+}
+.stn-selectable:hover{
+    cursor: pointer;
+}
+
+*:disabled{
+    cursor:not-allowed;
+}
+
+@media(max-width:992px){
+    .navbar-brand{
+        max-height:50px
+    }
+    .navbar-brand img{
+        max-height:30px
+    }
+}

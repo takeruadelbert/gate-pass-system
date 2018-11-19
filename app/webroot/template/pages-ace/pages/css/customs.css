@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Mar 16, 2015, 1:48:18 PM
+    Author     : Surya Wono
+*/
+
+.form-horizontal .form-actions{
+    padding-top:19px;
+}
+.table-responsive{overflow-y:auto}
+.table-responsive td{white-space:nowrap;}
+.lang-panel{
+    white-space: nowrap;
+    padding:5px;
+    background-color: rgba(39,43,53,0.5);
+    color:white;
+}
+.lang-panel a{
+    color:white;
+}

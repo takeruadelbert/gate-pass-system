@@ -1,0 +1,2 @@
+msgid "locale0001"
+msgstr "Menampilkan {:start} sampai {:end} dari {:count} data. Halaman {:page} dari {:pages}."
