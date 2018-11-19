@@ -25,7 +25,7 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-Router::connect('/', array('front' => true, 'controller' => 'fronts', 'action' => 'display', 'ID', 'index'));
+//Router::connect('/', array('front' => true, 'controller' => 'fronts', 'action' => 'display', 'ID', 'index'));
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */
@@ -46,6 +46,7 @@ Router::connect('/member/logout', array('controller' => 'accounts', 'action' => 
 //admin area
 Router::connect('/admin/change-password', array('admin' => true, 'controller' => 'accounts', 'action' => 'change_password'));
 Router::connect('/admin', array('controller' => 'accounts', 'action' => 'login_admin'));
+Router::connect('/', array('controller' => 'accounts', 'action' => 'login_admin'));
 Router::connect('/admin/lupa-password', array('controller' => 'accounts', 'action' => 'login_utama_lupa_password'));
 Router::connect('/admin/dashboard', array('admin' => true, 'controller' => 'accounts', 'action' => 'dashboard'));
 Router::connect('/admin/logout', array('controller' => 'accounts', 'action' => 'logout_admin'));
