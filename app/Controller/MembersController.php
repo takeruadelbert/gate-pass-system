@@ -104,8 +104,6 @@ class MembersController extends AppController {
                 }
                 unset($this->{Inflector::classify($this->name)}->data['Member']);
                 unset($this->{Inflector::classify($this->name)}->data['MemberDetail']);
-//                debug($this->{Inflector::classify($this->name)}->data);
-//                die;
                 $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
                 $this->redirect(array('action' => 'admin_index'));
@@ -118,4 +116,29 @@ class MembersController extends AppController {
         }
     }
 
+    function admin_index() {
+        $this->conds = "";
+        if(isset($this->request->query['gates']) && !empty($this->request->query['gates'])) {
+            $dataMemberDetail = ClassRegistry::init("MemberDetail")->find("list",[
+                    "conditions" => [
+                        "OR" => [
+                            "MemberDetail.gate_id" => $this->request->query['gates']
+                        ]
+                    ],
+                    "recursive" => -1,
+                    "group" => "MemberDetail.member_id",
+                    "fields" => [
+                        "MemberDetail.id",
+                        "MemberDetail.member_id"
+                    ]
+                ]);
+            $member_ids = !empty($dataMemberDetail) ? array_values($dataMemberDetail) : [];
+            $this->conds = [
+                "Member.id" => $member_ids
+            ];
+            $this->set("chosen_gate", $this->request->query['gates']);
+            unset($_GET['gates']);
+        }
+        parent::admin_index();
+    }
 }

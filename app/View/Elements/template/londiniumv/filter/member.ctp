@@ -27,6 +27,10 @@
                         <label><?= __("&nbsp;") ?></label>
                         <?= $this->Form->input(null, ['type' => 'text', 'label' => false, 'div' => false, 'class' => 'form-control datepicker', 'name' => 'akhir.Member.expired_dt', 'default' => isset($this->request->query['akhir_Member_expired_dt']) ? $this->request->query['akhir_Member_expired_dt'] : "", 'placeholder' => "Periode Akhir ..."]) ?>
                     </div>
+                    <div class="col-md-6">
+                        <label><?= __("Gate") ?></label>
+                        <?= $this->Form->input(null, ['label' => false, 'div' => false, 'class' => 'select-multiple', 'name' => 'gates[]', 'data-placeholder' => '- Semua -', 'multiple', 'options' => $gateWithTypes, 'default' => !empty($chosen_gate) ? $chosen_gate : ""]) ?>
+                    </div>
                 </div>
             </div>
             <div class="form-actions text-center">
