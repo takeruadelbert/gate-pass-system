@@ -68,13 +68,15 @@ Router::connect('/module-content-edit/*', array('admin' => true, 'controller' =>
 Router::connect('/account-edit/*', array('admin' => true, 'controller' => 'accounts', 'action' => 'edit'));
 
 //Report
-
 Router::connect("/admin/restriction", array("admin" => true, "controller" => "accounts", "action" => "restriction"));
 
 //Setting
 Router::connect('/setting', array('admin' => true, 'controller' => 'company_profiles', 'action' => 'edit','1'));
 
-//detail
+// Master Data
+Router::connect("/setup-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'index'));
+Router::connect("/add-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'add'));
+Router::connect("/edit-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'edit'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
