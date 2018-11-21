@@ -114,11 +114,22 @@ class EmployeesController extends AppController {
         if (!$this->Employee->exists($id)) {
             throw new NotFoundException(__('Invalid user'));
         } else {
-            $this->{ Inflector::classify($this->name) }->id = $id;
-            $this->Employee->data['Employee']['id'] = $id;
-            $rows = $this->{ Inflector::classify($this->name) }->find("first", array('conditions' => array(Inflector::classify($this->name) . ".id" => $id), "recursive" => 4));
-            $this->data = $rows;
-            $this->_activePrint(func_get_args(), "print_profile","print_profile");
+            if ($this->request->is("post") || $this->request->is("put")) {
+                $this->{ Inflector::classify($this->name) }->set($this->data);
+                $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
+                if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
+                    if (!is_null($id)) {
+                        $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
+                        $this->Session->setFlash(__("Data Profil berhasil diubah"), 'default', array(), 'success');
+                        $this->redirect(array('action' => 'admin_profil'));
+                    }
+                } else {
+                    $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
+                }
+            } else {
+                $rows = $this->{ Inflector::classify($this->name) }->find("first", array('conditions' => array(Inflector::classify($this->name) . ".id" => $id), "recursive" => 4));
+                $this->data = $rows;
+            }
         }
     }
 

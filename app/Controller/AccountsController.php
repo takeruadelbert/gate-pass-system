@@ -37,7 +37,10 @@ class AccountsController extends AppController {
             $allData = $this->data[Inflector::classify($this->name)]['checkbox'];
             foreach ($allData as $data) {
                 if ($data != '' || $data != 0) {
+                    $dataEmployee = $this->Account->findById($data);
+                    $employee_id = $dataEmployee['Employee']['id'];
                     $this->{ Inflector::classify($this->name) }->delete($data, true);
+                    ClassRegistry::init("Employee")->delete($employee_id);
                 }
             }
             $code = 204;

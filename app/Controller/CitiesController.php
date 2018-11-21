@@ -33,4 +33,35 @@ class CitiesController extends AppController {
         echo json_encode($this->_generateStatusCode(205, null, $data));
     }
 
+    function admin_list($state_id = false) {
+        if ($state_id === false) {
+            $data = $this->City->find("list", [
+                "fields" => [
+                    "City.id",
+                    "City.name",
+                ]
+            ]);
+        } else {
+            $data = $this->City->find("all", [
+                "fields" => [
+                    "City.id",
+                    "City.name",
+                ],
+                "conditions" => [
+                    "City.state_id" => $state_id
+                ],
+                "order" => "City.name"
+            ]);
+            $result = [];
+            foreach ($data as $index => $cities) {
+                $result[] = [
+                    $index => [
+                        $cities['City']['id'] => $cities['City']['name']
+                    ]
+                ];
+            }
+        }
+        echo json_encode($this->_generateStatusCode(205, null, $result));
+        die;
+    }
 }

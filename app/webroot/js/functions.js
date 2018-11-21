@@ -193,9 +193,11 @@ function cityList(e, targetE) {
         success: function (data) {
             var $target = $(targetE);
             $target.html("<option value=''>- Pilih Kota -</option>");
-            $.each(data.data, function (k, v) {
-                $target.append("<option value='" + k + "'>" + v + "</option>");
-            })
+            $.each(data.data, function(index, item) {
+                $.each(item[index], function (k, v) {
+                    $target.append("<option value='" + k + "'>" + v + "</option>");
+                });
+            });
         },
         error: function () {
 
