@@ -88,12 +88,20 @@ class AppController extends Controller {
     );
     var $emailAcc = array(
         'NoReply' => array(
-            'port' => 26,
-            'timeout' => 60,
-            'host' => 'mail.dispopsulbar.com',
-            'username' => 'noreply@dispopsulbar.com',
-            'password' => 'adminilugroup123',
+            'port' => 465,
+            'timeout' => 30,
+            'host' => 'ssl://smtp.gmail.com',
+            'username' => 'testing.stn@gmail.com',
+            'password' => 'emkF1qRD',
             'transport' => 'Smtp',
+            'log' => true,
+            'context' => [
+                'ssl' => [
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                ]
+            ]
         ),
     );
     var $pageInfo = array();

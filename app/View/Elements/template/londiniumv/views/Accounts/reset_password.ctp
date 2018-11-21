@@ -1,46 +1,41 @@
-<div class="col-md-12 col-sm-12 col-xs-12 content-middle">
-    <div class="col-md-12 col-sm-12 col-xs-12 form">
-        <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12 changed-content active" id="changedContent1">
-                <?php
-                echo $this->Form->create();
-                ?>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group label-floating">
-                            <div class="input-group font-Roboboto">
-                                <span class="input-group-addon box-imgPassword"><img src="<?= Router::url("/" . _TEMPLATE_DIR . DS . $template . DS . "login/img/lock.png", true) ?>"></span>
-                                <label class="control-label label-edit" for="newPassword"><?= __("Kata Sandi") ?></label>
-                                <?= $this->Form->input('User.password', ['class' => 'form-control input-username', 'label' => false, 'div' => false]) ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group label-floating">
-                            <div class="input-group font-Roboboto">
-                                <span class="input-group-addon box-imgPassword"><img src="<?= Router::url("/" . _TEMPLATE_DIR . DS . $template . DS . "login/img/lock.png", true) ?>"></span>
-                                <label class="control-label label-edit" for="repeatPassword"><?= __("Ulangi Kata Sandi") ?></label>
-                                <?= $this->Form->input('User.repeat_password', ['class' => 'form-control input-username', 'label' => false, 'div' => false,"type"=>"password"]) ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php
-                echo $this->element(_TEMPLATE_DIR . "/londiniumv/flash-login");
-                ?>
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12 btn-div">
-                        <button class="btn font-sourceSansProBold changed-button active" ><?= __("Ganti") ?></button>
-                    </div>
-                </div>
-                <?php
-                echo $this->Form->end();
-                ?>
+<!-- Login wrapper -->
+<div class="login-wrapper">
+    <?php
+    echo $this->element(_TEMPLATE_DIR."/londiniumv/flash-message");
+    echo $this->Form->create("", array("action" => "reset_password/{$this->params['pass'][0]}"));
+    ?>
+    <div class="popup-header">
+        <span class="text-semibold"><?= __("Reset Password") ?></span>
+    </div>
+    <div class="well">
+        <div class="form-group has-feedback">
+            <label>Password</label>
+            <?php
+            echo $this->Form->input("User.password", array("class" => "form-control", "div" => false, "label" => false, 'placeholder' => 'your new password', 'type' => 'password'));
+            ?>
+            <i class="icon-lock form-control-feedback"></i>
+        </div>
+
+        <div class="form-group has-feedback">
+            <label>Repeat Password</label>
+            <?php
+            echo $this->Form->input("User.repeat_password", array("class" => "form-control", "div" => false, "label" => false, "type" => "password", 'placeholder' => 'repeat password to confirm'));
+            ?>
+            <i class="icon-lock form-control-feedback"></i>
+        </div>
+
+        <div class="row form-actions">
+            <div class="col-xs-6">
+            </div>
+
+            <div class="col-xs-6">
+                <button type="submit" class="btn btn-warning pull-right"><i class="icon-enter"></i> Change</button>
             </div>
         </div>
     </div>
+    <?php
+    echo $this->Form->end();
+    ?>
 </div>
 <style>
     .error-message{
@@ -48,3 +43,4 @@
         color:red;
     }
 </style>
+<!-- /login wrapper -->

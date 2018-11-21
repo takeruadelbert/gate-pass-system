@@ -527,30 +527,104 @@ class AccountsController extends AppController {
 
     function reset_password($token = null) {
         $data = $this->{ Inflector::classify($this->name) }->find("first", array("contain" => array("PasswordReset", "User", "Biodata"), "conditions" => array("OR" => array("PasswordReset.token" => $token))));
-        $now = new DateTime();
-        if (is_null($token) || empty($data) || $data['PasswordReset']['is_used'] || $now > new DateTime($data['PasswordReset']['expire'])) {
-            $this->redirect("/");
-        }
         if ($this->request->is("post")) {
             $this->{ Inflector::classify($this->name) }->set($this->data);
+            if ($this->data['User']['password'] != $this->data['User']['repeat_password']) {
+                $this->Session->setFlash(__("Password tidak sama."), 'default', array(), 'danger');
+                $this->redirect($this->referer());
+            }
             if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only'))) {
                 $password = $this->{ Inflector::classify($this->name) }->data["User"]["password"];
                 $salt = $data['User']['salt'];
                 $encrypt = $this->_hashPassword($password . $salt);
-                $this->{ Inflector::classify($this->name) }->data["Account"]["id"] = $data['Account']['id'];
-                $this->{ Inflector::classify($this->name) }->data["User"]["id"] = $data['User']['id'];
-                $this->{ Inflector::classify($this->name) }->data["PasswordReset"]["id"] = $data['PasswordReset']['id'];
-                $this->{ Inflector::classify($this->name) }->data["User"]["password"] = $encrypt;
-                $this->{ Inflector::classify($this->name) }->data["PasswordReset"]["is_used"] = true;
+                $this->{ Inflector::classify($this->name) }->data = [
+                    "Account" => [
+                        'id' => $data['Account']['id']
+                    ],
+                    "User" => [
+                        "id" => $data['User']['id'],
+                        'password' => $encrypt
+                    ],
+                    "PasswordReset" => [
+                        "id" => $data['PasswordReset']['id'],
+                        "is_used" => true
+                    ]
+                ];
                 unset($this->{ Inflector::classify($this->name) }->data["User"]["repeat_password"]);
                 $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array("deep" => true));
-                $this->Session->setFlash(__("Kata sandi berhasil diubah"), 'default', array(), 'successlogin');
+                $this->Session->setFlash(__("Kata sandi berhasil diubah"), 'default', array(), 'success');
                 $this->redirect("/");
             } else {
-                $this->Session->setFlash(__("Periksa kesalahan"), 'default', array(), 'warninglogin');
+                $this->Session->setFlash(__("Periksa kesalahan"), 'default', array(), 'warning');
+            }
+        } else {
+            $now = new DateTime();
+            if (is_null($token) || empty($data) || $data['PasswordReset']['is_used'] || $now > new DateTime($data['PasswordReset']['expire'])) {
+                $this->Session->setFlash(__("Token tidak valid."), 'default', array(), 'warning');
+                $this->redirect("/");
             }
         }
         $this->layout = _TEMPLATE_DIR . "/{$this->template}/login";
     }
 
+    function forgot_password() {
+        if ($this->request->is("POST")) {
+            if (isset($this->data['Account']['username']) && empty($this->data['Account']['username'])) {
+                $this->Session->setFlash(__("Username harus diisi."), 'default', array(), 'warning');
+                $this->redirect("/forgot-password");
+            }
+            if (isset($this->data['Account']['email']) && empty($this->data['Account']['email'])) {
+                $this->Session->setFlash(__("Email harus diisi."), 'default', array(), 'warning');
+                $this->redirect("/forgot-password");
+            }
+            $dataAccount = $this->{Inflector::classify($this->name)}->find("first", [
+                "conditions" => [
+                    "User.username" => $this->data['Account']['username'],
+                    "User.email" => $this->data['Account']['email']
+                ],
+                "contain" => [
+                    "User"
+                ]
+            ]);
+            if (empty($dataAccount)) {
+                $this->Session->setFlash(__("Username/Email tidak terdaftar."), 'default', array(), 'warning');
+                $this->redirect("/forgot-password");
+            } else {
+                $token = hash("sha256", uniqid(mt_rand(), true), false);
+                $this->Account->data = [
+                    "Account" => [
+                        "id" => $dataAccount['Account']['id']
+                    ],
+                    "PasswordReset" => [
+                        "id" => $dataAccount['PasswordReset']['id'],
+                        "token" => $token,
+                        "expire" => date("Y-m-d H:i:s", time() + (24 * 3600)),
+                        "is_used" => false
+                    ]
+                ];
+                try {
+                    $this->{Inflector::classify($this->name)}->saveAll();
+                } catch (Exception $ex) {
+                    $this->Session->setFlash(__("Error found when saving the data."), 'default', array(), 'danger');
+                }
+                try {
+                    $this->_sentEmail("forgot-password", [
+                        "tujuan" => $this->data['Account']['email'],
+                        "subject" => "Gate Pass System - Reset Password",
+                        "from" => array("testing.stn@gmail.com" => "NoReply STN"),
+                        "acc" => "NoReply",
+                        "item" => [
+                            'token' => $token,
+                            'username' => $dataAccount['User']['username'],
+                        ],
+                    ]);
+                    $this->Session->setFlash(__("Email berhasil dikirim, silahkan cek email anda."), 'default', array(), 'success');
+                    $this->redirect("/forgot-password");
+                } catch (Exception $ex) {
+                    $this->Session->setFlash(__("Error found when trying to send an email."), 'default', array(), 'danger');
+                }
+            }
+        }
+        $this->layout = _TEMPLATE_DIR . "/{$this->template}/login";
+    }
 }
