@@ -719,6 +719,8 @@ class AppController extends Controller {
             "admin/employees/profil",
             "admin/employees/list",
             "admin/employees/listprio",
+            "admin/cities/list",
+            "admin/accounts/ganti_pp"
         ];
         $camelController = Inflector::camelize($this->params['controller']);
         $underController = Inflector::underscore($this->params['controller']);
