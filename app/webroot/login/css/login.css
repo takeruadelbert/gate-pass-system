@@ -1,0 +1,1053 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 18, 2016, 11:01:25 PM
+    Author     : Arif
+*/
+
+.bg-cover {    
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat !important;
+}
+
+@font-face {
+    font-family: SourceSansPro-Regular;
+    src: url(../../fonts/SourceSansPro/SourceSansPro-Regular.ttf);
+}
+
+@font-face {
+    font-family: SourceSansPro-Semibold;
+    src: url(../../fonts/SourceSansProSemibold/source-sans-pro.semibold.ttf);
+}
+
+@font-face {
+    font-family: SourceSansPro-Bold;
+    src: url(../../fonts/SourceSansPro/SourceSansPro-Bold.otf);
+}
+
+@font-face {
+    font-family: MissionScript-Regular;
+    src: url(../../fonts/MissionScript/Mission-Script.otf);
+}
+
+@font-face {
+    font-family: OpenSans-Regular;
+    src: url(../../fonts/OpenSans/OpenSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: OpenSans-Bold;
+    src: url(../../fonts/OpenSans/OpenSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: Oswald-Regular;
+    src: url(../../fonts/Oswald/Oswald-Regular.ttf);
+}
+
+@font-face {
+    font-family: Oswald-Bold;
+    src: url(../../fonts/Oswald/Oswald-Bold.ttf);
+}
+
+@font-face {
+    font-family: Oswald-Light;
+    src: url(../../fonts/Oswald/Oswald-Light.ttf);
+}
+
+@font-face {
+    font-family: Humnst777CnBT;
+    src: url(../../fonts/Humnst777CnBT/Humnst777CnBT.ttf);
+}
+
+@font-face {
+    font-family: Humnst777CnBT-Bold;
+    src: url(../../fonts/Humnst777CnBT/Humnst777CnBT-Bold.ttf);
+}
+
+@font-face {
+    font-family: Cambria;
+    src: url(../../fonts/Cambria/Cambria.ttf);
+}
+
+@font-face {
+    font-family: Cambria-Italic;
+    src: url(../../fonts/Cambria/cambriai.ttf);
+}
+
+@font-face {
+    font-family: Cambria-Bold;
+    src: url(../../fonts/Cambria/cambriab.ttf);
+}
+
+@font-face {
+    font-family: Voyage;
+    src: url(../../fonts/Voyage/VoyageRegular.otf);
+}
+
+@font-face {
+    font-family: Voyage-Bold;
+    src: url(../../fonts/Voyage/VoyageBold.otf);
+}
+
+@font-face {
+    font-family: Roboboto;
+    src: url(../../fonts/Roboboto/Roboto-Regular.ttf);
+}
+
+@font-face {
+    font-family: Roboboto-Bold;
+    src: url(../../fonts/Roboboto/Roboto-Bold.ttf);
+}
+
+@font-face {
+    font-family: Roboto-Light;
+    src: url(../../fonts/Roboboto/Roboto-Light.ttf);
+}
+
+@font-face {
+    font-family: Roboto-Medium;
+    src: url(../../fonts/Roboboto/Roboto-Medium.ttf);
+}
+
+@font-face {
+    font-family: RobotoCondensed;
+    src: url(../../fonts/RobotoCondensed/RobotoCondensed-Regular.ttf);
+}
+
+@font-face {
+    font-family: RobotoCondensed-Bold;
+    src: url(../../fonts/RobotoCondensed/RobotoCondensed-Bold.ttf);
+}
+
+@font-face {
+    font-family: RobotoCondensed-Light;
+    src: url(../../fonts/RobotoCondensed/RobotoCondensed-Light.ttf);
+}
+
+@font-face {
+    font-family: Montserrat;
+    src: url(../../fonts/Montserrat/Montserrat-Regular.otf);
+}
+
+@font-face {
+    font-family: Montserrat-Bold;
+    src: url(../../fonts/Montserrat/Montserrat-Bold.otf);
+}
+
+@font-face {
+    font-family: Rufina;
+    src: url(../../fonts/Rufina/Rufina-Regular.ttf);
+}
+
+@font-face {
+    font-family: Rufina-Bold;
+    src: url(../../fonts/Rufina/Rufina-Bold.ttf);
+}
+
+@font-face {
+    font-family: California-Regular;
+    src: url(../../fonts/CalifornianFB/Californian_FB.ttf);
+}
+
+@font-face {
+    font-family: California-Bold;
+    src: url(../../fonts/CalifornianFB/californian-fb-bold.ttf);
+}
+
+@font-face {
+    font-family: Mistral-Regular;
+    src: url(../../fonts/Mistral/MISTRAL.TTF);
+}
+
+@font-face {
+    font-family: Exo2-SemiBold;
+    src: url(../../fonts/Exo2/Exo2-SemiBold.ttf);
+}
+
+@font-face {
+    font-family: Lato-LightItalic;
+    src: url(../../fonts/Lato/Lato-LightItalic.ttf);
+}
+
+@font-face {
+    font-family: Poppins-Light;
+    src: url(../fonts/Poppins/Poppins-Light.ttf);
+}
+
+@font-face {
+    font-family: Poppins-SemiBold;
+    src: url(../fonts/Poppins/Poppins-SemiBold.ttf);
+}
+
+.font-PoppinsSemiBold{
+    font-family: Poppins-SemiBold;
+}
+
+.font-PoppinsLight{
+    font-family: Poppins-Light;
+}
+
+.font-LatoLightItalic{
+    font-family: Lato-LightItalic;
+}
+
+.font-Exo2SemiBold{
+    font-family: Exo2-SemiBold !important;
+}
+
+.font-Mistral{
+    font-family: Mistral-Regular;
+}
+
+.font-California{
+    font-family: California-Regular;
+}
+
+.font-CaliforniaBold{
+    font-family: California-Bold;
+}
+
+.font-sourceSansPro{
+    font-family: SourceSansPro-Regular;
+}
+
+.font-sourceSansProBold{
+    font-family: SourceSansPro-Bold;
+}
+
+.font-sourceSansProSemibold{
+    font-family: SourceSansPro-Semibold;
+}
+
+.font-missionScript{
+    font-family: MissionScript-Regular;
+}
+
+.font-openSans{
+    font-family: OpenSans-Regular;
+}
+
+.font-openSansBold{
+    font-family: OpenSans-Bold;
+}
+
+.font-oswald{
+    font-family: Oswald-Regular;
+}
+
+.font-oswaldBold{
+    font-family: Oswald-Bold;
+}
+
+.font-oswaldLight{
+    font-family: Oswald-Light;
+}
+
+.font-Humnst777CnBT{
+    font-family: Humnst777CnBT;
+}
+.font-Humnst777CnBT-Bold{
+    font-family: Humnst777CnBT-Bold;
+}
+
+.font-Cambria-Italic{
+    font-family: Cambria-Italic;
+}
+
+.font-Cambria{
+    font-family: Cambria;
+}
+
+.font-Cambria-Bold{
+    font-family: Cambria-Bold;
+}
+
+.font-Voyage{
+    font-family: Voyage;
+}
+
+.font-Voyage-Bold{
+    font-family: Voyage-Bold;
+}
+
+.font-Roboboto{
+    font-family: Roboboto;
+}
+
+.font-Roboboto-Bold{
+    font-family: Roboboto-Bold;
+}
+
+.font-Roboto-Light{
+    font-family: Roboto-Light;
+}
+
+.font-Roboto-Medium{
+    font-family: Roboto-Medium;
+}
+
+.font-RobotoCondensed{
+    font-family: RobotoCondensed;
+}
+
+.font-RobotoCondensed-Bold{
+    font-family: RobotoCondensed-Bold;
+}
+
+.font-RobotoCondensed-Light{
+    font-family: RobotoCondensed-Light;
+}
+
+.font-Montserrat{
+    font-family: Montserrat;
+}
+
+.font-Montserrat-Bold{
+    font-family: Montserrat-Bold;
+}
+
+.font-Rufina{
+    font-family: Rufina;
+}
+
+.font-RufinaBold{
+    font-family: Rufina-Bold;
+}
+
+.red{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border:1px solid red;
+}
+
+.flex{
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -moz-box;
+    display: flex;
+
+    -webkit-box-align: center;
+    -webkit-flex-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.center{
+    text-align: center;
+}
+
+
+.fit-screen{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background-image: url('../../img/icon/background-middleLogin.png');
+    background-size: 100% 100%;
+}
+
+.boxOut-topLogin{
+    height: 65px;
+    background-image: url('../../img/icon/background-topLogin.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat !important;
+}
+
+.boxOut-middleLogin{
+    height: 100%;
+    height: -webkit-calc 100%;
+    min-height: 600px;
+    background-image: url('../../img/icon/background-middleLogin.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat !important;
+}
+
+.boxOut-bottomLogin{
+    height: 68px;
+    /*background-image: url('../../img/icon/background-bottomLogin.png');*/
+    background-size: 100% 100%;
+    background-repeat: no-repeat !important;
+    color: white;
+    font-size: 14px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 12px;
+}
+
+.boxOut-titleUp{
+    margin-bottom: 35px;
+}
+
+.boxOut-bottomLogin > .col-md-12{
+    height: 100%;
+}
+
+.box-topShadow{
+    //height: 20px;
+    //background-image: url('../../img/icon/shadow-top.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat !important;
+}
+
+.box-middleContent{
+    height: calc(100% - 80px);
+    min-height: calc(100% - 80px);
+}
+
+.box-bottomShadow{
+    height: 80px;
+    //background-image: url('../../img/icon/shadow-bottom.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat !important;
+    color: white;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+}
+
+.boxOut-loginContent{
+    width: 330px;
+    height: 520px;
+    background-image: url('../../img/icon/login-contentBackground.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat !important;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 150px;
+}
+
+.box-textTitle{
+    color: #0B66A9;
+    font-size: 17px;
+    line-height: 17px;
+    margin-bottom: 5px;
+}
+
+.box-littleTitle{
+    color: #606062;
+    font-size: 10px;
+}
+
+.boxOut-user{
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+
+
+.input-group-addon {
+    padding: 10px 8px 0px 6px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 5px !important;
+}
+
+.box-username{
+    margin-top: 10px;
+}
+
+.box-email{
+    margin-top: 10px;
+}
+
+/*.form-control, .form-group .form-control{
+    background-image: linear-gradient(#66BA58, #66BA58), linear-gradient(#96989A, #96989A) !important;
+}
+
+.form-group.label-floating label.control-label, .form-group.label-placeholder label.control-label {
+    top: -7px;
+    font-size: 14px;
+    line-height: 30px;
+    padding-left: 10px;
+}
+
+.input-username{
+    color: #96989A !important;
+    width: 218px !important;
+    margin-left: -27px;
+    padding-left: 40px;
+    font-size: 12px;
+    padding-top: 15px;
+}
+
+.form-group.label-static label.control-label, .form-group.label-floating.is-focused label.control-label, .form-group.label-floating:not(.is-empty) label.control-label {
+    left: -9px !important;
+    top: -26px !important;
+}*/
+
+.label-edit{
+    color: #96989A !important;
+    font-size: 12px !important;
+    padding-bottom: 15px;
+}
+
+.box-imgUsername img{
+    width: 13px;
+    height: 14px;
+}
+
+.box-imgPassword img{
+    width: 12px;
+    height: 14px;
+}
+
+.box-imgEmail img{
+    width: 15px;
+    height: 12px;
+}
+
+.form-group .form-control {
+    margin-bottom: 0px !important;
+}
+
+.label-floating{
+    margin: 10px 0 0 0 !important;
+}
+
+.boxCheckBox{
+    //margin-top: 5px;
+}
+
+.edit-checbox{
+    padding-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    //margin-left: 12%;
+    padding-top: 5px;
+}
+
+.boxCheckBox label{
+    font-size: 9px;
+    color: #96989A;
+    margin-top: 0px;
+    padding-left: 5px;
+}
+
+.checkbox label::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    left: 0;
+    margin-left: -10px;
+    margin-top: 3px;
+    border: 1px solid #96989A;
+    border-radius: 2px;
+    background-color: transparent;
+    -webkit-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    -o-transition: border 0.15s ease-in-out, color 0.15s ease-in-out;
+    transition: border 0.15s ease-in-out, color 0.15s ease-in-out; 
+}
+
+.checkbox label::after {
+    display: inline-block;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    left: 0;
+    top: 0;
+    margin-left: -13px;
+    margin-top: 1px;
+    padding-left: 3px;
+    padding-top: 0px;
+    font-size: 8px;
+    color: #96989A;
+}
+
+.box-lupaPassword{
+    font-size: 9px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.box-lupaPassword a{
+    color: #96989A;
+}
+
+.box-lupaPassword a:hover{
+    color: #505152;
+    transition: all .2s ease;
+}
+
+.box-login{
+    font-size: 9px;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.box-login a{
+    color: #96989A;
+}
+
+.box-login a:hover{
+    color: #505152;
+    transition: all .2s ease;
+}
+
+.boxOut-checkBox{
+    margin-bottom: 15px;
+}
+
+.box-peringatan img{
+    width: 23px;
+    height: 23px;
+}
+
+.box-textPeringatan{
+    text-align: justify;
+    color: #ED3237;
+    font-size: 9px;
+}
+
+.box-textSukses {
+    color: #39B166;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.box-buttonReset{
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.button-login{
+    margin: 0px;
+    background-color: #FF6600;
+    color: white !important;
+    width: 100%;
+    font-size: 11px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 0px;
+    text-align: center;
+    margin-top: 35px;
+    transition: all .2s ease;
+}
+
+.button-login:hover, .button-login:focus{
+    background-color: #ED3237 !important;
+    transition: all .2s ease;
+}
+
+.boxOut-buttonReset{
+}
+
+.button-resetPassword{
+    margin: 0px;
+    background-color: #FF6600;
+    color: white !important;
+    width: 100%;
+    font-size: 11px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 0px;
+    text-align: center;
+    margin-top: 55px;
+    transition: all .2s ease;
+}
+
+.button-resetPassword:hover, .button-resetPassword:focus{
+    background-color: #ED3237 !important;
+    transition: all .2s ease;
+}
+
+.boxOut-loginFooter{
+    /*    position: absolute;
+        bottom: 0;*/
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 20%;
+}
+
+.login-upFooter img{
+    width: 100%;
+}
+
+.login-downFooter img{
+    width: 100%;
+}
+
+.box-textLoginFooter{
+    color: white;
+    font-size: 12px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.body-background{
+    max-width: 100% !important;
+
+}
+
+html,body{
+    height:100%;
+}
+
+.carousel{
+    height: 100%;
+}
+
+.edit-carousel{
+    height: 100%;
+}
+
+.box-bottomFooter{
+    font-size: 11px;
+}
+
+.box-support{
+    position: absolute;
+    right: 0;
+    bottom: 25px;
+    text-align: center;
+}
+
+.button-support{
+    margin: 0px;
+    background-color: transparent;
+    color: white;
+    width: 45px;
+    height: 20px;
+    font-size: 9px;
+    border-radius: 0px;
+    padding: 0px;
+    text-align: center;
+    //margin-top: 20px;
+    border-radius: 3px;
+    border: 1px solid white;
+    text-align: center;
+    cursor: pointer;
+    margin-right: 20px;
+    margin-top: 10px;
+    transition: all .2s ease;
+}
+
+.button-support:hover, .button-support:focus{
+    background-color: white !important;
+    color: #ff0000;
+    transition: all .2s ease;
+}
+
+.box-buttonLupa{
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+
+.button-lupa{
+    margin: 0px;
+    background-color: #E6E6E6;
+    color: #666666 !important;
+    width: 100%;
+    font-size: 11px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 0px;
+    text-align: center;
+    margin-top: 30px;
+    transition: all .2s ease;
+}
+
+.button-lupa:hover, .button-lupa:focus{
+    background-color: #C4C4C4 !important;
+    transition: all .2s ease;
+}
+
+.button-reset{
+    margin: 0px;
+    background-color: #E6E6E6;
+    color: #666666 !important;
+    width: 100%;
+    font-size: 11px;
+    height: 30px;
+    border-radius: 5px;
+    padding: 0px;
+    text-align: center;
+    margin-top: 50px;
+    transition: all .2s ease;
+}
+
+.button-reset:hover, .button-reset:focus{
+    background-color: #C4C4C4 !important;
+    transition: all .2s ease;
+}
+
+
+
+.width-nameFile{
+    width: 100%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+}
+
+.input-group {
+    width: 100%;
+}
+
+
+.input-fieldKomfirmasi{
+    width: 100%;
+    height: 30px;
+    border-radius: 0;
+    background-color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    color: #332C2B !important;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    padding-left: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-top: 2px;
+
+    float: left;
+}
+
+.input-fieldKomfirmasi::-webkit-input-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldKomfirmasi:-moz-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldKomfirmasi::-moz-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldKomfirmasi:-ms-input-placeholder { 
+    color: #B3B3B3 !important; 
+}
+
+
+.input-fieldPassword{
+    width: 100%;
+    height: 30px;
+    border-radius: 0;
+    background-color: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 12px;
+    color: #332C2B !important;
+    margin: 0px;
+    margin-top: 0px;
+    padding: 0px;
+    padding-left: 0px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-top: 2px;
+
+    float: left;
+}
+
+.input-fieldPassword::-webkit-input-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldPassword:-moz-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldPassword::-moz-placeholder { 
+    color: #B3B3B3 !important; 
+}
+.input-fieldPassword:-ms-input-placeholder { 
+    color: #B3B3B3 !important; 
+}
+
+.input-logo{
+    width: 40px;
+    height: 30px;
+    background-color: white;
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+
+
+
+
+.input-img{
+    background-size: 15px 15px;
+}
+
+.boxOut-lampir-file{
+    margin-top: 5px;
+}
+
+.input-username{
+    background-image: url('../../img/icon/login-username.png');
+    background-size: 8px 13px;
+}
+
+.boxOut-username:hover .input-username, .input-fieldKomfirmasi:focus:hover + .input-group-btn .input-group-btn {
+    background-image: url('../../img/icon/login-username-hover.png');
+}
+
+.input-password{
+    background-image: url('../../img/icon/login-password.png');
+    background-size: 9px 13px;
+}
+
+.boxOut-password:hover .input-password, .input-fieldKomfirmasi:focus:hover + .input-group-btn .input-group-btn {
+    background-image: url('../../img/icon/login-password-hover.png');
+}
+
+
+
+
+.boxOut-peringatan{
+    margin-top: 10px;
+}
+
+.button-login {
+    margin-top: 15px;
+}
+
+.button-lupa {
+    margin-top: 25px;
+}
+
+
+
+
+.button-support a{
+    color: white;
+}
+
+.button-support a:hover{
+    color: blue;
+}
+
+
+
+
+
+
+
+@media (max-width:1200px) {
+
+}
+
+@media (max-width:992px) {
+    .boxOut-bottomLogin{
+        font-size: 11px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .input-username{
+        color: #96989A !important;
+    }
+}
+
+
+@media (max-width:768px) {
+    body {
+        margin: auto;
+        max-width: none;
+        min-width: 0px;
+        position: relative;
+    }  
+
+    .boxOut-loginCanvas {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+    .box-loginCanvas {
+        width: 100%;
+        float: none;
+        height: 100%;
+        background-color: rgba(47, 49, 139, 0.92);
+        position: relative;
+    }
+
+    .box-support{
+        float: left;
+        right: inherit;
+        position: relative;
+        min-height: 1px;
+        width: 100%;
+        background: #2d4563;
+    }
+
+    .box-middleContent{
+        height: calc(100% - 150px);
+        min-height: calc(100% - 150px);
+    }
+
+    .box-bottomShadow{
+        height: 150px;
+    }
+
+    .button-support{
+        margin-right: 0px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        float: none !important;
+        display: block !important;
+        margin-right: auto !important;
+        margin-left: auto !important;
+        padding-top: 5px;
+        width: 80px;
+        height: 25px;
+        font-size: 10px;
+    }
+
+    .footer-top{
+        font-size: 10px;
+    }
+
+    .box-bottomFooter {
+        font-size: 9px;
+    }
+
+
+    .box-bottomFooter.flex{
+        display: block !important;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+
+    .boxOut-loginContent {
+        width: 100%;
+    }
+
+    .box-buttonLupa {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    .button-lupa {
+        font-size: 10px;
+    }
+
+    .box-support{
+        bottom: initial;
+    }
+
+
+
+
+}

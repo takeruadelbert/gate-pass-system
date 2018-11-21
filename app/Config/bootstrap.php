@@ -104,6 +104,7 @@ define("_APP_START","2016");
 
 define("_DEVELOPER_NAME","Surya Teknologi Nasional");
 define("_DEVELOPER_WEBSITE","http://www.suryateknologi.com/");
+define("_DEVELOPER_EMAIL", "takeru_adelbert@hotmail.com");
 
 define("_PRIVATE_DIR", "Asset");
 /**
