@@ -72,6 +72,9 @@ Router::connect("/admin/restriction", array("admin" => true, "controller" => "ac
 
 //Setting
 Router::connect('/setting', array('admin' => true, 'controller' => 'company_profiles', 'action' => 'edit','1'));
+Router::connect("/system-config", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'edit'));
+Router::connect("/change-logo", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'change_logo'));
+Router::connect("/change-background-login", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'change_background_login'));
 
 // Master Data
 Router::connect("/setup-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'index'));
@@ -82,9 +85,6 @@ Router::connect("/edit-gate", array("admin" => true, 'controller' => 'gates', 'a
 Router::connect("/register", array("admin" => true, 'controller' => 'members', 'action' => 'index'));
 Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
 Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'multi_add'));
-
-// System Configuration
-Router::connect("/system-config", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'edit'));
 
 // API
 Router::connect("/api/access", array("api" => true, 'controller' => "members", 'action' => 'check_validity'));
