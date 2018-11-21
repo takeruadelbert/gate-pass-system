@@ -51,6 +51,9 @@ class AppModel extends Model {
         "ModuleLink" => [
             "relationField" => "module_id",
         ],
+        "MemberDetail" => [
+            "relationField" => "member_id"
+        ]
     ];
 
     public function saveData() {

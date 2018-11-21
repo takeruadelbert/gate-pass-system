@@ -78,6 +78,11 @@ Router::connect("/setup-gate", array("admin" => true, 'controller' => 'gates', '
 Router::connect("/add-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'add'));
 Router::connect("/edit-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'edit'));
 
+// Member Registration
+Router::connect("/register", array("admin" => true, 'controller' => 'members', 'action' => 'index'));
+Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
+Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'mutliple_add'));
+
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
