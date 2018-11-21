@@ -26,4 +26,9 @@ class GatesController extends AppController {
         $this->_setPageInfo("admin_add", "");
         $this->_setPageInfo("admin_edit", "");
     }
+    
+    function admin_index() {
+        $this->_activePrint(func_get_args(), "data-gate");
+        parent::admin_index();
+    }
 }

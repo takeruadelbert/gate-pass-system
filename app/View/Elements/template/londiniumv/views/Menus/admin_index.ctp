@@ -6,6 +6,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/menu");
         <div class="block-inner text-danger">
             <h6 class="heading-hr"><?= __("DATA MENU") ?>
                 <div class="pull-right">
+                    <!--
                     <button class="btn btn-xs btn-default" type="button" onclick="exp('print', '<?php echo Router::url("index/print?" . $_SERVER['QUERY_STRING'], true) ?>')">
                         <i class="icon-print2"></i> 
                         <?= __("Cetak") ?>
@@ -17,7 +18,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/menu");
                     <button class="btn btn-xs btn-default" type="button" onclick="exp('pdf', '<?php echo Router::url("index/pdf?" . $_SERVER['QUERY_STRING'], true) ?>')">
                         <i class="icon-file-pdf"></i>
                         PDF
-                    </button>&nbsp;
+                    </button>&nbsp; -->
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/delete") ?>
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/add") ?>
                 </div>
