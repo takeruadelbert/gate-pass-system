@@ -58,6 +58,7 @@ class AccountsController extends AppController {
             if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only'))) {
                 $this->{ Inflector::classify($this->name) }->data["User"]["password"] = $encrypt;
                 $this->{ Inflector::classify($this->name) }->data["User"]["salt"] = $salt;
+                $this->{Inflector::classify($this->name)}->data['Employee']['employee_status_id'] = 2;
                 unset($this->{ Inflector::classify($this->name) }->data["User"]["repeatPassword"]);
                 $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data);
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');

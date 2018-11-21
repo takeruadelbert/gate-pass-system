@@ -39,7 +39,7 @@
                                 <div class="form-group">
                                     <?php
                                     echo $this->Form->label("User.user_group_id", __("User Group"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                    echo $this->Form->input("User.user_group_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", "empty" => "- Pilih Posisi -"));
+                                    echo $this->Form->input("User.user_group_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", "empty" => "", "placeholder" => "- Pilih Posisi -"));
                                     ?>
                                 </div>
                             </div>
@@ -47,8 +47,8 @@
                                 <div class="form-group">
                                     <?php
                                     echo $this->Form->label("User.password", __("Password"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                    echo $this->Form->input(null, array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control", "disabled" => true, "value" => "password123", "type" => "text"));
-                                    echo $this->Form->input("User.password", array("div" => false, "label" => false, "class" => "form-control", "value" => "password123", "type" => "hidden"));
+                                    echo $this->Form->input(null, array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control", "disabled" => true, "value" => "gatepass123", "type" => "text"));
+                                    echo $this->Form->input("User.password", array("div" => false, "label" => false, "class" => "form-control", "value" => "gatepass123", "type" => "hidden"));
                                     ?>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                 <div class="form-group">
                                     <?php
                                     echo $this->Form->label("Biodata.identity_type_id", __("Jenis Identitas"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                    echo $this->Form->input("Biodata.identity_type_id", array("empty" => "- Pilih Jenis Identitas -", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full"));
+                                    echo $this->Form->input("Biodata.identity_type_id", array("empty" => "", "placeholder" => "- Pilih Jenis Identitas -", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full"));
                                     ?>
                                 </div>
                             </div>
@@ -113,15 +113,15 @@
                                 <div class="form-group">
                                     <?php
                                     echo $this->Form->label("Biodata.gender_id", __("Jenis Kelamin"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                    echo $this->Form->input("Biodata.gender_id", array("empty" => "- Pilih Jenis Kelamin -", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full"));
+                                    echo $this->Form->input("Biodata.gender_id", array("empty" => "", "placeholder" => "- Pilih Jenis Kelamin -", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full"));
                                     ?>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <?php
-                                    echo $this->Form->label("Biodata.birth_date", __("Tanggal Lahir"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                    echo $this->Form->input("Biodata.birth_date", array("type" => "text", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control date"));
+                                    echo $this->Form->label("Biodata.tanggal_lahir", __("Tanggal Lahir"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                    echo $this->Form->input("Biodata.tanggal_lahir", array("type" => "text", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control datepicker"));
                                     ?>
                                 </div>
                             </div>

@@ -7,6 +7,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/account");
         <div class="block-inner text-danger">
             <h6 class="heading-hr"><?= __("DATA PENGGUNA") ?>
                 <div class="pull-right">
+                    <!--
                     <button class="btn btn-xs btn-default" type="button" onclick="exp('print', '<?php echo Router::url("index/print?" . $_SERVER['QUERY_STRING'], true) ?>')">
                         <i class="icon-print2"></i> 
                         <?= __("Cetak") ?>
@@ -14,8 +15,9 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/account");
                     <button class="btn btn-xs btn-default" type="button" onclick="exp('excel', '<?php echo Router::url("index/excel?" . $_SERVER['QUERY_STRING'], true) ?>')">
                         <i class="icon-file-excel"></i>
                         Excel
-                    </button>&nbsp;
+                    </button>&nbsp; -->
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/add") ?>
+                    <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/delete") ?>
                 </div>
                 <small class="display-block"></small>
             </h6>
@@ -35,7 +37,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/account");
                             <th><?= __("Alamat") ?></th>
                             <th><?= __("No. Handphone") ?></th>
                             <th><?= __("Status Pengguna") ?></th>
-                            <th width="100"><?= __("Aksi") ?></th>
+                            <th width="50"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
                     <tbody>
