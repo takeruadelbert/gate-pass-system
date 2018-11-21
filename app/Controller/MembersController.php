@@ -58,12 +58,12 @@ class MembersController extends AppController {
                         // remove unpicked access gate(s)
                         if(!empty($this->{Inflector::classify($this->name)}->data['MemberDetail'])) {
                             foreach ($this->{Inflector::classify($this->name)}->data['MemberDetail'] as $i => $detail) {
-                                if(empty($detail['gate_type_id'])) {
+                                if(empty($detail['gate_id'])) {
                                    unset($this->{Inflector::classify($this->name)}->data['MemberDetail'][$i]); 
                                 }
                             }
                         }
-                        $this->{Inflector::classify($this->name)}->_deleteableHasmany();
+                        $this->{Inflector::classify($this->name)}->_deleteableHasmany();                        
                         $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
                         $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
                         $this->redirect(array('action' => 'admin_index'));
@@ -89,10 +89,23 @@ class MembersController extends AppController {
         }
     }
 
-    function admin_multiple_add() {
+    function admin_multi_add() {
         if ($this->request->is("post")) {
             $this->{ Inflector::classify($this->name) }->set($this->data);
             if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
+                unset($this->{Inflector::classify($this->name)}->data['Member']['input-addon-checkbox']);                
+                if(!empty($this->{Inflector::classify($this->name)}->data['Member'])) {
+                    foreach ($this->{Inflector::classify($this->name)}->data['Member'] as $i => $member) {
+                        $this->{Inflector::classify($this->name)}->data[$i]['Member']['uid'] = $member['Member']['uid'];
+                        $this->{Inflector::classify($this->name)}->data[$i]['Member']['name'] = $member['Member']['name'];
+                        $this->{Inflector::classify($this->name)}->data[$i]['Member']['expired_dt'] = $member['Member']['expired_dt'];
+                        $this->{Inflector::classify($this->name)}->data[$i]['MemberDetail'] = $this->{Inflector::classify($this->name)}->data['MemberDetail'];
+                    }
+                }
+                unset($this->{Inflector::classify($this->name)}->data['Member']);
+                unset($this->{Inflector::classify($this->name)}->data['MemberDetail']);
+//                debug($this->{Inflector::classify($this->name)}->data);
+//                die;
                 $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
                 $this->redirect(array('action' => 'admin_index'));
@@ -100,6 +113,8 @@ class MembersController extends AppController {
                 $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
                 $this->Session->setFlash(__("Harap mengecek kembali kesalahan dibawah."), 'default', array(), 'danger');
             }
+        } else {
+            $this->set("gate_ids", ClassRegistry::init("Gate")->get_all_ids());
         }
     }
 

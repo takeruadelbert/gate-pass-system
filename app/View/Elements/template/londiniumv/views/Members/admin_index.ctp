@@ -8,7 +8,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                 <div class="pull-right">
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/delete") ?>
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/add") ?>
-                    <a href="<?= Router::url("", true) ?>">
+                    <a href="<?= Router::url("/add-multiple-member", true) ?>">
                         <button class="btn btn-xs btn-success" type="button">
                             <i class="icon-users"></i>
                             <?= __("Tambah Multi Data") ?>

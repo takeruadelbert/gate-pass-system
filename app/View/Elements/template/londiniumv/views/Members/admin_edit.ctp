@@ -51,7 +51,7 @@
                                                     <span class="input-group-addon">
                                                         <input type="checkbox" class="styled tooltip" title="Check/Uncheck Semua Gate" name="input-addon-checkbox" id="isCheckAll" onchange="check_all(this, $('#gate'))">
                                                     </span>
-                                                    <?= $this->Form->input("MemberDetail..gate_type_id", array("div" => false, "label" => false, "class" => "select-multiple", 'multiple', 'data-placeholder' => '- Pilih Gate yang diakses -', 'options' => $gateWithTypes, 'id' => 'gate', 'default' => !empty($this->data['MemberDetail']) ? array_column($this->data['MemberDetail'], "gate_id") : "")); ?>
+                                                    <?= $this->Form->input("MemberDetail..gate_id", array("div" => false, "label" => false, "class" => "select-multiple", 'multiple', 'data-placeholder' => '- Pilih Gate yang diakses -', 'options' => $gateWithTypes, 'id' => 'gate', 'default' => !empty($this->data['MemberDetail']) ? array_column($this->data['MemberDetail'], "gate_id") : "")); ?>
                                                 </div>
                                                 <?php
                                                 if (!empty($this->data['MemberDetail'])) {
