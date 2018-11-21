@@ -36,7 +36,7 @@
             var currDateTime = servertime;
             var formattedDate = function (date) {
                 var day = new Array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
-                var month = new Array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "Nopember", "Desember");
+                var month = new Array("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
                 var dayN = String(currDateTime.getDay());
                 var dd = day[dayN];
                 var mthN = String(currDateTime.getMonth());

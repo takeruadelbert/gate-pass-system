@@ -172,7 +172,7 @@ class AppHelper extends Helper {
         } elseif ($i == 10) {
             $monthName = 'Oktober';
         } elseif ($i == 11) {
-            $monthName = 'Nopember';
+            $monthName = 'November';
         } else {
             $monthName = 'Desember';
         }
