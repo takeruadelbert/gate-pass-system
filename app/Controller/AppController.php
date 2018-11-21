@@ -331,7 +331,7 @@ class AppController extends Controller {
 
     function __checkPremission() {
         $credential = $this->Session->read("credential.{$this->params['prefix']}");
-        if ($this->params['prefix'] == "front") {
+        if ($this->params['prefix'] == "front" || $this->params['prefix'] == "api") {
             
         } else if (!empty($this->params['prefix']) && empty($credential)) {
             if ($this->params['prefix'] == "member") {

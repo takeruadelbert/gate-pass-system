@@ -83,6 +83,9 @@ Router::connect("/register", array("admin" => true, 'controller' => 'members', '
 Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
 Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'multi_add'));
 
+// API
+Router::connect("/api/access", array("api" => true, 'controller' => "members", 'action' => 'check_validity'));
+
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.

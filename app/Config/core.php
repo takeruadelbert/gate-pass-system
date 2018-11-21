@@ -149,7 +149,7 @@ Configure::write('App.encoding', 'UTF-8');
  * 	`manager_index()` and `/manager/controller/index`
  *
  */
-Configure::write('Routing.prefixes', array('admin', 'front', 'member'));
+Configure::write('Routing.prefixes', array('admin', 'front', 'member', 'api'));
 
 /**
  * Turn off all caching application-wide.

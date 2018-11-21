@@ -141,4 +141,36 @@ class MembersController extends AppController {
         }
         parent::admin_index();
     }
+    
+    function api_check_validity() {
+        $this->autoRender = false;
+        if($this->request->is("POST")) {
+            $current_dt_server = date("Y-m-d H:i:s");
+            $uid = $this->data['uid'];
+            // first thing first check if uid is exist in database.
+            if(!empty($uid)) {
+                $dataMember = $this->{Inflector::classify($this->name)}->find("first",[
+                    "conditions" => [
+                        "Member.uid" => $uid
+                    ],
+                    "recursive" => -1
+                ]);
+                if(!empty($dataMember)) {
+                    // if it's exist, then check if it's still in valid period
+                    $expired_dt = $dataMember['Member']['expired_dt'];
+                    if($current_dt_server <= $expired_dt) {
+                        return json_encode($this->_generateStatusCode(206, "UID is Valid."));
+                    } else {
+                        return json_encode($this->_generateStatusCode(405, "Error : UID is expired."));
+                    }
+                } else {
+                    return json_encode($this->_generateStatusCode(401, "Error : UID not registered."));
+                }
+            } else {
+                return json_encode($this->_generateStatusCode(406, "Error : Invalid 'uid' param."));
+            }
+        } else {
+            return json_encode($this->_generateStatusCode(400, 'Error : Invalid Request Type.'));
+        }
+    }
 }
