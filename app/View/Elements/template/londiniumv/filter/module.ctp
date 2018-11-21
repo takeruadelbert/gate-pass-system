@@ -9,11 +9,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label><?= __("Label") ?></label>
-                        <input type="text" name="Module.name" placeholder="<?= __("") ?>" class="form-control tip">
+                        <?= $this->Form->input(null, ['div' => false, 'label' => false, 'type' => "text", 'class' => "form-control", 'name' => "Module.name", 'default' => isset($this->request->query['Module_name']) ? $this->request->query['Module_name'] : ""]) ?>
                     </div>
                     <div class="col-md-6">
                         <label ><?= __("Alias") ?></label>
-                        <input type="text" name="Module.alias" placeholder="<?= __("") ?>" class="form-control tip">
+                        <?= $this->Form->input(null, ['div' => false, 'label' => false, 'type' => "text", 'class' => "form-control", 'name' => "Module.alias", 'default' => isset($this->request->query['Module_alias']) ? $this->request->query['Module_alias'] : ""]) ?>
                     </div>
                 </div>
             </div>

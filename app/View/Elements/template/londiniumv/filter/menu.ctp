@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6">
                         <label><?= __("Modul") ?></label>
-                        <?= $this->Form->input(null, array("default" => isset($this->request->query['Menu_module_id']) ? $this->request->query['Menu_module_id'] : '', "name" => "Menu.module_id", "div" => false, "label" => false, "class" => "select-full","options"=>$modules,"empty"=>"-Semua-")) ?>
+                        <?= $this->Form->input(null, array("default" => isset($this->request->query['Menu_module_id']) ? $this->request->query['Menu_module_id'] : '', "name" => "Menu.module_id", "div" => false, "label" => false, "class" => "select-full","options"=>$modules,"empty"=>"", "placeholder" => "-Semua-")) ?>
                     </div>
                 </div>
             </div>

@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-md-6">
                         <label><?= __("Modul") ?></label>
-                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_module_id']) ? $this->request->query['SubMenu_module_id'] : '', "name" => "SubMenu.module_id", "div" => false, "label" => false, "class" => "select-full", "options" => $modules, "empty" => "-Semua-")) ?>
+                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_module_id']) ? $this->request->query['SubMenu_module_id'] : '', "name" => "SubMenu.module_id", "div" => false, "label" => false, "class" => "select-full", "options" => $modules, "empty" => "", "placeholder" => "-Semua-")) ?>
                     </div>
                 </div>
             </div>
@@ -21,11 +21,11 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label><?= __("Menu") ?></label>
-                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_menu_id']) ? $this->request->query['SubMenu_menu_id'] : '', "name" => "SubMenu.menu_id", "div" => false, "label" => false, "class" => "select-full", "options" => $menus, "empty" => "-Semua-")) ?>
+                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_menu_id']) ? $this->request->query['SubMenu_menu_id'] : '', "name" => "SubMenu.menu_id", "div" => false, "label" => false, "class" => "select-full", "options" => $menus, "empty" => "", "placeholder" => "-Semua-")) ?>
                     </div>
                     <div class="col-md-6">
                         <label><?= __("Parent") ?></label>
-                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_parent_id']) ? $this->request->query['SubMenu_parent_id'] : '', "name" => "SubMenu.parent_id", "div" => false, "label" => false, "class" => "select-full", "options" => $parents, "empty" => "-Semua-")) ?>
+                        <?= $this->Form->input(null, array("default" => isset($this->request->query['SubMenu_parent_id']) ? $this->request->query['SubMenu_parent_id'] : '', "name" => "SubMenu.parent_id", "div" => false, "label" => false, "class" => "select-full", "options" => $parents, "empty" => "", 'placeholder' => "-Semua-")) ?>
                     </div>
                 </div>
             </div>
