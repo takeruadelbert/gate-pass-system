@@ -7,10 +7,10 @@ class Member extends AppModel {
             'Harus diisi' => array("rule" => "notEmpty"),
             'Sudah Terdaftar' => array("rule" => 'isUnique')
         ),
-        'name' => array(
-            'rule' => 'notEmpty',
-            'message' => 'Harus Diisi.'
-        ),
+//        'name' => array(
+//            'rule' => 'notEmpty',
+//            'message' => 'Harus Diisi.'
+//        ),
         'expired_dt' => array(
             'rule' => 'notEmpty',
             'message' => 'Harus Diisi.'
@@ -28,4 +28,15 @@ class Member extends AppModel {
     public $virtualFields = array(
     );
     
+    function is_member_exists($uid = null) {
+        if(!empty($uid)) {
+            $data = $this->find("first",[
+                "conditions" => [
+                    "Member.uid" => $uid
+                ],
+                "recursive" => -1
+            ]);
+            return !empty($data) ? TRUE : FALSE;
+        }
+    }
 }

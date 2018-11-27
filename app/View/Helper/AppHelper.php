@@ -122,6 +122,25 @@ class AppHelper extends Helper {
         }
         return "$tgl $bulan $tahun - $jam:$menit";
     }
+    
+    function cvtWaktuDetik($date = null) {
+        if (!empty($date)) {
+            $tgl = date("d", strtotime($date));
+            $bulan = $this->getNamaBulan(date("m", strtotime($date)));
+            $tahun = date("Y", strtotime($date));
+            $jam = date("H", strtotime($date));
+            $menit = date("i", strtotime($date));
+            $detik = date("s", strtotime($date));
+        } else {
+            $tgl = date("d");
+            $bulan = $this->getNamaBulan(date("m"));
+            $tahun = date("Y");
+            $jam = date("H");
+            $menit = date("i");
+            $detik = date("s");
+        }
+        return "$tgl $bulan $tahun - $jam:$menit:$detik";
+    }
 
     function getTanggal($date = null) {
         if (!empty($date)) {
@@ -321,5 +340,49 @@ class AppHelper extends Helper {
             }
         }
     }
-
+    
+    function getBulanInteger($name = null) {
+        if(!empty($name)) {
+            switch ($name) {
+                case "Januari":
+                    return '01';
+                case "Februari":
+                    return '02';
+                case "Maret":
+                    return '03';
+                case "April":
+                    return '04';
+                case "Mei":
+                    return '05';
+                case "Juni":
+                    return '06';
+                case "Juli":
+                    return '07';
+                case "Agustus":
+                    return '08';
+                case "September":
+                    return '09';
+                case "Oktober":
+                    return '10';
+                case "November":
+                    return '11';
+                case "Desember":
+                    return '12';
+            }                
+        }
+    }
+    
+    // format date back to YYYY-mm-dd HH:ii:ss
+    function convertDateFormat($datetime = null) {
+        if(!empty($datetime)) {
+            $temp = explode(" - ", $datetime);
+            $time = $temp[1];
+            $temp2 = explode(" ", $temp[0]);
+            $date = $temp2[0];
+            $month = $temp2[1];
+            $year = $temp2[2];
+            $month_in_integer = $this->getBulanInteger($temp2[1]);
+            return "$year-$month_in_integer-$date $time";
+        }
+    }
 }

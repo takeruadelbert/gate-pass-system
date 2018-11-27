@@ -25,8 +25,11 @@ class Gate extends AppModel {
         "full_label" => "concat(Gate.name, ' - ', Gate.ip_address)",
     );
 
-    function get_list_gate() {
+    function get_list_gate($conds = []) {
         return $this->find("list",[
+            "conditions" => [
+                $conds
+            ],
             "fields" => [
                 "Gate.id",
                 "Gate.full_label"
@@ -95,5 +98,29 @@ class Gate extends AppModel {
             "recursive" => -1,
             "order" => "Gate.name"
         ]);
+    }
+    
+    function get_gate_name($gate_id = null) {
+        if(!empty($gate_id)) {
+            $gate = $this->find("first",[
+                "conditions" => [
+                    "Gate.id" => $gate_id
+                ],
+                "recursive" => -1
+            ]);
+            return !empty($gate) ? $gate['Gate']['full_label'] : "";
+        }
+    }
+    
+    function get_ip_address($gate_id = null) {
+        if(!empty($gate_id)) {
+            $gate = $this->find("first",[
+                "conditions" => [
+                    "Gate.id" => $gate_id
+                ],
+                "recursive" => -1
+            ]);
+            return !empty($gate) ? $gate['Gate']['ip_address'] : "";
+        }
     }
 }
