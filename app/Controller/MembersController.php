@@ -165,6 +165,8 @@ class MembersController extends AppController {
                     // Raspberry Pi Data Processed
                     $dataSaveRPI = isset($this->data['RPI']) ? $this->data['RPI'] : [];
                     $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
+//                    debug($dataSaveRPI);
+//                    die;
                     if (!empty($dataSaveRPI)) {
                         $data_saved_rpi = [];
                         if ($conn = @mysql_connect($ip_address_gate, $this->username, $this->password, $this->db_name)) {
@@ -173,27 +175,34 @@ class MembersController extends AppController {
                                 $name = mysql_real_escape_string($temp[1]);
                                 $uid = mysql_real_escape_string($temp[2]);
                                 $expired_dt = mysql_real_escape_string($helper->convertDateFormat($temp[3]));
-
-                                // insert member record
-                                $sql = "INSERT INTO members (name, uid, expired_dt) VALUES ('$name', '$uid', '$expired_dt')";
+                                
+                                // check if record exists
                                 mysql_select_db($this->db_name);
-                                if (mysql_query($sql, $conn) === TRUE) {
-                                    echo "successfully insert new record";
+                                $temp = mysql_query("SELECT * FROM members WHERE uid = '$uid'");
+                                if(mysql_fetch_array($temp) !== FALSE) {
+//                                    debug("exists");
                                 } else {
-                                    echo "failed to insert new record";
-                                }
+                                    // insert member record
+                                    $sql = "INSERT INTO members (name, uid, expired_dt) VALUES ('$name', '$uid', '$expired_dt')";
+                                    mysql_select_db($this->db_name);
+                                    if (mysql_query($sql, $conn) === TRUE) {
+                                        echo "successfully insert new record";
+                                    } else {
+                                        echo "failed to insert new record";
+                                    }
 
-                                // insert member detail record
-                                $sql = "INSERT INTO member_details (member_id, gate_id) VALUES (LAST_INSERT_ID(), '$gate_id')";
-                                if (mysql_query($sql, $conn) === TRUE) {
-                                    echo "successfully insert new record";
-                                } else {
-                                    echo "failed to insert new record";
-                                }
+                                    // insert member detail record
+                                    $sql = "INSERT INTO member_details (member_id, gate_id) VALUES (LAST_INSERT_ID(), '$gate_id')";
+                                    if (mysql_query($sql, $conn) === TRUE) {
+                                        echo "successfully insert new record";
+                                    } else {
+                                        echo "failed to insert new record";
+                                    }
+                                }                                
                             }
                             mysql_close($conn);
                             $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
-                            $this->redirect(array('action' => 'admin_sync_data_member'));
+//                            $this->redirect(array('action' => 'admin_sync_data_member'));
                         } else {
                             $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$conn->connect_error}"), 'default', array(), 'danger');
                             $this->redirect(array('action' => 'admin_sync_data_member'));
@@ -204,6 +213,8 @@ class MembersController extends AppController {
 
                     // Local Data Processed
                     $dataSaveLocal = isset($this->data['Local']) ? $this->data['Local'] : [];
+//                    debug($dataSaveLocal);
+//                    die;
                     if (!empty($dataSaveLocal)) {
                         $data_saved_local = [];
                         foreach ($dataSaveLocal as $dataLocal) {
