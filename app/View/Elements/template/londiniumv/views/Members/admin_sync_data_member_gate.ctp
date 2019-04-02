@@ -26,7 +26,7 @@
                     </select>                    
                     <span id="box1Counter" class="count-label"></span>
                     <select id="box1Storage"></select>
-                    <span class="help-block">Format Data : ID -- UID -- Nama -- Expired Date </span>
+                    <span class="help-block">Format Data : ID -- Nama -- UID -- Expired Date </span>
                 </div>
                 <!-- /left-box -->
 
@@ -57,7 +57,7 @@
                     </select>
                     <span id="box2Counter" class="count-label"></span>
                     <select id="box2Storage"></select>
-                    <span class="help-block">Format Data : ID -- UID -- Nama -- Expired Date </span>
+                    <span class="help-block">Format Data : ID -- Nama -- UID -- Expired Date </span>
                 </div>
                 <!-- /right box -->             
             </div>

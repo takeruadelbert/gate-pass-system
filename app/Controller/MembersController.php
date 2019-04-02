@@ -158,15 +158,11 @@ class MembersController extends AppController {
         $helper = $view->loadHelper("App");
         if (!empty($gate_id)) {
             if ($this->request->is("POST")) {
-//                debug($this->data);
-//                die;
                 $gate_id = $this->data['Member']['gate_id'];
                 try {
                     // Raspberry Pi Data Processed
                     $dataSaveRPI = isset($this->data['RPI']) ? $this->data['RPI'] : [];
                     $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
-//                    debug($dataSaveRPI);
-//                    die;
                     if (!empty($dataSaveRPI)) {
                         $data_saved_rpi = [];
                         if ($conn = @mysql_connect($ip_address_gate, $this->username, $this->password, $this->db_name)) {
@@ -175,11 +171,11 @@ class MembersController extends AppController {
                                 $name = mysql_real_escape_string($temp[1]);
                                 $uid = mysql_real_escape_string($temp[2]);
                                 $expired_dt = mysql_real_escape_string($helper->convertDateFormat($temp[3]));
-                                
+
                                 // check if record exists
                                 mysql_select_db($this->db_name);
                                 $temp = mysql_query("SELECT * FROM members WHERE uid = '$uid'");
-                                if(mysql_fetch_array($temp) !== FALSE) {
+                                if (mysql_fetch_array($temp) !== FALSE) {
 //                                    debug("exists");
                                 } else {
                                     // insert member record
@@ -198,11 +194,10 @@ class MembersController extends AppController {
                                     } else {
                                         echo "failed to insert new record";
                                     }
-                                }                                
+                                }
                             }
                             mysql_close($conn);
                             $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
-//                            $this->redirect(array('action' => 'admin_sync_data_member'));
                         } else {
                             $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$conn->connect_error}"), 'default', array(), 'danger');
                             $this->redirect(array('action' => 'admin_sync_data_member'));
@@ -213,8 +208,6 @@ class MembersController extends AppController {
 
                     // Local Data Processed
                     $dataSaveLocal = isset($this->data['Local']) ? $this->data['Local'] : [];
-//                    debug($dataSaveLocal);
-//                    die;
                     if (!empty($dataSaveLocal)) {
                         $data_saved_local = [];
                         foreach ($dataSaveLocal as $dataLocal) {
@@ -286,6 +279,10 @@ class MembersController extends AppController {
                                 ];
                             }
                         }
+//                        function cmp($a, $b) {
+//                            return strnatcmp($a["data"], $b["data"]);
+//                        }
+//                        usort($dataRPI, "cmp");
                         $conn->close();
                         $is_connect_to_RPI = TRUE;
                     } else {
@@ -391,7 +388,7 @@ class MembersController extends AppController {
         } else {
             if (empty($dataLocal) && !empty($dataRPI)) {
                 $difference = $dataRPI;
-            } else if(!empty($dataLocal) && empty($dataRPI)) {
+            } else if (!empty($dataLocal) && empty($dataRPI)) {
                 $difference = $dataLocal;
             }
         }
