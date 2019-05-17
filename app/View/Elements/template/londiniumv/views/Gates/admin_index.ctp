@@ -30,7 +30,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                             <th><?= __("Nama") ?></th>
                             <th><?= __("Tipe") ?></th>
                             <th><?= __("IP Address") ?></th>
-                            <th width="50"><?= __("Aksi") ?></th>
+                            <th width="100"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -55,6 +55,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                                     <td class="text-center"><?= $item['Gate']['ip_address'] ?></td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>
+                                        <a href="<?= Router::url("/admin/gates/sync_data_gate/{$item['Gate']['id']}", true) ?>"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="Sync Data"><i class="icon-feed"></i></button></a>
                                     </td>
                                 </tr>
                                 <?php

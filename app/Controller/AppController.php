@@ -124,6 +124,10 @@ class AppController extends Controller {
     var $cetak_template = false;
     var $order = false;
     var $layoutCetak = false;
+    
+    var $username = "admin";
+    var $password = "admin123";
+    var $db_name = "gate_pass_system";
 
     function _sentEmail($type = null, $info = array(), $options = array(), $sent = true) {
         App::uses('CakeEmail', 'Network/Email');

@@ -12,9 +12,6 @@ class MembersController extends AppController {
             "Gate"
         ]
     );
-    var $username = "takeru";
-    var $password = "takeru123";
-    var $db_name = "gate_pass_system";
 
     function beforeFilter() {
         parent::beforeFilter();
