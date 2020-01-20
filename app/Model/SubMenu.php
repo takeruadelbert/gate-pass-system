@@ -19,11 +19,11 @@ class SubMenu extends AppModel {
     );
     var $validate = array(
         'label' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
         'menu_id' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus dipilih'
         ),
     );

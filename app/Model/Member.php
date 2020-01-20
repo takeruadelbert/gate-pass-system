@@ -4,15 +4,15 @@ class Member extends AppModel {
 
     public $validate = array(
         'uid' => array(
-            'Harus diisi' => array("rule" => "notEmpty"),
+            'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Terdaftar' => array("rule" => 'isUnique')
         ),
 //        'name' => array(
-//            'rule' => 'notEmpty',
+//            'rule' => 'NotBlank',
 //            'message' => 'Harus Diisi.'
 //        ),
         'expired_dt' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus Diisi.'
         )
     );

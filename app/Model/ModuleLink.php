@@ -6,7 +6,7 @@ class ModuleLink extends AppModel {
     var $actsAs = array('Containable');
     var $validate = array(
         'alias' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
     );

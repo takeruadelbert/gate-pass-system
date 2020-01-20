@@ -19,7 +19,7 @@ class UserGroup extends AppModel {
                 'message' => 'Nama telah terpakai',
             ),
             'rule2' => array(
-                'rule' => 'notEmpty',
+                'rule' => 'NotBlank',
                 'message' => 'Harus diisi',
             )
         )

@@ -4,7 +4,7 @@ class MemberDetail extends AppModel {
 
     public $validate = array(
         'gate_id' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
         )
     );

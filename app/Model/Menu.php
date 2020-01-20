@@ -18,15 +18,15 @@ class Menu extends AppModel {
     );
     var $validate = array(
         'label' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
         'ordering_number' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
         'position' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
     );

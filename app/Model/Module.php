@@ -18,11 +18,11 @@ class Module extends AppModel {
     );
     var $validate = array(
         'name' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
         'alias' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
     );

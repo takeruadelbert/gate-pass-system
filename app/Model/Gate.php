@@ -4,15 +4,15 @@ class Gate extends AppModel {
 
     public $validate = array(
         'name' => array(
-            'Harus diisi' => array("rule" => "notEmpty"),
+            'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique')
         ),
         'ip_address' => array(
-            'Harus diisi' => array("rule" => "notEmpty"),
+            'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique')
         ),
         'gate_type_id' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
         )
     );

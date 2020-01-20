@@ -4,7 +4,7 @@ class Biodata extends AppModel {
 
     public $validate = array(
         'first_name' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Harus diisi'
         ),
     );

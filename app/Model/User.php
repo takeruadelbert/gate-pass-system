@@ -4,7 +4,7 @@ class User extends AppModel {
 
     public $validate = array(
         'username' => array(
-            'Harus diisi' => array("rule" => "notEmpty"),
+            'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah terdaftar' => array("rule" => 'isUnique'),
             'Hanya alphanumeric' => array("rule" => 'alphaNumeric'),
         ),
@@ -14,12 +14,12 @@ class User extends AppModel {
                 'message' => 'Minimal 6 karakter'
             ),
             'rule2' => array(
-                'rule' => 'notEmpty',
+                'rule' => 'NotBlank',
                 'message' => 'Hasur diisi'
             )
         ),
         'user_group_id' => array(
-            'rule' => 'notEmpty',
+            'rule' => 'NotBlank',
             'message' => 'Hasur dipilih'
         ),
         'repeat_password' => array(
@@ -28,12 +28,12 @@ class User extends AppModel {
                 'message' => 'Kata sandi tidak sama'
             ),
             'rule2' => array(
-                'rule' => 'notEmpty',
+                'rule' => 'NotBlank',
                 'message' => 'Hasur diisi'
             )
         ),
         'email' => array(
-            'Harus diisi' => array("rule" => 'notEmpty'),
+            'Harus diisi' => array("rule" => 'NotBlank'),
             'Sudah terdaftar' => array("rule" => 'isUnique'),
         )
     );
