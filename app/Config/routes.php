@@ -72,7 +72,7 @@ Router::connect('/account-edit/*', array('admin' => true, 'controller' => 'accou
 Router::connect("/admin/restriction", array("admin" => true, "controller" => "accounts", "action" => "restriction"));
 
 //Setting
-Router::connect('/setting', array('admin' => true, 'controller' => 'company_profiles', 'action' => 'edit','1'));
+Router::connect('/setting', array('admin' => true, 'controller' => 'company_profiles', 'action' => 'edit', '1'));
 Router::connect("/system-config", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'edit'));
 Router::connect("/change-logo", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'change_logo'));
 Router::connect("/change-background-login", array("admin" => true, 'controller' => 'entity_configurations', 'action' => 'change_background_login'));
@@ -81,6 +81,10 @@ Router::connect("/change-background-login", array("admin" => true, 'controller' 
 Router::connect("/setup-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'index'));
 Router::connect("/add-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'add'));
 Router::connect("/edit-gate", array("admin" => true, 'controller' => 'gates', 'action' => 'edit'));
+
+Router::connect("/client", array("admin" => true, 'controller' => 'clients', 'action' => 'index'));
+Router::connect("/add-client", array("admin" => true, 'controller' => 'clients', 'action' => 'add'));
+Router::connect("/edit-client", array("admin" => true, 'controller' => 'clients', 'action' => 'edit'));
 
 // Member Registration
 Router::connect("/register", array("admin" => true, 'controller' => 'members', 'action' => 'index'));

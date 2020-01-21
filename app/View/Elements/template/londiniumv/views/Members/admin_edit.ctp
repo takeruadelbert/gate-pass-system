@@ -51,13 +51,13 @@
                                                     <span class="input-group-addon">
                                                         <input type="checkbox" class="styled tooltip" title="Check/Uncheck Semua Gate" name="input-addon-checkbox" id="isCheckAll" onchange="check_all(this, $('#gate'))">
                                                     </span>
-                                                    <?= $this->Form->input("MemberDetail..gate_id", array("div" => false, "label" => false, "class" => "select-multiple", 'multiple', 'data-placeholder' => '- Pilih Gate yang diakses -', 'options' => $gateWithTypes, 'id' => 'gate', 'default' => !empty($this->data['MemberDetail']) ? array_column($this->data['MemberDetail'], "gate_id") : "")); ?>
+                                                    <?= $this->Form->input("MemberCard..gate_id", array("div" => false, "label" => false, "class" => "select-multiple", 'multiple', 'data-placeholder' => '- Pilih Gate yang diakses -', 'options' => $gateWithTypes, 'id' => 'gate', 'default' => !empty($this->data['MemberCard']) ? array_column($this->data['MemberCard'], "gate_id") : "")); ?>
                                                 </div>
                                                 <?php
-                                                if (!empty($this->data['MemberDetail'])) {
-                                                    foreach ($this->data['MemberDetail'] as $i => $detail) {
-                                                        echo $this->Form->input("MemberDetail.$i.id", ['type' => 'hidden']);
-                                                        echo $this->Form->input("MemberDetail.$i.member_id", ['type' => 'hidden']);
+                                                if (!empty($this->data['MemberCard'])) {
+                                                    foreach ($this->data['MemberCard'] as $i => $detail) {
+                                                        echo $this->Form->input("MemberCard.$i.id", ['type' => 'hidden']);
+                                                        echo $this->Form->input("MemberCard.$i.member_id", ['type' => 'hidden']);
                                                     }
                                                 }
                                                 ?>

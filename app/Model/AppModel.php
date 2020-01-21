@@ -51,7 +51,7 @@ class AppModel extends Model {
         "ModuleLink" => [
             "relationField" => "module_id",
         ],
-        "MemberDetail" => [
+        "MemberCard" => [
             "relationField" => "member_id"
         ]
     ];

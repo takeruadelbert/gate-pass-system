@@ -1,16 +1,14 @@
 <?php
 
-class MemberDetail extends AppModel {
+class MemberCard extends AppModel {
 
     public $validate = array(
-        'gate_id' => array(
+        'card_number' => array(
             'rule' => 'NotBlank',
-            'message' => 'Harus Dipilih.'
+            'message' => 'Harus Diisi.'
         )
     );
-    public $belongsTo = array(
-        "Gate"
-    );
+    public $belongsTo = array();
     public $hasOne = array(
     );
     public $hasMany = array(

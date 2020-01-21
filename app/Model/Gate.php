@@ -10,17 +10,12 @@ class Gate extends AppModel {
         'ip_address' => array(
             'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique')
-        ),
-        'gate_type_id' => array(
-            'rule' => 'NotBlank',
-            'message' => 'Harus Dipilih.'
         )
     );
     public $belongsTo = array(
-        "GateType"
+        "Client"
     );
-    public $hasOne = array(
-    );
+    public $hasOne = array();
     public $virtualFields = array(
         "full_label" => "concat(Gate.name, ' - ', Gate.ip_address)",
     );
@@ -85,8 +80,7 @@ class Gate extends AppModel {
                 "Gate Keluar" => $temp
             ];
         }
-        $gates = $gate_in + $gate_out;
-        return $gates;
+        return $gate_in + $gate_out;
     }
     
     function get_all_ids() {

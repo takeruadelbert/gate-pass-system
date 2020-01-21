@@ -45,8 +45,8 @@
                     <td>
                         <ul>
                             <?php
-                            if (!empty($item['MemberDetail'])) {
-                                foreach ($item['MemberDetail'] as $detail) {
+                            if (!empty($item['MemberCard'])) {
+                                foreach ($item['MemberCard'] as $detail) {
                                     ?>
                                     <li><?= $detail['Gate']['full_label'] ?></li>
                                     <?php

@@ -8,7 +8,7 @@ class MembersController extends AppController {
     var $disabledAction = array(
     );
     var $contain = array(
-        "MemberDetail" => [
+        "MemberCard" => [
             "Gate"
         ]
     );
@@ -32,15 +32,7 @@ class MembersController extends AppController {
 
     function admin_add() {
         if ($this->request->is("post")) {
-            $this->{ Inflector::classify($this->name) }->set($this->data);
-            if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
-                $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
-                $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
-                $this->redirect(array('action' => 'admin_index'));
-            } else {
-                $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
-                $this->Session->setFlash(__("Harap mengecek kembali kesalahan dibawah."), 'default', array(), 'danger');
-            }
+            parent::admin_add();
         } else {
             $this->set("gate_ids", ClassRegistry::init("Gate")->get_all_ids());
         }
@@ -56,10 +48,10 @@ class MembersController extends AppController {
                 if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
                     if (!is_null($id)) {
                         // remove unpicked access gate(s)
-                        if (!empty($this->{Inflector::classify($this->name)}->data['MemberDetail'])) {
-                            foreach ($this->{Inflector::classify($this->name)}->data['MemberDetail'] as $i => $detail) {
+                        if (!empty($this->{Inflector::classify($this->name)}->data['MemberCard'])) {
+                            foreach ($this->{Inflector::classify($this->name)}->data['MemberCard'] as $i => $detail) {
                                 if (empty($detail['gate_id'])) {
-                                    unset($this->{Inflector::classify($this->name)}->data['MemberDetail'][$i]);
+                                    unset($this->{Inflector::classify($this->name)}->data['MemberCard'][$i]);
                                 }
                             }
                         }
@@ -78,7 +70,7 @@ class MembersController extends AppController {
                         Inflector::classify($this->name) . ".id" => $id
                     ),
                     'contain' => [
-                        "MemberDetail" => [
+                        "MemberCard" => [
                             "Gate"
                         ]
                     ]
@@ -99,11 +91,11 @@ class MembersController extends AppController {
                         $this->{Inflector::classify($this->name)}->data[$i]['Member']['uid'] = $member['Member']['uid'];
                         $this->{Inflector::classify($this->name)}->data[$i]['Member']['name'] = $member['Member']['name'];
                         $this->{Inflector::classify($this->name)}->data[$i]['Member']['expired_dt'] = $member['Member']['expired_dt'];
-                        $this->{Inflector::classify($this->name)}->data[$i]['MemberDetail'] = $this->{Inflector::classify($this->name)}->data['MemberDetail'];
+                        $this->{Inflector::classify($this->name)}->data[$i]['MemberCard'] = $this->{Inflector::classify($this->name)}->data['MemberCard'];
                     }
                 }
                 unset($this->{Inflector::classify($this->name)}->data['Member']);
-                unset($this->{Inflector::classify($this->name)}->data['MemberDetail']);
+                unset($this->{Inflector::classify($this->name)}->data['MemberCard']);
                 $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
                 $this->redirect(array('action' => 'admin_index'));
@@ -120,17 +112,17 @@ class MembersController extends AppController {
         $this->_activePrint(func_get_args(), "data-member");
         $this->conds = "";
         if (isset($this->request->query['gates']) && !empty($this->request->query['gates'])) {
-            $dataMemberDetail = ClassRegistry::init("MemberDetail")->find("list", [
+            $dataMemberDetail = ClassRegistry::init("MemberCard")->find("list", [
                 "conditions" => [
                     "OR" => [
-                        "MemberDetail.gate_id" => $this->request->query['gates']
+                        "MemberCard.gate_id" => $this->request->query['gates']
                     ]
                 ],
                 "recursive" => -1,
-                "group" => "MemberDetail.member_id",
+                "group" => "MemberCard.member_id",
                 "fields" => [
-                    "MemberDetail.id",
-                    "MemberDetail.member_id"
+                    "MemberCard.id",
+                    "MemberCard.member_id"
                 ]
             ]);
             $member_ids = !empty($dataMemberDetail) ? array_values($dataMemberDetail) : [];
@@ -221,7 +213,7 @@ class MembersController extends AppController {
                                         "name" => @$name,
                                         "expired_dt" => $helper->convertDateFormat($expired_dt)
                                     ],
-                                    "MemberDetail" => [
+                                    "MemberCard" => [
                                         0 => [
                                             "gate_id" => $gate_id
                                         ]

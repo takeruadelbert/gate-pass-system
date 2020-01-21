@@ -7,10 +7,6 @@ class Member extends AppModel {
             'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Terdaftar' => array("rule" => 'isUnique')
         ),
-//        'name' => array(
-//            'rule' => 'NotBlank',
-//            'message' => 'Harus Diisi.'
-//        ),
         'expired_dt' => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Diisi.'
@@ -21,8 +17,8 @@ class Member extends AppModel {
     public $hasOne = array(
     );
     public $hasMany = array(
-        "MemberDetail" => [
-            "dependent" => true
+        "MemberCard" => [
+            "dependent" => TRUE
         ]
     );
     public $virtualFields = array(
