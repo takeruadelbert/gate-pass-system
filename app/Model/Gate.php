@@ -10,6 +10,10 @@ class Gate extends AppModel {
         'ip_address' => array(
             'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique')
+        ),
+        "client_id" => array(
+            'rule' => 'NotBlank',
+            'message' => 'Harus Dipilih.'
         )
     );
     public $belongsTo = array(
@@ -38,7 +42,7 @@ class Gate extends AppModel {
         // fetch all gate in
         $dataGateIn = $this->find("list",[
             'conditions' => [
-                'Gate.gate_type_id' => 1
+
             ],
             "fields" => [
                 "Gate.id",
@@ -61,7 +65,7 @@ class Gate extends AppModel {
         // fetch all gate out
         $dataGateOut = $this->find("list",[
             "conditions" => [
-                "Gate.gate_type_id" => 2
+
             ],
             "fields" => [
                 "Gate.id",

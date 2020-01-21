@@ -12,8 +12,8 @@
                         <?= $this->Form->input(null, array("default" => isset($this->request->query['Gate_name']) ? $this->request->query['Gate_name'] : '', "name" => "Gate.name", "div" => false, "label" => false, "class" => "form-control tip")) ?>
                     </div>
                     <div class="col-md-6">
-                        <label><?= __("Tipe") ?></label>
-                        <?= $this->Form->input(null, array("default" => isset($this->request->query['select_Gate_gate_type_id']) ? $this->request->query['select_Gate_gate_type_id'] : '', "name" => "select.Gate.gate_type_id", "div" => false, "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => "- Semua -", 'options' => $gateTypes)) ?>
+                        <label><?= __("Client") ?></label>
+                        <?= $this->Form->input(null ,["default" => isset($this->request->query['select_Gate_client_id']) ? $this->request->query['select_Gate_client_id'] : '', "name" => "select.Gate.client_id", "div" => false, 'label' => false, 'class' => 'select-full', 'empty' => '', 'placeholder' => '- Semua -', 'options' => $clients]) ?>
                     </div>
                 </div>
             </div>

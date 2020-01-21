@@ -2,37 +2,42 @@
 
 App::uses('AppController', 'Controller');
 
-class GatesController extends AppController {
+class GatesController extends AppController
+{
 
     var $name = "Gates";
-    var $disabledAction = array(
-    );
+    var $disabledAction = array();
     var $contain = array(
-        "GateType"
+        "Client"
     );
 
-    function _options() {
-        $this->set("gateTypes", ClassRegistry::init("GateType")->find("list", ['fields' => ['GateType.id', 'GateType.name'], 'recursive' => -1]));
+    function _options()
+    {
+        $this->set("clients", ClassRegistry::init("Client")->find("list", ["fields" => ["Client.id", "Client.name"], "recursive" => -1]));
     }
 
-    function beforeRender() {
+    function beforeRender()
+    {
         $this->_options();
         parent::beforeRender();
     }
 
-    function beforeFilter() {
+    function beforeFilter()
+    {
         parent::beforeFilter();
         $this->_setPageInfo("admin_index", "");
         $this->_setPageInfo("admin_add", "");
         $this->_setPageInfo("admin_edit", "");
     }
 
-    function admin_index() {
+    function admin_index()
+    {
         $this->_activePrint(func_get_args(), "data-gate");
         parent::admin_index();
     }
 
-    function admin_sync_data_gate($gate_id) {
+    function admin_sync_data_gate($gate_id)
+    {
         if (!empty($gate_id)) {
             $dataGate = $this->{Inflector::classify($this->name)}->find("first", [
                 "conditions" => [
@@ -57,9 +62,9 @@ class GatesController extends AppController {
                     $temp = mysql_query($query);
                     if (mysql_fetch_array($temp) !== FALSE) {
                         $update_query = "UPDATE gates SET name = '$name', gate_type_id = '$gate_type_id', ip_address = '$ip_address_gate', created = '$created', "
-                                . "modified = '$modified', is_deleted = '$is_deleted', deleted_date = '$deleted_date' WHERE ip_address = '$ip_address_gate'";
+                            . "modified = '$modified', is_deleted = '$is_deleted', deleted_date = '$deleted_date' WHERE ip_address = '$ip_address_gate'";
                         mysql_select_db($this->db_name);
-                        if(mysql_query($update_query, $conn) == TRUE) {
+                        if (mysql_query($update_query, $conn) == TRUE) {
                             echo "Successfully update record.";
                         } else {
                             echo "Failed to update record.";

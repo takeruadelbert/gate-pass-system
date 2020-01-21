@@ -28,9 +28,9 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                             <th width="50"><input type="checkbox" class="styled checkall"/></th>
                             <th width="50">No</th>
                             <th><?= __("Nama") ?></th>
-                            <th><?= __("Tipe") ?></th>
+                            <th><?= __("Client") ?></th>
                             <th><?= __("IP Address") ?></th>
-                            <th width="100"><?= __("Aksi") ?></th>
+                            <th width="50"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,11 +51,11 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                                     <td class="text-center"><input type="checkbox" name="data[<?php echo Inflector::classify($this->params['controller']) ?>][checkbox][]" value="<?php echo $item[Inflector::classify($this->params['controller'])]['id']; ?>"  id="checkBoxRow" class="styled checkboxDeleteRow" /></td>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['Gate']['name'] ?></td>
-                                    <td class="text-center"><?= $item['GateType']['name'] ?></td>
+                                    <td class="text-center"><?= $item['Client']['name'] ?></td>
                                     <td class="text-center"><?= $item['Gate']['ip_address'] ?></td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>
-                                        <a href="<?= Router::url("/admin/gates/sync_data_gate/{$item['Gate']['id']}", true) ?>"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="Sync Data"><i class="icon-feed"></i></button></a>
+<!--                                        <a href="--><?//= Router::url("/admin/gates/sync_data_gate/{$item['Gate']['id']}", true) ?><!--"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="Sync Data"><i class="icon-feed"></i></button></a>-->
                                     </td>
                                 </tr>
                                 <?php

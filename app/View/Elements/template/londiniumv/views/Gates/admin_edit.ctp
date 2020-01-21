@@ -24,8 +24,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <?php
-                                            echo $this->Form->label("Gate.gate_type_id", __("Tipe"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                            echo $this->Form->input("Gate.gate_type_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => '- Pilih Tipe Gate -'));
+                                            echo $this->Form->label("Gate.client_id", __("Client"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                            echo $this->Form->input("Gate.client_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => '- Pilih Client -', 'required'));
                                             ?>
                                         </div>
                                     </div>
