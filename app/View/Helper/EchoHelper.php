@@ -29,7 +29,8 @@ App::uses('Helper', 'View');
  *
  * @package       app.View.Helper
  */
-class EchoHelper extends HtmlHelper {
+class EchoHelper extends HtmlHelper
+{
 
     var $bulan = [
         1 => "Januari",
@@ -45,21 +46,24 @@ class EchoHelper extends HtmlHelper {
         11 => "November",
         12 => "Desember"];
 
-    function empty_strip($s) {
+    function empty_strip($s)
+    {
         if (empty($s)) {
             return '-';
         }
         return $s;
     }
 
-    function fullName($biodata = false) {
+    function fullName($biodata = false)
+    {
         if ($biodata) {
             return rtrim($biodata['gelar_depan'] . " " . $biodata['first_name'] . " " . $biodata['last_name'] . ", " . $biodata['gelar_belakang'], ", ");
         }
         return "";
     }
 
-    function userGroup($user_group_id = false) {
+    function userGroup($user_group_id = false)
+    {
         $userGroupName = ClassRegistry::init("UserGroup")->find("list", array("fields" => array("UserGroup.id", "UserGroup.label")));
         if ($user_group_id) {
             return $userGroupName[$user_group_id];
@@ -67,7 +71,8 @@ class EchoHelper extends HtmlHelper {
         return "";
     }
 
-    function department($department_id = false) {
+    function department($department_id = false)
+    {
         $departmentName = ClassRegistry::init("Department")->find("list", array("fields" => array("Department.id", "Department.name")));
         if ($department_id) {
             return $departmentName[$department_id];
@@ -75,7 +80,8 @@ class EchoHelper extends HtmlHelper {
         return "";
     }
 
-    function city($city_id = false) {
+    function city($city_id = false)
+    {
         $city = ClassRegistry::init("City")->find("list", array("fields" => array("City.id", "City.name")));
         if ($city) {
             return $city[$city_id];
@@ -83,7 +89,8 @@ class EchoHelper extends HtmlHelper {
         return "";
     }
 
-    function state($state_id = false) {
+    function state($state_id = false)
+    {
         $state = ClassRegistry::init("State")->find("list", array("fields" => array("State.id", "State.name")));
         if ($state) {
             return $state[$state_id];
@@ -91,7 +98,8 @@ class EchoHelper extends HtmlHelper {
         return "";
     }
 
-    function country($country_id = false) {
+    function country($country_id = false)
+    {
         $country = ClassRegistry::init("Country")->find("list", array("fields" => array("Country.id", "Country.name")));
         if ($country) {
             return $country[$country_id];
@@ -99,11 +107,13 @@ class EchoHelper extends HtmlHelper {
         return "";
     }
 
-    function periodeBulan() {
+    function periodeBulan()
+    {
         return $this->bulan;
     }
 
-    function periodeTahun() {
+    function periodeTahun()
+    {
         $tahun = [];
         for ($i = date("Y"); $i >= 1900; $i--) {
             $tahun[$i] = $i;
@@ -111,7 +121,8 @@ class EchoHelper extends HtmlHelper {
         return $tahun;
     }
 
-    function bulanToTriwulan($bulan) {
+    function bulanToTriwulan($bulan)
+    {
         switch ($bulan) {
             case ($bulan <= 3):
                 $triwulan = "I";
@@ -132,7 +143,8 @@ class EchoHelper extends HtmlHelper {
         return $triwulan;
     }
 
-    function rangeBulan($s, $e) {
+    function rangeBulan($s, $e)
+    {
         $r = [];
         for (; $s <= $e; $s++) {
             $r[] = $this->bulan[$s];
@@ -140,7 +152,12 @@ class EchoHelper extends HtmlHelper {
         return $r;
     }
 
-    function laporanPeriodeBulan($awal, $akhir) {
+    function laporanPeriodeBulan($awal, $akhir)
+    {
+        if (empty($awal) || empty($akhir)) {
+            return "-";
+        }
+
         $tglAwal = date("d", strtotime($awal));
         $bulanAwal = $this->getNamaBulan(date("m", strtotime($awal)));
         $tahunAwal = date("Y", strtotime($awal));

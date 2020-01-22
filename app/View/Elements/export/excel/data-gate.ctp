@@ -10,8 +10,9 @@
         <tr>
             <th width="50">No</th>
             <th><?= __("Nama") ?></th>
-            <th><?= __("Tipe") ?></th>
+            <th><?= __("Client") ?></th>
             <th><?= __("IP Address") ?></th>
+            <th><?= __("Gate Type") ?></th>
         </tr>
     </thead>
     <tbody>
@@ -29,8 +30,9 @@
                 <tr>
                     <td class="text-center"><?= $i ?></td>
                     <td class="text-center"><?= $item['Gate']['name'] ?></td>
-                    <td class="text-center"><?= $item['GateType']['name'] ?></td>
+                    <td class="text-center"><?= $item['Client']['name'] ?></td>
                     <td class="text-center"><?= $item['Gate']['ip_address'] ?></td>
+                    <td class="text-center"><?= $item['GateType']['name'] ?></td>
                 </tr>
                 <?php
                 $i++;
