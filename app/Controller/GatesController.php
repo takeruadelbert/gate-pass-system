@@ -8,12 +8,14 @@ class GatesController extends AppController
     var $name = "Gates";
     var $disabledAction = array();
     var $contain = array(
-        "Client"
+        "Client",
+        "GateType"
     );
 
     function _options()
     {
         $this->set("clients", ClassRegistry::init("Client")->find("list", ["fields" => ["Client.id", "Client.name"], "recursive" => -1]));
+        $this->set("gateTypes", ClassRegistry::init("GateType")->find("list", ['fields' => ['GateType.id', 'GateType.name'], 'recursive' => -1]));
     }
 
     function beforeRender()

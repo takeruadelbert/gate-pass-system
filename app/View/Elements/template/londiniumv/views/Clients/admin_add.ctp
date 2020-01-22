@@ -22,6 +22,45 @@
                                             echo $this->Form->input("Client.name", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
                                             ?>
                                         </div>
+                                        <div class="col-md-6">
+                                            <?php
+                                            echo $this->Form->label("Client.gate", __("Gate"), array("class" => 'col-sm-3 col-md-4 control-label'));
+                                            ?>
+                                            <div class="col-sm-9 col-md-8">
+                                                <select data-placeholder="Your Favorite Football Team" class="select-multiple" multiple="multiple" tabindex="2">
+                                                    <optgroup label="NFC EAST">
+                                                        <option>Dallas Cowboys</option>
+                                                        <option selected="selected">New York Giants</option>
+                                                        <option>Philadelphia Eagles</option>
+                                                        <option>Washington Redskins</option>
+                                                    </optgroup>
+                                                    <optgroup label="NFC NORTH">
+                                                        <option selected="selected">Chicago Bears</option>
+                                                        <option>Detroit Lions</option>
+                                                        <option>Green Bay Packers</option>
+                                                        <option>Minnesota Vikings</option>
+                                                    </optgroup>
+                                                    <optgroup label="NFC SOUTH">
+                                                        <option selected="selected">Atlanta Falcons</option>
+                                                        <option>Carolina Panthers</option>
+                                                        <option>New Orleans Saints</option>
+                                                        <option>Tampa Bay Buccaneers</option>
+                                                    </optgroup>
+                                                    <optgroup label="NFC WEST">
+                                                        <option>Arizona Cardinals</option>
+                                                        <option>St. Louis Rams</option>
+                                                        <option>San Francisco 49ers</option>
+                                                        <option>Seattle Seahawks</option>
+                                                    </optgroup>
+                                                    <optgroup label="AFC EAST">
+                                                        <option>Buffalo Bills</option>
+                                                        <option>Miami Dolphins</option>
+                                                        <option>New England Patriots</option>
+                                                        <option>New York Jets</option>
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </td>

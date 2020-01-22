@@ -30,6 +30,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                             <th><?= __("Nama") ?></th>
                             <th><?= __("Client") ?></th>
                             <th><?= __("IP Address") ?></th>
+                            <th><?= __("Gate Type") ?></th>
                             <th width="50"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
@@ -41,7 +42,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                         if (empty($data['rows'])) {
                             ?>
                             <tr>
-                                <td class = "text-center" colspan = 6>Tidak Ada Data</td>
+                                <td class = "text-center" colspan = 7>Tidak Ada Data</td>
                             </tr>
                             <?php
                         } else {
@@ -53,6 +54,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/gate");
                                     <td class="text-center"><?= $item['Gate']['name'] ?></td>
                                     <td class="text-center"><?= $item['Client']['name'] ?></td>
                                     <td class="text-center"><?= $item['Gate']['ip_address'] ?></td>
+                                    <td class="text-center"><?= $item['GateType']['name'] ?></td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>
 <!--                                        <a href="--><?//= Router::url("/admin/gates/sync_data_gate/{$item['Gate']['id']}", true) ?><!--"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="Sync Data"><i class="icon-feed"></i></button></a>-->

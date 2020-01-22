@@ -1,6 +1,7 @@
 <?php
 
-class Gate extends AppModel {
+class Gate extends AppModel
+{
 
     public $validate = array(
         'name' => array(
@@ -15,18 +16,24 @@ class Gate extends AppModel {
         "client_id" => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
+        ),
+        "gate_type_id" => array(
+            'rule' => 'NotBlank',
+            'message' => 'Harus Dipilih.'
         )
     );
     public $belongsTo = array(
-        "Client"
+        "Client",
+        "GateType"
     );
     public $hasOne = array();
     public $virtualFields = array(
         "full_label" => "concat(Gate.name, ' - ', Gate.ip_address)",
     );
 
-    function get_list_gate($conds = []) {
-        return $this->find("list",[
+    function get_list_gate($conds = [])
+    {
+        return $this->find("list", [
             "conditions" => [
                 $conds
             ],
@@ -38,12 +45,13 @@ class Gate extends AppModel {
             "order" => "Gate.gate_type_id"
         ]);
     }
-    
-    function get_list_gate_by_type() {
-        // fetch all gate in
-        $dataGateIn = $this->find("list",[
-            'conditions' => [
 
+    function get_list_gate_by_type()
+    {
+        // fetch all gate in
+        $dataGateIn = $this->find("list", [
+            'conditions' => [
+                'Gate.gate_type_id' => 1
             ],
             "fields" => [
                 "Gate.id",
@@ -53,7 +61,7 @@ class Gate extends AppModel {
             "order" => "Gate.name"
         ]);
         $gate_in = [];
-        if(!empty($dataGateIn)) {
+        if (!empty($dataGateIn)) {
             $temp = [];
             foreach ($dataGateIn as $gate_id => $gate_name) {
                 $temp[$gate_id] = $gate_name;
@@ -62,11 +70,11 @@ class Gate extends AppModel {
                 "Gate Masuk" => $temp
             ];
         }
-        
-        // fetch all gate out
-        $dataGateOut = $this->find("list",[
-            "conditions" => [
 
+        // fetch all gate out
+        $dataGateOut = $this->find("list", [
+            "conditions" => [
+                'Gate.gate_type_id' => 2
             ],
             "fields" => [
                 "Gate.id",
@@ -76,7 +84,7 @@ class Gate extends AppModel {
             "order" => "Gate.name"
         ]);
         $gate_out = [];
-        if(!empty($dataGateOut)) {
+        if (!empty($dataGateOut)) {
             $temp = [];
             foreach ($dataGateOut as $gate_id => $gate_name) {
                 $temp[$gate_id] = $gate_name;
@@ -87,9 +95,10 @@ class Gate extends AppModel {
         }
         return $gate_in + $gate_out;
     }
-    
-    function get_all_ids() {
-        return $this->find("list",[
+
+    function get_all_ids()
+    {
+        return $this->find("list", [
             "fields" => [
                 "Gate.id",
                 "Gate.id"
@@ -98,10 +107,11 @@ class Gate extends AppModel {
             "order" => "Gate.name"
         ]);
     }
-    
-    function get_gate_name($gate_id = null) {
-        if(!empty($gate_id)) {
-            $gate = $this->find("first",[
+
+    function get_gate_name($gate_id = null)
+    {
+        if (!empty($gate_id)) {
+            $gate = $this->find("first", [
                 "conditions" => [
                     "Gate.id" => $gate_id
                 ],
@@ -110,10 +120,11 @@ class Gate extends AppModel {
             return !empty($gate) ? $gate['Gate']['full_label'] : "";
         }
     }
-    
-    function get_ip_address($gate_id = null) {
-        if(!empty($gate_id)) {
-            $gate = $this->find("first",[
+
+    function get_ip_address($gate_id = null)
+    {
+        if (!empty($gate_id)) {
+            $gate = $this->find("first", [
                 "conditions" => [
                     "Gate.id" => $gate_id
                 ],
