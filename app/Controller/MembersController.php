@@ -2,89 +2,39 @@
 
 App::uses('AppController', 'Controller');
 
-class MembersController extends AppController {
+class MembersController extends AppController
+{
 
     var $name = "Members";
-    var $disabledAction = array(
-    );
+    var $disabledAction = array();
     var $contain = array(
-        "MemberCard" => [
-            "Gate"
-        ]
+        "Client"
     );
 
-    function beforeFilter() {
+    function beforeFilter()
+    {
         parent::beforeFilter();
         $this->_setPageInfo("admin_index", "");
         $this->_setPageInfo("admin_add", "");
         $this->_setPageInfo("admin_edit", "");
     }
 
-    function _options() {
-        $this->set("gates", ClassRegistry::init("Gate")->get_list_gate());
-        $this->set("gateWithTypes", ClassRegistry::init("Gate")->get_list_gate_by_type());
+    function _options()
+    {
+        $this->set("clients", ClassRegistry::init("Client")->find("list", ['fields' => ['Client.id', 'Client.name'], 'recursive' => -1]));
     }
 
-    function beforeRender() {
+    function beforeRender()
+    {
         $this->_options();
         parent::beforeRender();
     }
 
-    function admin_add() {
+    function admin_multi_add()
+    {
         if ($this->request->is("post")) {
-            parent::admin_add();
-        } else {
-            $this->set("gate_ids", ClassRegistry::init("Gate")->get_all_ids());
-        }
-    }
-
-    function admin_edit($id = null) {
-        if (!$this->{ Inflector::classify($this->name) }->exists($id)) {
-            throw new NotFoundException(__('Data tidak ditemukan'));
-        } else {
-            if ($this->request->is("post") || $this->request->is("put")) {
-                $this->{ Inflector::classify($this->name) }->set($this->data);
-                $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
-                if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
-                    if (!is_null($id)) {
-                        // remove unpicked access gate(s)
-                        if (!empty($this->{Inflector::classify($this->name)}->data['MemberCard'])) {
-                            foreach ($this->{Inflector::classify($this->name)}->data['MemberCard'] as $i => $detail) {
-                                if (empty($detail['gate_id'])) {
-                                    unset($this->{Inflector::classify($this->name)}->data['MemberCard'][$i]);
-                                }
-                            }
-                        }
-                        $this->{Inflector::classify($this->name)}->_deleteableHasmany();
-                        $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
-                        $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
-                        $this->redirect(array('action' => 'admin_index'));
-                    }
-                } else {
-                    $this->request->data[Inflector::classify($this->name)]["id"] = $id;
-                    $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
-                }
-            } else {
-                $rows = $this->{ Inflector::classify($this->name) }->find("first", array(
-                    'conditions' => array(
-                        Inflector::classify($this->name) . ".id" => $id
-                    ),
-                    'contain' => [
-                        "MemberCard" => [
-                            "Gate"
-                        ]
-                    ]
-                ));
-                $this->data = $rows;
-                $this->set("gate_ids", ClassRegistry::init("Gate")->get_all_ids());
-            }
-        }
-    }
-
-    function admin_multi_add() {
-        if ($this->request->is("post")) {
-            $this->{ Inflector::classify($this->name) }->set($this->data);
-            if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
+            $this->{Inflector::classify($this->name)}->set($this->data);
+            if ($this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('validate' => 'only', "deep" => true))) {
                 unset($this->{Inflector::classify($this->name)}->data['Member']['input-addon-checkbox']);
                 if (!empty($this->{Inflector::classify($this->name)}->data['Member'])) {
                     foreach ($this->{Inflector::classify($this->name)}->data['Member'] as $i => $member) {
@@ -96,11 +46,11 @@ class MembersController extends AppController {
                 }
                 unset($this->{Inflector::classify($this->name)}->data['Member']);
                 unset($this->{Inflector::classify($this->name)}->data['MemberCard']);
-                $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
+                $this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('deep' => true));
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
                 $this->redirect(array('action' => 'admin_index'));
             } else {
-                $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
+                $this->validationErrors = $this->{Inflector::classify($this->name)}->validationErrors;
                 $this->Session->setFlash(__("Harap mengecek kembali kesalahan dibawah."), 'default', array(), 'danger');
             }
         } else {
@@ -108,7 +58,8 @@ class MembersController extends AppController {
         }
     }
 
-    function admin_index() {
+    function admin_index()
+    {
         $this->_activePrint(func_get_args(), "data-member");
         $this->conds = "";
         if (isset($this->request->query['gates']) && !empty($this->request->query['gates'])) {
@@ -135,14 +86,16 @@ class MembersController extends AppController {
         parent::admin_index();
     }
 
-    function admin_sync_data_member() {
+    function admin_sync_data_member()
+    {
         $conds = [
             "Gate.gate_type_id" => 1
         ];
         $this->set("listGate", ClassRegistry::init("Gate")->get_list_gate($conds));
     }
 
-    function admin_sync_data_member_gate($gate_id = null) {
+    function admin_sync_data_member_gate($gate_id = null)
+    {
         $view = new View($this);
         $helper = $view->loadHelper("App");
         if (!empty($gate_id)) {
@@ -268,10 +221,6 @@ class MembersController extends AppController {
                                 ];
                             }
                         }
-//                        function cmp($a, $b) {
-//                            return strnatcmp($a["data"], $b["data"]);
-//                        }
-//                        usort($dataRPI, "cmp");
                         $conn->close();
                         $is_connect_to_RPI = TRUE;
                     } else {
@@ -338,7 +287,8 @@ class MembersController extends AppController {
         }
     }
 
-    function _calculateDifference($dataLocal, $dataRPI) {
+    function _calculateDifference($dataLocal, $dataRPI)
+    {
         $difference = [];
         $has_diff = FALSE;
         if (!empty($dataLocal) && !empty($dataRPI)) {

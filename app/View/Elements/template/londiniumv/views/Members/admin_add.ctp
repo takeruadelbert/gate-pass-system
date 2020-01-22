@@ -10,7 +10,8 @@
                 <div class="table-responsive">
                     <table width="100%" class="table">
                         <div class="panel-heading" style="background:#2179cc">
-                            <h6 class="panel-title" style=" color:#fff"><i class="icon-menu2"></i><?= __("Data Member") ?></h6>
+                            <h6 class="panel-title" style=" color:#fff"><i
+                                        class="icon-menu2"></i><?= __("Data Member") ?></h6>
                         </div>
                         <tr>
                             <td>
@@ -18,14 +19,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <?php
-                                            echo $this->Form->label("Member.uid", __("UID"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                            echo $this->Form->input("Member.uid", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
+                                            echo $this->Form->label("Member.name", __("Nama"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                            echo $this->Form->input("Member.name", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
                                             ?>
                                         </div>
                                         <div class="col-md-6">
                                             <?php
-                                            echo $this->Form->label("Member.name", __("Nama"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                            echo $this->Form->input("Member.name", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
+                                            echo $this->Form->label("Member.client_id", __("Client"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                            echo $this->Form->input("Member.client_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => '- Pilih Client -'));
                                             ?>
                                         </div>
                                     </div>
@@ -42,54 +43,88 @@
                                             echo $this->Form->input("Member.expired_dt", array("type" => "text", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control datetime"));
                                             ?>
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="col-sm-3 col-md-4 control-label">
-                                                <label>Akses Gate</label>
-                                            </div>
-                                            <div class="col-sm-9 col-md-8">
-                                                <div class="input-group">
-                                                    <span class="input-group-addon">
-                                                        <input type="checkbox" class="styled tooltip" title="Check/Uncheck Semua Gate" name="input-addon-checkbox" id="isCheckAll" onchange="check_all(this, $('#gate'))">
-                                                    </span>
-                                                    <?= $this->Form->input("MemberCard..gate_id", array("div" => false, "label" => false, "class" => "select-multiple", 'multiple', 'data-placeholder' => '- Pilih Gate yang diakses -', 'options' => $gateWithTypes, 'id' => 'gate')); ?>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="form-actions text-center">
-                                    <input name="Button" type="button" onclick="history.go(-1);" class="btn btn-success" value="<?= __("Kembali") ?>">
-                                    <input type="reset" value="Reset" class="btn btn-info">
-                                    <input type="submit" value="<?= __("Simpan") ?>" class="btn btn-danger">
-                                </div>
-                            </td>
+                    </table>
+
+                    <div class="panel-heading" style="background:#2179cc">
+                        <h6 class="panel-title" style=" color:#fff"><i
+                                    class="icon-menu2"></i><?= __("Data Card") ?></h6>
+                    </div>
+                    <table width="100%" class="table table-bordered table-hover">
+                        <thead>
+                        <tr bordercolor="#000000">
+                            <td width="1%" align="center" valign="middle" bgcolor="#feffc2">No</td>
+                            <td width="20%" align="center" valign="middle" bgcolor="#feffc2">Card</td>
+                            <td width="1%" align="center" valign="middle" bgcolor="#feffc2">Aksi</td>
                         </tr>
+                        </thead>
+                        <tbody id="target-memberCard">
+                        </tbody>
+                        <tfoot>
+                        <tr class="addrowborder">
+                            <td colspan="3" align="left"><a href="javascript:void(false)"
+                                                            onclick="addThisRow($(this), 'memberCard')" data-n="1"><i
+                                            class="icon-plus-circle"></i></a></td>
+                        </tr>
+                        </tfoot>
                     </table>
                 </div>
+            </div>
+            <div class="form-actions text-center">
+                <input name="Button" type="button" onclick="history.go(-1);"
+                       class="btn btn-success" value="<?= __("Kembali") ?>">
+                <input type="reset" value="Reset" class="btn btn-info">
+                <input type="submit" value="<?= __("Simpan") ?>" class="btn btn-danger">
             </div>
         </div>
     </div>
 </div>
 <?php echo $this->Form->end() ?>
-
 <script>
-    var gate_ids = <?= json_encode($gate_ids) ?>;
-    function check_all(e, target) {
-        if ($(e).is(":checked")) {
-            target.select2("val", Object.keys(gate_ids));
-        } else {
-            target.select2("val", "");
+    function addThisRow(e, t, optFunc) {
+        var n = $(e).data("n");
+        var template = $('#tmpl-' + t).html();
+        Mustache.parse(template);
+        var options = {i: 2, n: n};
+        if (typeof (optFunc) !== 'undefined') {
+            $.extend(options, window[optFunc]());
         }
+        var rendered = Mustache.render(template, options);
+        $("#target-" + t).append(rendered);
+        $(e).data("n", n + 1);
+        fixNumber($(e).parents("table").find("tbody"));
     }
 
-    $(document).keypress(
-            function (event) {
-                if (event.which == '13') {
-                    event.preventDefault();
-                }
-            });
+    function fixNumber(e) {
+        var i = 1;
+        $.each(e.find("tr"), function () {
+            $(this).find(".nomorIdx").html(i);
+            i++;
+        })
+    }
+
+    function deleteThisRow(e) {
+        var tbody = $(e).parents("tbody");
+        var tr = e.parents("tr");
+        tr.remove();
+        fixNumber(tbody);
+    }
+</script>
+
+<script type="x-tmpl-mustache" id="tmpl-memberCard">
+    <tr>
+    <td align="center" class="nomorIdx">1</td>
+    <td>
+    <div class="false">
+    <input name="data[MemberCard][{{n}}][card_number]" class="form-control" maxlength="255" type="text" id="MemberCard{{n}}Uid" required>
+    </div>
+    </td>
+    <td align="center">
+    <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i class="icon-remove3"></i></a>
+    </td>
+    </tr>
+
 </script>

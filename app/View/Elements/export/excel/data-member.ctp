@@ -12,54 +12,40 @@
         <div style="font-size:11px;font-style: italic; font-family:Tahoma, Geneva, sans-serif;">Periode : - </div>
         <?php
     }
-    ?>     
+    ?>
 </div>
 <br>
 <table width="100%" class="table-data">
     <thead>
-        <tr>
-            <th width="50">No</th>
-            <th><?= __("UID") ?></th>
-            <th><?= __("Nama") ?></th>
-            <th><?= __("Expired Date") ?></th>
-            <th><?= __("Akses Gate") ?></th>
-        </tr>
+    <tr>
+        <th width="50">No</th>
+        <th><?= __("Nama") ?></th>
+        <th><?= __("Expired Date") ?></th>
+        <th><?= __("Client") ?></th>
+    </tr>
     </thead>
     <tbody>
+    <?php
+    $i = 1;
+    if (empty($data['rows'])) {
+        ?>
+        <tr>
+            <td class = "text-center" colspan = 5>Tidak Ada Data</td>
+        </tr>
         <?php
-        $i = 1;
-        if (empty($data['rows'])) {
+    } else {
+        foreach ($data['rows'] as $item) {
             ?>
             <tr>
-                <td class = "text-center" colspan = 5>Tidak Ada Data</td>
+                <td class="text-center"><?= $i ?></td>
+                <td class="text-center"><?= $item['Member']['name'] ?></td>
+                <td class="text-center"><?= $this->Html->cvtWaktu($item['Member']['expired_dt']) ?></td>
+                <td class="text-center"><?= $item['Client']['name'] ?></td>
             </tr>
             <?php
-        } else {
-            foreach ($data['rows'] as $item) {
-                ?>
-                <tr>
-                    <td class="text-center"><?= $i ?></td>
-                    <td class="text-center"><?= $item['Member']['uid'] ?></td>
-                    <td class="text-center"><?= $item['Member']['name'] ?></td>
-                    <td class="text-center"><?= $this->Html->cvtWaktu($item['Member']['expired_dt']) ?></td>
-                    <td>
-                        <ul>
-                            <?php
-                            if (!empty($item['MemberCard'])) {
-                                foreach ($item['MemberCard'] as $detail) {
-                                    ?>
-                                    <li><?= $detail['Gate']['full_label'] ?></li>
-                                    <?php
-                                }
-                            }
-                            ?>
-                        </ul>
-                    </td>
-                </tr>
-                <?php
-                $i++;
-            }
+            $i++;
         }
-        ?>
+    }
+    ?>
     </tbody>
 </table>

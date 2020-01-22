@@ -3,16 +3,17 @@
 class Member extends AppModel {
 
     public $validate = array(
-        'uid' => array(
-            'Harus diisi' => array("rule" => "NotBlank"),
-            'Sudah Terdaftar' => array("rule" => 'isUnique')
-        ),
         'expired_dt' => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Diisi.'
+        ),
+        'client_id' => array(
+            'rule' => 'NotBlank',
+            'message' => 'Harus Dipilih.'
         )
     );
     public $belongsTo = array(
+        "Client"
     );
     public $hasOne = array(
     );
@@ -23,16 +24,4 @@ class Member extends AppModel {
     );
     public $virtualFields = array(
     );
-    
-    function is_member_exists($uid = null) {
-        if(!empty($uid)) {
-            $data = $this->find("first",[
-                "conditions" => [
-                    "Member.uid" => $uid
-                ],
-                "recursive" => -1
-            ]);
-            return !empty($data) ? TRUE : FALSE;
-        }
-    }
 }

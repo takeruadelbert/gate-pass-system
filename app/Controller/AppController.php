@@ -30,10 +30,11 @@ App::import('Vendor', 'terbilang');
  * Add your application-wide methods in the class below, your controllers
  * will inherit them.
  *
- * @package		app.Controller
- * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
+ * @package        app.Controller
+ * @link        http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
  */
-class AppController extends Controller {
+class AppController extends Controller
+{
 
     var $helpers = array(
         'Html',
@@ -113,23 +114,21 @@ class AppController extends Controller {
     var $constantString = array(
         "pagination-tips" => "locale0001"
     );
-    var $contain = array(
-    );
-    var $conds = array(
-    );
-    var $defaultConds = array(
-    );
+    var $contain = array();
+    var $conds = array();
+    var $defaultConds = array();
     var $filterCond = "AND";
     var $args = false;
     var $cetak_template = false;
     var $order = false;
     var $layoutCetak = false;
-    
+
     var $username = "admin";
     var $password = "admin123";
     var $db_name = "gate_pass_system";
 
-    function _sentEmail($type = null, $info = array(), $options = array(), $sent = true) {
+    function _sentEmail($type = null, $info = array(), $options = array(), $sent = true)
+    {
         App::uses('CakeEmail', 'Network/Email');
         $Email = new CakeEmail();
         if (!empty($type)) {
@@ -149,7 +148,8 @@ class AppController extends Controller {
         }
     }
 
-    function __construct($request = null, $response = null) {
+    function __construct($request = null, $response = null)
+    {
         parent::__construct($request, $response);
         $this->pageInfo = array(
             "index" => array(
@@ -183,11 +183,13 @@ class AppController extends Controller {
         );
     }
 
-    function _excludedUserGroup() {
+    function _excludedUserGroup()
+    {
         return ClassRegistry::init("UserGroup")->excludedUserGroup();
     }
 
-    function beforeFilter() {
+    function beforeFilter()
+    {
 //        $this->__setVar();
         $this->_listLang();
         $this->_setLang();
@@ -202,11 +204,12 @@ class AppController extends Controller {
         }
     }
 
-    function beforeRender() {
+    function beforeRender()
+    {
         Configure::write("template", $this->template);
         Configure::write("frontTemplate", $this->frontTemplate);
         if (isset($this->jump) && $this->jump) {
-            
+
         } else {
             global $URL, $ACTION_URL, $MID;
             if (isset($this->cetak)) {
@@ -233,12 +236,12 @@ class AppController extends Controller {
                     "{$this->params['prefix']}/{$camelController}",
                     "{$this->params['prefix']}/{$underController}",
                     "{$this->params['prefix']}/{$otherController}",
-                        ], $target);
+                ], $target);
             }
             $reversedUrl = Router::url([
-                        "controller" => $underController,
-                        "action" => $this->_pureAction(),
-                        "prefix" => $this->params['prefix'],
+                "controller" => $underController,
+                "action" => $this->_pureAction(),
+                "prefix" => $this->params['prefix'],
             ]);
             $reversedUrl = str_replace_first(Router::url("/"), "", $reversedUrl);
             $target[] = $reversedUrl;
@@ -303,7 +306,8 @@ class AppController extends Controller {
         }
     }
 
-    function _buildSubMenuBC($sub_menu_id = null) {
+    function _buildSubMenuBC($sub_menu_id = null)
+    {
         $bc = [];
         $currentSubMenu = ClassRegistry::init("SubMenu")->find("first", [
             "conditions" => [
@@ -323,7 +327,8 @@ class AppController extends Controller {
         return $bc;
     }
 
-    function _buildMenuBC($menu_id = null) {
+    function _buildMenuBC($menu_id = null)
+    {
         $currentMenu = ClassRegistry::init("Menu")->find("first", [
             "conditions" => [
                 "Menu.id" => $menu_id,
@@ -341,10 +346,11 @@ class AppController extends Controller {
         );
     }
 
-    function __checkPremission() {
+    function __checkPremission()
+    {
         $credential = $this->Session->read("credential.{$this->params['prefix']}");
         if ($this->params['prefix'] == "front" || $this->params['prefix'] == "api") {
-            
+
         } else if (!empty($this->params['prefix']) && empty($credential)) {
             if ($this->params['prefix'] == "member") {
                 $this->redirect('/', 401);
@@ -354,7 +360,8 @@ class AppController extends Controller {
         }
     }
 
-    function _createLeftMenu() {
+    function _createLeftMenu()
+    {
         $user_group_id = $this->Session->read("credential.admin.User.user_group_id");
         $cond = array(
             'Role.user_group_id' => $user_group_id,
@@ -432,7 +439,8 @@ class AppController extends Controller {
         return $roleData;
     }
 
-    function _subMenu($parent, $user_group_id = 0) {
+    function _subMenu($parent, $user_group_id = 0)
+    {
         $result = array();
         $menu = ClassRegistry::init('SubMenu')->find("all", array(
             "conditions" => array(
@@ -473,7 +481,8 @@ class AppController extends Controller {
         return $result;
     }
 
-    function _filter($get, $paramCond = 'AND') {
+    function _filter($get, $paramCond = 'AND')
+    {
         $cond = array();
         foreach ($get as $k => $v) {
             if ($k == "mID") {
@@ -513,11 +522,13 @@ class AppController extends Controller {
         return $cond;
     }
 
-    function _pureAction() {
+    function _pureAction()
+    {
         return ltrim(ltrim($this->params['action'], "/{$this->params['prefix']}/"), "_");
     }
 
-    function _generateStatusCode($id, $message = null, $data = array()) {
+    function _generateStatusCode($id, $message = null, $data = array())
+    {
         if (is_null($message)) {
             return array("status" => $id, "message" => $this->statusCode[$id], 'data' => $data);
         } else {
@@ -525,7 +536,8 @@ class AppController extends Controller {
         }
     }
 
-    function _listLang() {
+    function _listLang()
+    {
         $all = ClassRegistry::init("Language")->find("all");
         $lang = array();
         foreach ($all as $i) {
@@ -537,13 +549,15 @@ class AppController extends Controller {
         $this->set("langs", $lang);
     }
 
-    function _setCKConfig() {
+    function _setCKConfig()
+    {
         $this->Session->write("sck.baseUrl", Router::url("/", true));
         $this->Session->write("sck.root", WWW_ROOT);
         $this->Session->write("sck.folder", "upload" . DS);
     }
 
-    function _setLang() {
+    function _setLang()
+    {
         if ($this->Session->check("Config.language")) {
             Configure::write("Config.language", $this->Session->read("Config.language"));
         }
@@ -551,14 +565,16 @@ class AppController extends Controller {
     }
 
     //Start Main Basic CRUD Engine
-    function _setPageInfo($action = null, $titlePage = "", $descriptionPage = "") {
+    function _setPageInfo($action = null, $titlePage = "", $descriptionPage = "")
+    {
         $this->pageInfo[$action] = array(
             'titlePage' => __($titlePage),
             'descriptionPage' => __($descriptionPage),
         );
     }
 
-    function _activePrint($args = false, $filename = false, $layoutCetak = false) {
+    function _activePrint($args = false, $filename = false, $layoutCetak = false)
+    {
         if ($args === false) {
             $args = func_get_args();
         }
@@ -581,13 +597,13 @@ class AppController extends Controller {
         }
     }
 
-    function admin_index() {
+    function admin_index()
+    {
         $conds = $this->_filter($_GET, $this->filterCond);
         if (empty($conds)) {
             $conds = $this->defaultConds;
         }
-        $conds['AND'] = am($conds, array(
-                ), $this->conds);
+        $conds['AND'] = am($conds, array(), $this->conds);
         if ($this->order === false) {
             $this->order = Inflector::classify($this->name) . '.created desc';
         }
@@ -601,7 +617,7 @@ class AppController extends Controller {
                 'contain' => $this->contain,
             )
         );
-        $rows = $this->Paginator->paginate($this->{ Inflector::classify($this->name) });
+        $rows = $this->Paginator->paginate($this->{Inflector::classify($this->name)});
         $data = array(
             'rows' => $rows,
 //            'rows' => [],
@@ -619,41 +635,43 @@ class AppController extends Controller {
 //        }
     }
 
-    function admin_add() {
+    function admin_add()
+    {
         if ($this->request->is("post")) {
-            $this->{ Inflector::classify($this->name) }->set($this->data);
-            if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
-                $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
+            $this->{Inflector::classify($this->name)}->set($this->data);
+            if ($this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('validate' => 'only', "deep" => true))) {
+                $this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('deep' => true));
                 $this->Session->setFlash(__("Data berhasil disimpan"), 'default', array(), 'success');
                 $this->redirect(array('action' => 'admin_index'));
             } else {
-                $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
+                $this->validationErrors = $this->{Inflector::classify($this->name)}->validationErrors;
                 $this->Session->setFlash(__("Harap mengecek kembali kesalahan dibawah."), 'default', array(), 'danger');
             }
         }
     }
 
-    function admin_edit($id = null) {
-        if (!$this->{ Inflector::classify($this->name) }->exists($id)) {
+    function admin_edit($id = null)
+    {
+        if (!$this->{Inflector::classify($this->name)}->exists($id)) {
             throw new NotFoundException(__('Data tidak ditemukan'));
         } else {
             if ($this->request->is("post") || $this->request->is("put")) {
-                $this->{ Inflector::classify($this->name) }->set($this->data);
-                $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
-                if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
+                $this->{Inflector::classify($this->name)}->set($this->data);
+                $this->{Inflector::classify($this->name)}->data[Inflector::classify($this->name)]['id'] = $id;
+                if ($this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('validate' => 'only', "deep" => true))) {
                     if (!is_null($id)) {
-                        $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
+                        $this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('deep' => true));
                         $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
                         $this->redirect(array('action' => 'admin_index'));
                     } else {
-                        
+
                     }
                 } else {
                     $this->request->data[Inflector::classify($this->name)]["id"] = $id;
-                    $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
+                    $this->validationErrors = $this->{Inflector::classify($this->name)}->validationErrors;
                 }
             } else {
-                $rows = $this->{ Inflector::classify($this->name) }->find("first", array(
+                $rows = $this->{Inflector::classify($this->name)}->find("first", array(
                     'conditions' => array(
                         Inflector::classify($this->name) . ".id" => $id
                     ),
@@ -664,15 +682,31 @@ class AppController extends Controller {
         }
     }
 
-    function admin_multiple_delete() {
-        $this->{ Inflector::classify($this->name) }->set($this->data);
+    function admin_view($id = null)
+    {
+        if (!$this->{Inflector::classify($this->name)}->exists($id)) {
+            throw new NotFoundException(__("Id Not Found"));
+        } else {
+            $rows = $this->{Inflector::classify($this->name)}->find("first", array(
+                'conditions' => array(
+                    Inflector::classify($this->name) . ".id" => $id
+                ),
+                'recursive' => 2
+            ));
+            $this->data = $rows;
+        }
+    }
+
+    function admin_multiple_delete()
+    {
+        $this->{Inflector::classify($this->name)}->set($this->data);
         if (empty($this->data)) {
             $code = 203;
         } else {
             $allData = $this->data[Inflector::classify($this->name)]['checkbox'];
             foreach ($allData as $data) {
                 if ($data != '' || $data != 0) {
-                    $this->{ Inflector::classify($this->name) }->delete($data, true);
+                    $this->{Inflector::classify($this->name)}->delete($data, true);
                 }
             }
             $code = 204;
@@ -681,9 +715,10 @@ class AppController extends Controller {
         die();
     }
 
-    function admin_delete($id = null) {
+    function admin_delete($id = null)
+    {
         if ($this->request->is("delete")) {
-            if ($this->{ Inflector::classify($this->name) }->delete($id)) {
+            if ($this->{Inflector::classify($this->name)}->delete($id)) {
                 $code = 204;
             } else {
                 $code = 401;
@@ -696,31 +731,37 @@ class AppController extends Controller {
     }
 
     //End Main Basic CRUD Engine
-    function _404() {
+    function _404()
+    {
         die();
     }
 
-    function _adminOnly() {
+    function _adminOnly()
+    {
         if (!$this->_isAdmin()) {
             $this->redirect("/admin/restriction");
         }
     }
 
-    function _isAdmin() {
+    function _isAdmin()
+    {
         return $this->Session->read("credential.admin.User.user_group_id") == 1 ? true : false;
     }
 
-    function _getEmployeeId() {
+    function _getEmployeeId()
+    {
         return $this->Session->read("credential.admin.Employee.id");
     }
 
-    function _getDepartmentId() {
+    function _getDepartmentId()
+    {
         return $this->Session->read("credential.admin.Employee.department_id");
     }
 
     //hanya berlaku untuk default routing
     //TO-DO: custome routing
-    function __checkRoleAccess() {
+    function __checkRoleAccess()
+    {
         $skippedAlias = [
             "admin/restriction",
             "admin/dashboard",
@@ -747,13 +788,13 @@ class AppController extends Controller {
                 "{$this->params['prefix']}/{$camelController}",
                 "{$this->params['prefix']}/{$underController}",
                 "{$this->params['prefix']}/{$otherController}",
-                    ], $target);
+            ], $target);
         }
 
         $reversedUrl = Router::url([
-                    "controller" => $underController,
-                    "action" => $this->_pureAction(),
-                    "prefix" => $this->params['prefix'],
+            "controller" => $underController,
+            "action" => $this->_pureAction(),
+            "prefix" => $this->params['prefix'],
         ]);
         $reversedUrl = str_replace_first(Router::url("/"), "", $reversedUrl);
         $target[] = $reversedUrl;

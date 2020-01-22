@@ -16,12 +16,12 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                     </button>&nbsp;
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/delete") ?>
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/add") ?>
-                    <a href="<?= Router::url("/add-multiple-member", true) ?>">
-                        <button class="btn btn-xs btn-success" type="button">
-                            <i class="icon-users"></i>
-                            <?= __("Tambah Multi Data") ?>
-                        </button>
-                    </a>
+<!--                    <a href="--><?//= Router::url("/add-multiple-member", true) ?><!--">-->
+<!--                        <button class="btn btn-xs btn-success" type="button">-->
+<!--                            <i class="icon-users"></i>-->
+<!--                            --><?//= __("Tambah Multi Data") ?>
+<!--                        </button>-->
+<!--                    </a>-->
                 </div>
                 <small class="display-block"></small>
             </h6>
@@ -33,11 +33,10 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                         <tr>
                             <th width="50"><input type="checkbox" class="styled checkall"/></th>
                             <th width="50">No</th>
-                            <th><?= __("UID") ?></th>
                             <th><?= __("Nama") ?></th>
                             <th><?= __("Expired Date") ?></th>
-                            <th><?= __("Akses Gate") ?></th>
-                            <th width="50"><?= __("Aksi") ?></th>
+                            <th><?= __("Client") ?></th>
+                            <th width="100"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,7 +47,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                         if (empty($data['rows'])) {
                             ?>
                             <tr>
-                                <td class = "text-center" colspan = 7>Tidak Ada Data</td>
+                                <td class = "text-center" colspan = 6>Tidak Ada Data</td>
                             </tr>
                             <?php
                         } else {
@@ -57,24 +56,12 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                                 <tr id="row-<?= $i ?>" class="removeRow<?php echo $item[Inflector::classify($this->params['controller'])]['id']; ?>">
                                     <td class="text-center"><input type="checkbox" name="data[<?php echo Inflector::classify($this->params['controller']) ?>][checkbox][]" value="<?php echo $item[Inflector::classify($this->params['controller'])]['id']; ?>"  id="checkBoxRow" class="styled checkboxDeleteRow" /></td>
                                     <td class="text-center"><?= $i ?></td>
-                                    <td class="text-center"><?= $item['Member']['uid'] ?></td>
                                     <td class="text-center"><?= $item['Member']['name'] ?></td>
                                     <td class="text-center"><?= $this->Html->cvtWaktu($item['Member']['expired_dt']) ?></td>
-                                    <td>
-                                        <ul>
-                                            <?php
-                                            if (!empty($item['MemberCard'])) {
-                                                foreach ($item['MemberCard'] as $detail) {
-                                                    ?>
-                                                    <li><?= $detail['Gate']['full_label'] ?></li>
-                                                    <?php
-                                                }
-                                            }
-                                            ?>
-                                        </ul>
-                                    </td>
+                                    <td class="text-center"><?= $item['Client']['name'] ?></td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>
+                                        <a href="<?= Router::url("/admin/members/view/{$item['Member']['id']}", true) ?>"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="View Data"><i class="icon-eye"></i></button></a>
                                     </td>
                                 </tr>
                                 <?php
