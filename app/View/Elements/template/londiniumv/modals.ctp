@@ -15,7 +15,7 @@
 <div id="modalgantipp" class="modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg-4">
         <div class="modal-content">
-            <?php echo $this->Form->create("Account", array("type"=>"file","action" => "ganti_pp", "id" => "formSubmit", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
+            <?php echo $this->Form->create("Account", array("type"=>"file","action" => "ganti_pp", "id" => "formSubmitProfilePicture", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?= __("Ganti Foto") ?></h4>

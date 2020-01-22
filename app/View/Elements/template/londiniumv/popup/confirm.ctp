@@ -78,7 +78,7 @@
             <div class="text-center">
                 <b>Apakah Anda yakin akan menghapus data terpilih?</b>
                 <div class="clear"></div>
-                <smal class="text-danger">Note : Jika Anda memilih Ya, aksi ini tidak dapat di batalkan.</small>
+                <small class="text-danger">Note : Jika Anda memilih Ya, aksi ini tidak dapat di batalkan.</small>
             </div>
         </div>
     </div>

@@ -10,7 +10,7 @@
                 <div class="table-responsive">
                     <table width="100%" class="table">
                         <div class="panel-heading" style="background:#2179cc">
-                            <h6 class="panel-title" style=" color:#fff"><i class="icon-menu2"></i><?= __("Data Gate") ?></h6>
+                            <h6 class="panel-title" style=" color:#fff"><i class="icon-menu2"></i><?= __("Data Client") ?></h6>
                         </div>
                         <tr>
                             <td>

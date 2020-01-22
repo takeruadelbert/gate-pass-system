@@ -62,23 +62,3 @@
     </div>
 </div>
 <?php echo $this->Form->end() ?>
-<script>
-    $(document).ready(function () {
-        $.validator.addMethod('IP4Checker', function (value) {
-            var ip = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
-                    "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-            return value.match(ip);
-        }, 'Invalid IP address');
-
-        $('#formSubmit').validate({
-            rules: {
-                "data[Gate][ip_address]": {
-                    required: true,
-                    IP4Checker: true
-                }
-            }
-        });
-    });
-</script>
