@@ -127,6 +127,11 @@ class AppController extends Controller
     var $password = "admin123";
     var $db_name = "gate_pass_system";
 
+    const HTTP_GET = "GET";
+    const HTTP_POST = "POST";
+    const HTTP_PUT = "PUT";
+    const HTTP_DELETE = "DELETE";
+
     function _sentEmail($type = null, $info = array(), $options = array(), $sent = true)
     {
         App::uses('CakeEmail', 'Network/Email');
@@ -887,4 +892,20 @@ class AppController extends Controller
         }
     }
 
+    function _syncData($method, $url, $param = "")
+    {
+        switch ($method) {
+            case self::HTTP_GET:
+                return ApiController::apiGet($url);
+            case self::HTTP_POST:
+                return ApiController::apiPost($url, $param);
+            case self::HTTP_PUT:
+                return ApiController::apiPut($url, $param);
+            case self::HTTP_DELETE:
+                return ApiController::apiDelete($url, $param);
+            default:
+                echo "Invalid HTTP Request Method.";
+                return null;
+        }
+    }
 }
