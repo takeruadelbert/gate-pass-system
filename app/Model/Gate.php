@@ -11,7 +11,7 @@ class Gate extends AppModel
         'ip_address' => array(
             'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique'),
-            "Invalid IP Address" => array("rule" => array("ip", "IPv4"))
+            "Invalid IP Address" => array("rule" => "url")
         ),
         "client_id" => array(
             'rule' => 'NotBlank',

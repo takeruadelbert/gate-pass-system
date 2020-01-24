@@ -33,20 +33,6 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <?php
-                                            echo $this->Form->label("Member.expired_dt", __("Expired Date"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                            echo $this->Form->input("Member.expired_dt", array("type" => "text", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control datetime"));
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
                     </table>
 
                     <div class="panel-heading" style="background:#2179cc">
@@ -58,6 +44,7 @@
                         <tr bordercolor="#000000">
                             <td width="1%" align="center" valign="middle" bgcolor="#feffc2">No</td>
                             <td width="20%" align="center" valign="middle" bgcolor="#feffc2">Card</td>
+                            <td width="10%" align="center" valign="middle" bgcolor="#feffc2">Expired Date</td>
                             <td width="1%" align="center" valign="middle" bgcolor="#feffc2">Aksi</td>
                         </tr>
                         </thead>
@@ -65,7 +52,7 @@
                         </tbody>
                         <tfoot>
                         <tr class="addrowborder">
-                            <td colspan="3" align="left"><a href="javascript:void(false)"
+                            <td colspan="4" align="left"><a href="javascript:void(false)"
                                                             onclick="addThisRow($(this), 'memberCard')" data-n="1"><i
                                             class="icon-plus-circle"></i></a></td>
                         </tr>
@@ -96,6 +83,7 @@
         $("#target-" + t).append(rendered);
         $(e).data("n", n + 1);
         fixNumber($(e).parents("table").find("tbody"));
+        reloadDatePicker();
     }
 
     function fixNumber(e) {
@@ -122,9 +110,13 @@
     <input name="data[MemberCard][{{n}}][card_number]" class="form-control" maxlength="255" type="text" id="MemberCard{{n}}Uid" required>
     </div>
     </td>
+    <td>
+    <input name="data[MemberCard][{{n}}][expired_dt]" class="form-control datetime" type="text" id="MemberExpiredDate{{n}}" required>
+    </td>
     <td align="center">
     <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i class="icon-remove3"></i></a>
     </td>
     </tr>
+
 
 </script>

@@ -33,20 +33,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <?php
-                                                echo $this->Form->label("Member.expired_dt", __("Expired Date"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                                echo $this->Form->input("Member.expired_dt", array("type" => "text", "div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control datetime", "disabled"));
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                         </table>
 
                         <div class="panel-heading" style="background:#2179cc">
@@ -58,6 +44,7 @@
                             <tr bordercolor="#000000">
                                 <td width="1%" align="center" valign="middle" bgcolor="#feffc2">No</td>
                                 <td width="20%" align="center" valign="middle" bgcolor="#feffc2">Card</td>
+                                <td width="10%" align="center" valign="middle" bgcolor="#feffc2">Expired Date</td>
                             </tr>
                             </thead>
                             <tbody id="target-memberCard">
@@ -70,6 +57,11 @@
                                     <td>
                                         <div class="false">
                                             <?= $this->Form->input("MemberCard.$k.card_number", ["div" => false, "class" => "form-control", "label" => false, 'disabled']) ?>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="false">
+                                            <?= $this->Form->input("MemberCard.$k.expired_dt", ['type' => 'text', 'div' => false, 'class' => 'form-control datetime', 'label' => false, 'disabled']) ?>
                                         </div>
                                     </td>
                                 </tr>

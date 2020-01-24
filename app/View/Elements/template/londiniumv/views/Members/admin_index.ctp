@@ -34,7 +34,6 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                             <th width="50"><input type="checkbox" class="styled checkall"/></th>
                             <th width="50">No</th>
                             <th><?= __("Nama") ?></th>
-                            <th><?= __("Expired Date") ?></th>
                             <th><?= __("Client") ?></th>
                             <th width="100"><?= __("Aksi") ?></th>
                         </tr>
@@ -47,7 +46,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                         if (empty($data['rows'])) {
                             ?>
                             <tr>
-                                <td class = "text-center" colspan = 6>Tidak Ada Data</td>
+                                <td class = "text-center" colspan = 5>Tidak Ada Data</td>
                             </tr>
                             <?php
                         } else {
@@ -57,7 +56,6 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                                     <td class="text-center"><input type="checkbox" name="data[<?php echo Inflector::classify($this->params['controller']) ?>][checkbox][]" value="<?php echo $item[Inflector::classify($this->params['controller'])]['id']; ?>"  id="checkBoxRow" class="styled checkboxDeleteRow" /></td>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['Member']['name'] ?></td>
-                                    <td class="text-center"><?= $this->Html->cvtWaktu($item['Member']['expired_dt']) ?></td>
                                     <td class="text-center"><?= $item['Client']['name'] ?></td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>

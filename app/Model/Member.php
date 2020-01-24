@@ -3,10 +3,6 @@
 class Member extends AppModel {
 
     public $validate = array(
-        'expired_dt' => array(
-            'rule' => 'NotBlank',
-            'message' => 'Harus Diisi.'
-        ),
         'client_id' => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
