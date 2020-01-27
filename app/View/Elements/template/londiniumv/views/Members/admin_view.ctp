@@ -61,7 +61,7 @@
                                     </td>
                                     <td>
                                         <div class="false">
-                                            <?= $this->Form->input("MemberCard.$k.expired_dt", ['type' => 'text', 'div' => false, 'class' => 'form-control datetime', 'label' => false, 'disabled']) ?>
+                                            <?= $this->Form->input("MemberCard.$k.expired_dt", ['type' => 'text', 'div' => false, 'class' => 'form-control datepicker', 'label' => false, 'disabled']) ?>
                                         </div>
                                     </td>
                                 </tr>

@@ -111,7 +111,7 @@
     </div>
     </td>
     <td>
-    <input name="data[MemberCard][{{n}}][expired_dt]" class="form-control datetime" type="text" id="MemberExpiredDate{{n}}" required>
+    <input name="data[MemberCard][{{n}}][expired_dt]" class="form-control datepicker" type="text" id="MemberExpiredDate{{n}}" required>
     </td>
     <td align="center">
     <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i class="icon-remove3"></i></a>

@@ -1,6 +1,7 @@
 <?php
 
 App::uses('AppController', 'Controller');
+App::import('Controller', 'Api');
 
 class MembersController extends AppController
 {
@@ -10,6 +11,7 @@ class MembersController extends AppController
     var $contain = array(
         "Client"
     );
+    private $urlPath = "/api/member/";
 
     function beforeFilter()
     {
@@ -61,277 +63,323 @@ class MembersController extends AppController
     function admin_index()
     {
         $this->_activePrint(func_get_args(), "data-member");
-        $this->conds = "";
-        if (isset($this->request->query['gates']) && !empty($this->request->query['gates'])) {
-            $dataMemberDetail = ClassRegistry::init("MemberCard")->find("list", [
-                "conditions" => [
-                    "OR" => [
-                        "MemberCard.gate_id" => $this->request->query['gates']
-                    ]
-                ],
-                "recursive" => -1,
-                "group" => "MemberCard.member_id",
-                "fields" => [
-                    "MemberCard.id",
-                    "MemberCard.member_id"
-                ]
-            ]);
-            $member_ids = !empty($dataMemberDetail) ? array_values($dataMemberDetail) : [];
-            $this->conds = [
-                "Member.id" => $member_ids
-            ];
-            $this->set("chosen_gate", $this->request->query['gates']);
-            unset($_GET['gates']);
-        }
         parent::admin_index();
     }
 
     function admin_sync_data_member()
     {
-        $conds = [
-            "Gate.gate_type_id" => 1
-        ];
-        $this->set("listGate", ClassRegistry::init("Gate")->get_list_gate($conds));
+        $this->set("dataClient", ClassRegistry::init("Client")->find("all", ['contain' => ['Gate']]));
     }
 
     function admin_sync_data_member_gate($gate_id = null)
     {
-        $view = new View($this);
-        $helper = $view->loadHelper("App");
         if (!empty($gate_id)) {
-            if ($this->request->is("POST")) {
-                $gate_id = $this->data['Member']['gate_id'];
-                try {
-                    // Raspberry Pi Data Processed
-                    $dataSaveRPI = isset($this->data['RPI']) ? $this->data['RPI'] : [];
-                    $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
-                    if (!empty($dataSaveRPI)) {
-                        $data_saved_rpi = [];
-                        if ($conn = @mysql_connect($ip_address_gate, $this->username, $this->password, $this->db_name)) {
-                            foreach ($dataSaveRPI as $dataRPI) {
-                                $temp = explode(" -- ", $dataRPI);
-                                $name = mysql_real_escape_string($temp[1]);
-                                $uid = mysql_real_escape_string($temp[2]);
-                                $expired_dt = mysql_real_escape_string($helper->convertDateFormat($temp[3]));
-
-                                // check if record exists
-                                mysql_select_db($this->db_name);
-                                $temp = mysql_query("SELECT * FROM members WHERE uid = '$uid'");
-                                if (mysql_fetch_array($temp) !== FALSE) {
-//                                    debug("exists");
-                                } else {
-                                    // insert member record
-                                    $sql = "INSERT INTO members (name, uid, expired_dt) VALUES ('$name', '$uid', '$expired_dt')";
-                                    mysql_select_db($this->db_name);
-                                    if (mysql_query($sql, $conn) === TRUE) {
-                                        echo "successfully insert new record";
-                                    } else {
-                                        echo "failed to insert new record";
-                                    }
-
-                                    // insert member detail record
-                                    $sql = "INSERT INTO member_details (member_id, gate_id) VALUES (LAST_INSERT_ID(), '$gate_id')";
-                                    if (mysql_query($sql, $conn) === TRUE) {
-                                        echo "successfully insert new record";
-                                    } else {
-                                        echo "failed to insert new record";
-                                    }
-                                }
-                            }
-                            mysql_close($conn);
-                            $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
-                        } else {
-                            $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$conn->connect_error}"), 'default', array(), 'danger');
-                            $this->redirect(array('action' => 'admin_sync_data_member'));
-                        }
-                    } else {
-                        $this->Session->setFlash(__("No Changes Data."), 'default', array(), 'info');
-                    }
-
-                    // Local Data Processed
-                    $dataSaveLocal = isset($this->data['Local']) ? $this->data['Local'] : [];
-                    if (!empty($dataSaveLocal)) {
-                        $data_saved_local = [];
-                        foreach ($dataSaveLocal as $dataLocal) {
-                            $temp = explode(" -- ", $dataLocal);
-                            $name = !empty($temp[1]) ? $temp[1] : NULL;
-                            $uid = $temp[2];
-                            $expired_dt = $temp[3];
-
-                            // check if uid is already exist in database. if so, then ignore it, otherwise save it.
-                            if (!$this->{Inflector::classify($this->name)}->is_member_exists($uid)) {
-                                $data_saved_local[] = [
-                                    "Member" => [
-                                        "uid" => $uid,
-                                        "name" => @$name,
-                                        "expired_dt" => $helper->convertDateFormat($expired_dt)
-                                    ],
-                                    "MemberCard" => [
-                                        0 => [
-                                            "gate_id" => $gate_id
-                                        ]
-                                    ]
-                                ];
-                            }
-                        }
-
-                        // saving new record
-                        try {
-                            $this->{Inflector::classify($this->name)}->saveAll($data_saved_local, array('deep' => true));
-                            $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
-                            $this->redirect(array('action' => 'admin_sync_data_member'));
-                        } catch (Exception $ex) {
-                            $err_message = "Error : failed to save the records";
-                            echo $err_message;
-                            debug($err_message);
-                        }
-                    }
-                    $this->redirect(array('action' => 'admin_sync_data_member'));
-                } catch (Exception $ex) {
-                    $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$ex->getMessage()}"), 'default', array(), 'danger');
-                    $this->redirect(array('action' => 'admin_sync_data_member'));
-                }
-            } else {
-                $dataDiffLocal = [];
-                $dataDiffRPI = [];
-
-                // Data Raspberry Pi
-                $dataRPI = [];
-                $dataCompareRPI = [];
-                $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
-                $is_connect_to_RPI = FALSE;
-                try {
-                    if ($conn = @new mysqli($ip_address_gate, $this->username, $this->password, $this->db_name)) {
-                        if ($conn->connect_error) {
-                            $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$conn->connect_error}"), 'default', array(), 'danger');
-                            $this->redirect(array('action' => 'admin_sync_data_member'));
-                        }
-                        $sql = "SELECT id, name, uid, expired_dt from members";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            while ($row = $result->fetch_assoc()) {
-                                $dataCompareRPI[] = [
-                                    "name" => $row['name'],
-                                    "uid" => $row['uid'],
-                                    "expired_dt" => $row['expired_dt']
-                                ];
-                                $dataRPI[$row['id']] = [
-                                    "data" => $row['id'] . " -- " . @$row['name'] . " -- " . $row['uid'] . " -- " . $helper->cvtWaktuDetik($row['expired_dt']),
-                                    "is_diff" => FALSE
-                                ];
-                            }
-                        }
-                        $conn->close();
-                        $is_connect_to_RPI = TRUE;
-                    } else {
-                        $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$conn->connect_error}"), 'default', array(), 'danger');
-                        $this->redirect(array('action' => 'admin_sync_data_member'));
-                    }
-                } catch (Exception $ex) {
-                    $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$ex->getMessage()}"), 'default', array(), 'danger');
-                    $this->redirect(array('action' => 'admin_sync_data_member'));
-                }
-
-                if ($is_connect_to_RPI) {
-                    // Data Local
-                    $dataLocal = [];
-                    $dataCompareLocal = [];
-                    $dataMemberLocal = $this->{Inflector::classify($this->name)}->find("all", [
+            $dataGate = ClassRegistry::init("Gate")->find("first", [
+                'fields' => [
+                    'Gate.id',
+                    'Gate.ip_address',
+                    'Gate.client_id'
+                ],
+                'recursive' => -1,
+                'conditions' => [
+                    'Gate.id' => $gate_id
+                ]
+            ]);
+            $dataClient = ClassRegistry::init("Client")->find("all", [
+                "conditions" => [
+                    "Client.id" => $dataGate['Gate']['client_id']
+                ],
+                "contain" => [
+                    "Member" => [
                         "fields" => [
                             "Member.id",
-                            "Member.uid",
                             "Member.name",
-                            "Member.expired_dt"
+                            "Member.client_id"
                         ],
-                        "recursive" => -1
-                    ]);
-                    if (!empty($dataMemberLocal)) {
-                        foreach ($dataMemberLocal as $memberLocal) {
-                            $dataCompareLocal[] = [
-                                "name" => $memberLocal['Member']['name'],
-                                "uid" => $memberLocal['Member']['uid'],
-                                "expired_dt" => $memberLocal['Member']['expired_dt']
-                            ];
-                            $dataLocal[$memberLocal['Member']['id']] = [
-                                "data" => $memberLocal['Member']['id'] . " -- " . $memberLocal['Member']['name'] . " -- " . $memberLocal['Member']['uid'] . " -- " . $helper->cvtWaktuDetik($memberLocal['Member']['expired_dt']),
-                                "is_diff" => FALSE
-                            ];
-                        }
-                    }
+                        "MemberCard" => [
+                            "fields" => [
+                                "MemberCard.id",
+                                "MemberCard.card_number",
+                                "MemberCard.expired_dt"
+                            ]
+                        ]
+                    ]
+                ],
+                "fields" => [
+                    "Client.id",
+                    "Client.name"
+                ]
+            ]);
+            $ipAddress = $dataGate['Gate']['ip_address'];
+            $url = sprintf("%s%s", $ipAddress, $this->urlPath);
 
-                    // compare process
-                    $diff = array_column($this->_calculateDifference($dataCompareLocal, $dataCompareRPI), "uid");
-
-                    // re-flag the data
-                    foreach ($dataLocal as $member_id => $data) {
-                        $temp = explode(" -- ", $data['data']);
-                        $data_uid = $temp[2];
-                        if (in_array($data_uid, $diff)) {
-                            $dataLocal[$member_id]['is_diff'] = TRUE;
-                        }
-                    }
-                    foreach ($dataRPI as $member_id => $data) {
-                        $temp = explode(" -- ", $data['data']);
-                        $data_uid = $temp[2];
-                        if (in_array($data_uid, $diff)) {
-                            $dataRPI[$member_id]['is_diff'] = TRUE;
+            // get data Member Card
+            $param = [];
+            if (!empty($dataClient)) {
+                foreach ($dataClient as $client) {
+                    if (!empty($client['Member'])) {
+                        foreach ($client['Member'] as $member) {
+                            foreach ($member['MemberCard'] as $detail) {
+                                $param[] = [
+                                    "code" => $detail['card_number'],
+                                    "expiration" => $detail['expired_dt']
+                                ];
+                            }
                         }
                     }
                 }
-                $this->set("dataRaspi", ClassRegistry::init("Gate")->get_gate_name($gate_id));
-                $this->set(compact('dataLocal', 'dataRPI'));
             }
+            $response = ApiController::apiPut($url, $param);
+            if ($response['http_response_code'] == 200) {
+                $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
+            } else {
+                $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+            }
+            $this->redirect(Router::url('/sync-data-member', true));
         } else {
             $this->Session->setFlash(__("Invalid Gate ID"), 'default', array(), 'warning');
             $this->redirect(array('action' => 'admin_sync_data_member'));
         }
     }
 
-    function _calculateDifference($dataLocal, $dataRPI)
-    {
-        $difference = [];
-        $has_diff = FALSE;
-        if (!empty($dataLocal) && !empty($dataRPI)) {
-            foreach ($dataLocal as $local) {
-                foreach ($dataRPI as $rpi) {
-                    if (!empty(array_diff($local, $rpi))) {
-                        $has_diff = TRUE;
-                    } else {
-                        $has_diff = FALSE;
-                        break;
-                    }
-                }
-                if ($has_diff) {
-                    if (!in_array($local, $difference)) {
-                        $difference[] = $local;
-                    }
-                }
-                $has_diff = FALSE;
-            }
-            foreach ($dataRPI as $rpi) {
-                foreach ($dataLocal as $local) {
-                    if (!empty(array_diff($rpi, $local))) {
-                        $has_diff = TRUE;
-                    } else {
-                        $has_diff = FALSE;
-                        break;
-                    }
-                }
-                if ($has_diff) {
-                    if (!in_array($rpi, $difference)) {
-                        $difference[] = $rpi;
-                    }
-                }
-                $has_diff = FALSE;
-            }
-        } else {
-            if (empty($dataLocal) && !empty($dataRPI)) {
-                $difference = $dataRPI;
-            } else if (!empty($dataLocal) && empty($dataRPI)) {
-                $difference = $dataLocal;
-            }
-        }
-        return $difference;
-    }
+//    function admin_sync_data_member_gate($gate_id = null)
+//    {
+//        $view = new View($this);
+//        $helper = $view->loadHelper("App");
+//        if (!empty($gate_id)) {
+//            if ($this->request->is("POST")) {
+//                $gate_id = $this->data['Member']['gate_id'];
+//                try {
+//                    // Raspberry Pi Data Processed
+//                    $dataSaveRPI = isset($this->data['RPI']) ? $this->data['RPI'] : [];
+//                    $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
+//                    if (!empty($dataSaveRPI)) {
+//                        $data_saved_rpi = [];
+//                        if ($conn = @mysql_connect($ip_address_gate, $this->username, $this->password, $this->db_name)) {
+//                            foreach ($dataSaveRPI as $dataRPI) {
+//                                $temp = explode(" -- ", $dataRPI);
+//                                $name = mysql_real_escape_string($temp[1]);
+//                                $uid = mysql_real_escape_string($temp[2]);
+//                                $expired_dt = mysql_real_escape_string($helper->convertDateFormat($temp[3]));
+//
+//                                // check if record exists
+//                                mysql_select_db($this->db_name);
+//                                $temp = mysql_query("SELECT * FROM members WHERE uid = '$uid'");
+//                                if (mysql_fetch_array($temp) !== FALSE) {
+////                                    debug("exists");
+//                                } else {
+//                                    // insert member record
+//                                    $sql = "INSERT INTO members (name, uid, expired_dt) VALUES ('$name', '$uid', '$expired_dt')";
+//                                    mysql_select_db($this->db_name);
+//                                    if (mysql_query($sql, $conn) === TRUE) {
+//                                        echo "successfully insert new record";
+//                                    } else {
+//                                        echo "failed to insert new record";
+//                                    }
+//
+//                                    // insert member detail record
+//                                    $sql = "INSERT INTO member_details (member_id, gate_id) VALUES (LAST_INSERT_ID(), '$gate_id')";
+//                                    if (mysql_query($sql, $conn) === TRUE) {
+//                                        echo "successfully insert new record";
+//                                    } else {
+//                                        echo "failed to insert new record";
+//                                    }
+//                                }
+//                            }
+//                            mysql_close($conn);
+//                            $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
+//                        } else {
+//                            $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$conn->connect_error}"), 'default', array(), 'danger');
+//                            $this->redirect(array('action' => 'admin_sync_data_member'));
+//                        }
+//                    } else {
+//                        $this->Session->setFlash(__("No Changes Data."), 'default', array(), 'info');
+//                    }
+//
+//                    // Local Data Processed
+//                    $dataSaveLocal = isset($this->data['Local']) ? $this->data['Local'] : [];
+//                    if (!empty($dataSaveLocal)) {
+//                        $data_saved_local = [];
+//                        foreach ($dataSaveLocal as $dataLocal) {
+//                            $temp = explode(" -- ", $dataLocal);
+//                            $name = !empty($temp[1]) ? $temp[1] : NULL;
+//                            $uid = $temp[2];
+//                            $expired_dt = $temp[3];
+//
+//                            // check if uid is already exist in database. if so, then ignore it, otherwise save it.
+//                            if (!$this->{Inflector::classify($this->name)}->is_member_exists($uid)) {
+//                                $data_saved_local[] = [
+//                                    "Member" => [
+//                                        "uid" => $uid,
+//                                        "name" => @$name,
+//                                        "expired_dt" => $helper->convertDateFormat($expired_dt)
+//                                    ],
+//                                    "MemberCard" => [
+//                                        0 => [
+//                                            "gate_id" => $gate_id
+//                                        ]
+//                                    ]
+//                                ];
+//                            }
+//                        }
+//
+//                        // saving new record
+//                        try {
+//                            $this->{Inflector::classify($this->name)}->saveAll($data_saved_local, array('deep' => true));
+//                            $this->Session->setFlash(__("Sync Berhasil."), 'default', array(), 'success');
+//                            $this->redirect(array('action' => 'admin_sync_data_member'));
+//                        } catch (Exception $ex) {
+//                            $err_message = "Error : failed to save the records";
+//                            echo $err_message;
+//                            debug($err_message);
+//                        }
+//                    }
+//                    $this->redirect(array('action' => 'admin_sync_data_member'));
+//                } catch (Exception $ex) {
+//                    $this->Session->setFlash(__("Sync Failed : Cannot connect to {$ip_address_gate} --> {$ex->getMessage()}"), 'default', array(), 'danger');
+//                    $this->redirect(array('action' => 'admin_sync_data_member'));
+//                }
+//            } else {
+//                $dataDiffLocal = [];
+//                $dataDiffRPI = [];
+//
+//                // Data Raspberry Pi
+//                $dataRPI = [];
+//                $dataCompareRPI = [];
+//                $ip_address_gate = ClassRegistry::init("Gate")->get_ip_address($gate_id);
+//                $is_connect_to_RPI = FALSE;
+//                try {
+//                    if ($conn = @new mysqli($ip_address_gate, $this->username, $this->password, $this->db_name)) {
+//                        if ($conn->connect_error) {
+//                            $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$conn->connect_error}"), 'default', array(), 'danger');
+//                            $this->redirect(array('action' => 'admin_sync_data_member'));
+//                        }
+//                        $sql = "SELECT id, name, uid, expired_dt from members";
+//                        $result = $conn->query($sql);
+//                        if ($result->num_rows > 0) {
+//                            while ($row = $result->fetch_assoc()) {
+//                                $dataCompareRPI[] = [
+//                                    "name" => $row['name'],
+//                                    "uid" => $row['uid'],
+//                                    "expired_dt" => $row['expired_dt']
+//                                ];
+//                                $dataRPI[$row['id']] = [
+//                                    "data" => $row['id'] . " -- " . @$row['name'] . " -- " . $row['uid'] . " -- " . $helper->cvtWaktuDetik($row['expired_dt']),
+//                                    "is_diff" => FALSE
+//                                ];
+//                            }
+//                        }
+//                        $conn->close();
+//                        $is_connect_to_RPI = TRUE;
+//                    } else {
+//                        $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$conn->connect_error}"), 'default', array(), 'danger');
+//                        $this->redirect(array('action' => 'admin_sync_data_member'));
+//                    }
+//                } catch (Exception $ex) {
+//                    $this->Session->setFlash(__("Cannot connect to {$ip_address_gate} : {$ex->getMessage()}"), 'default', array(), 'danger');
+//                    $this->redirect(array('action' => 'admin_sync_data_member'));
+//                }
+//
+//                if ($is_connect_to_RPI) {
+//                    // Data Local
+//                    $dataLocal = [];
+//                    $dataCompareLocal = [];
+//                    $dataMemberLocal = $this->{Inflector::classify($this->name)}->find("all", [
+//                        "fields" => [
+//                            "Member.id",
+//                            "Member.uid",
+//                            "Member.name",
+//                            "Member.expired_dt"
+//                        ],
+//                        "recursive" => -1
+//                    ]);
+//                    if (!empty($dataMemberLocal)) {
+//                        foreach ($dataMemberLocal as $memberLocal) {
+//                            $dataCompareLocal[] = [
+//                                "name" => $memberLocal['Member']['name'],
+//                                "uid" => $memberLocal['Member']['uid'],
+//                                "expired_dt" => $memberLocal['Member']['expired_dt']
+//                            ];
+//                            $dataLocal[$memberLocal['Member']['id']] = [
+//                                "data" => $memberLocal['Member']['id'] . " -- " . $memberLocal['Member']['name'] . " -- " . $memberLocal['Member']['uid'] . " -- " . $helper->cvtWaktuDetik($memberLocal['Member']['expired_dt']),
+//                                "is_diff" => FALSE
+//                            ];
+//                        }
+//                    }
+//
+//                    // compare process
+//                    $diff = array_column($this->_calculateDifference($dataCompareLocal, $dataCompareRPI), "uid");
+//
+//                    // re-flag the data
+//                    foreach ($dataLocal as $member_id => $data) {
+//                        $temp = explode(" -- ", $data['data']);
+//                        $data_uid = $temp[2];
+//                        if (in_array($data_uid, $diff)) {
+//                            $dataLocal[$member_id]['is_diff'] = TRUE;
+//                        }
+//                    }
+//                    foreach ($dataRPI as $member_id => $data) {
+//                        $temp = explode(" -- ", $data['data']);
+//                        $data_uid = $temp[2];
+//                        if (in_array($data_uid, $diff)) {
+//                            $dataRPI[$member_id]['is_diff'] = TRUE;
+//                        }
+//                    }
+//                }
+//                $this->set("dataRaspi", ClassRegistry::init("Gate")->get_gate_name($gate_id));
+//                $this->set(compact('dataLocal', 'dataRPI'));
+//            }
+//        } else {
+//            $this->Session->setFlash(__("Invalid Gate ID"), 'default', array(), 'warning');
+//            $this->redirect(array('action' => 'admin_sync_data_member'));
+//        }
+//    }
+//
+//    function _calculateDifference($dataLocal, $dataRPI)
+//    {
+//        $difference = [];
+//        $has_diff = FALSE;
+//        if (!empty($dataLocal) && !empty($dataRPI)) {
+//            foreach ($dataLocal as $local) {
+//                foreach ($dataRPI as $rpi) {
+//                    if (!empty(array_diff($local, $rpi))) {
+//                        $has_diff = TRUE;
+//                    } else {
+//                        $has_diff = FALSE;
+//                        break;
+//                    }
+//                }
+//                if ($has_diff) {
+//                    if (!in_array($local, $difference)) {
+//                        $difference[] = $local;
+//                    }
+//                }
+//                $has_diff = FALSE;
+//            }
+//            foreach ($dataRPI as $rpi) {
+//                foreach ($dataLocal as $local) {
+//                    if (!empty(array_diff($rpi, $local))) {
+//                        $has_diff = TRUE;
+//                    } else {
+//                        $has_diff = FALSE;
+//                        break;
+//                    }
+//                }
+//                if ($has_diff) {
+//                    if (!in_array($rpi, $difference)) {
+//                        $difference[] = $rpi;
+//                    }
+//                }
+//                $has_diff = FALSE;
+//            }
+//        } else {
+//            if (empty($dataLocal) && !empty($dataRPI)) {
+//                $difference = $dataRPI;
+//            } else if (!empty($dataLocal) && empty($dataRPI)) {
+//                $difference = $dataLocal;
+//            }
+//        }
+//        return $difference;
+//    }
 
 }

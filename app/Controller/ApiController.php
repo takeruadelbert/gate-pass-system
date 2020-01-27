@@ -1,84 +1,105 @@
 <?php
 
+App::uses('RestApi', 'Controller/Interface');
 
 class ApiController implements RestApi
 {
-    private static $header = [
-        'Content-Type: application/ x-www-form-urlencoded'
+    private static $apiHeader = [
+        'Content-Type: application/json'
     ];
-    private static $HTTP_REQUEST_METHOD_DELETE = "Delete";
+    private static $curlDefaultOptions = [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HEADER => true,
+        CURLINFO_HEADER_OUT => true,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => false,
+    ];
+    private static $HTTP_REQUEST_METHOD_DELETE = "DELETE";
+    private static $HTTP_REQUEST_METHOD_PUT = "PUT";
 
     public static function apiGet($url)
     {
-        try {
-            $options = [
-                CURLOPT_HTTPHEADER => self::$header,
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_SSL_VERIFYHOST => false
-            ];
-            $ch = curl_init();
-            curl_setopt_array($ch, $options);
-            $result = curl_exec($ch);
-            curl_close($ch);
-
-            if ($result === false) {
-                return "Error occurred.";
-            }
-            return $result;
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
+        $options = [
+            CURLOPT_URL => $url
+        ];
+        return self::apiConnect($options);
     }
 
     public static function apiPost($url, $param = "")
     {
-        try {
-            $options = [
-                CURLOPT_HTTPHEADER => self::header,
-                CURLOPT_POSTFIELDS => json_encode($param),
-                CURLOPT_URL => $url,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_SSL_VERIFYHOST => false
-            ];
-            $ch = curl_init();
-            curl_setopt_array($ch, $options);
-            $result = curl_exec($ch);
-            curl_close($ch);
-
-            if ($result === false) {
-                return "Error occurred.";
-            }
-            return $result;
-        } catch (Exception $ex) {
-            echo $ex->getMessage();
-        }
+        $options = [
+            CURLOPT_HTTPHEADER => self::$apiHeader,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => self::encodeDataParam($param),
+            CURLOPT_URL => $url
+        ];
+        return self::apiConnect($options);
     }
 
     public static function apiPut($url, $param = "")
     {
-        return self::apiPost($url, $param);
+        $options = [
+            CURLOPT_HTTPHEADER => self::$apiHeader,
+            CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_PUT,
+            CURLOPT_POSTFIELDS => self::encodeDataParam($param),
+            CURLOPT_URL => $url
+        ];
+        return self::apiConnect($options);
     }
 
     public static function apiDelete($url, $param = "")
     {
+        $options = [
+            CURLOPT_HTTPHEADER => self::$apiHeader,
+            CURLOPT_URL => $url,
+            CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
+            CURLOPT_POSTFIELDS => self::encodeDataParam($param)
+        ];
+        return self::apiConnect($options);
+    }
+
+    private static function apiConnect($options)
+    {
         try {
-            $options = [
-                CURLOPT_URL => $url,
-                CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
-                CURLOPT_POSTFIELDS => json_encode($param),
-                CURLOPT_RETURNTRANSFER => true
-            ];
+            if (!empty($options)) {
+                self::$curlDefaultOptions += $options;
+            }
+
             $ch = curl_init();
-            curl_setopt_array($ch, $options);
+            curl_setopt_array($ch, self::$curlDefaultOptions);
+
             $result = curl_exec($ch);
+
+            $httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+            $err = curl_error($ch);
+            debug($err);
+
+            $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+            $header = substr($result, 0, $header_size);
+            $body = substr($result, $header_size);
+
             curl_close($ch);
 
-            return $result;
+            if ($result === false || !empty($err)) {
+                $body = $err;
+            }
+            return [
+                "http_response_code" => $httpResponseCode,
+                "header" => $header,
+                "body_response" => $body
+            ];
         } catch (Exception $ex) {
-            echo $ex->getMessage();
+            return [
+                "http_response_code" => 500,
+                "header" => null,
+                "body_response" => $ex->getMessage()
+            ];
         }
+    }
+
+    private static function encodeDataParam($data)
+    {
+        return !empty($data) ? json_encode($data) : null;
     }
 }
