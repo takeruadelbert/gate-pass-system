@@ -29,7 +29,8 @@ App::uses('Helper', 'View');
  *
  * @package       app.View.Helper
  */
-class AppHelper extends Helper {
+class AppHelper extends Helper
+{
 
     var $hari = array(
         "Minggu",
@@ -41,14 +42,16 @@ class AppHelper extends Helper {
         "Sabtu"
     );
 
-    function Rp($Rp) {
+    function Rp($Rp)
+    {
         if ($Rp == "") {
             return "Rp. 0";
         }
         return "Rp. " . number_format($Rp, 0, "", ".") . ",-";
     }
 
-    function cvtTanggal($date = null, $now = true) {
+    function cvtTanggal($date = null, $now = true)
+    {
         if (!empty($date)) {
             $tgl = date("d", strtotime($date));
             $bulan = $this->getNamaBulan(date("m", strtotime($date)));
@@ -63,12 +66,14 @@ class AppHelper extends Helper {
         return "$tgl $bulan $tahun";
     }
 
-    function periodeInd($periode = null) {
+    function periodeInd($periode = null)
+    {
         $p = explode("/", $periode);
         return $this->cvtTanggal($p[0]) . " - " . $this->cvtTanggal($p[1]);
     }
 
-    function cvtHariTanggal($date = null, $now = true) {
+    function cvtHariTanggal($date = null, $now = true)
+    {
         if (!empty($date)) {
             $tgl = date("d", strtotime($date));
             $bulan = $this->getNamaBulan(date("m", strtotime($date)));
@@ -84,7 +89,9 @@ class AppHelper extends Helper {
         }
         return "$hari, $tgl $bulan $tahun";
     }
-    function cvtHari($date = null, $now = true) {
+
+    function cvtHari($date = null, $now = true)
+    {
         if (!empty($date)) {
             $hari = $this->hari[date("w", strtotime($date))];
         } else if ($now) {
@@ -95,7 +102,8 @@ class AppHelper extends Helper {
         return "$hari";
     }
 
-    function cvtJam($date = null) {
+    function cvtJam($date = null)
+    {
         if (!empty($date)) {
             $jam = date("H", strtotime($date));
             $menit = date("i", strtotime($date));
@@ -106,7 +114,8 @@ class AppHelper extends Helper {
         return "$jam:$menit";
     }
 
-    function cvtWaktu($date = null) {
+    function cvtWaktu($date = null)
+    {
         if (!empty($date)) {
             $tgl = date("d", strtotime($date));
             $bulan = $this->getNamaBulan(date("m", strtotime($date)));
@@ -122,8 +131,9 @@ class AppHelper extends Helper {
         }
         return "$tgl $bulan $tahun - $jam:$menit";
     }
-    
-    function cvtWaktuDetik($date = null) {
+
+    function cvtWaktuDetik($date = null)
+    {
         if (!empty($date)) {
             $tgl = date("d", strtotime($date));
             $bulan = $this->getNamaBulan(date("m", strtotime($date)));
@@ -142,7 +152,8 @@ class AppHelper extends Helper {
         return "$tgl $bulan $tahun - $jam:$menit:$detik";
     }
 
-    function getTanggal($date = null) {
+    function getTanggal($date = null)
+    {
         if (!empty($date)) {
             $tgl = date("d", strtotime($date));
         } else {
@@ -151,7 +162,8 @@ class AppHelper extends Helper {
         return "$tgl";
     }
 
-    function getBulan($date = null) {
+    function getBulan($date = null)
+    {
         if (!empty($date)) {
             $bulan = $this->getNamaBulan(date("m", strtotime($date)));
         } else {
@@ -160,7 +172,8 @@ class AppHelper extends Helper {
         return $bulan;
     }
 
-    function getTahun($date = null) {
+    function getTahun($date = null)
+    {
         if (!empty($date)) {
             $tahun = date("Y", strtotime($date));
         } else {
@@ -169,7 +182,8 @@ class AppHelper extends Helper {
         return "$tahun";
     }
 
-    function getNamaBulan($i = null) {
+    function getNamaBulan($i = null)
+    {
         if ($i == 1) {
             $monthName = 'Januari';
         } elseif ($i == 2) {
@@ -198,7 +212,8 @@ class AppHelper extends Helper {
         return $monthName;
     }
 
-    function getEkstensi($inExt = null) {
+    function getEkstensi($inExt = null)
+    {
         if ($inExt == 'doc') {
             $result = 'Word';
         } else if ($inExt == 'docx') {
@@ -226,7 +241,8 @@ class AppHelper extends Helper {
         return $result;
     }
 
-    function println($string = false) {
+    function println($string = false)
+    {
         if ($string === false) {
             return "<br/>";
         } else if (empty($string)) {
@@ -236,7 +252,8 @@ class AppHelper extends Helper {
         }
     }
 
-    function changeStatusSelect($id, $options = array(), $default = null, $url = "", $e = null) {
+    function changeStatusSelect($id, $options = array(), $default = null, $url = "", $e = null)
+    {
         $result = "<select onchange=changeStatus($id,$(this).val(),'$url','$e') class='select-full'>";
         foreach ($options as $k => $v) {
             if ($k == $default) {
@@ -244,12 +261,13 @@ class AppHelper extends Helper {
             } else {
                 $selected = "";
             }
-            $result.="<option value='$k' $selected>{$v}</option>";
+            $result .= "<option value='$k' $selected>{$v}</option>";
         }
         return $result . "</select>";
     }
 
-    function cekKeterlambatan($time = null) {
+    function cekKeterlambatan($time = null)
+    {
         if ($time <= 0) {
             $result = 0;
         } else {
@@ -258,19 +276,22 @@ class AppHelper extends Helper {
         return $result;
     }
 
-    function convertJam($time = null) {
+    function convertJam($time = null)
+    {
         $result = $time / 3600;
         return $result;
     }
 
     //source
     //http://stackoverflow.com/questions/3534533/output-is-in-seconds-convert-to-hhmmss-format-in-php
-    function toHHMMSS($seconds = 0) {
+    function toHHMMSS($seconds = 0)
+    {
         $t = round($seconds);
         return sprintf('%02d:%02d:%02d', ($t / 3600), ($t / 60 % 60), $t % 60);
     }
 
-    function getUmur($date = null) {
+    function getUmur($date = null)
+    {
 //        return intval(date('Y',time()-strtotime($date))) - 1970;
 //        $now = date("Y-m-d");
 //        $interval = $now->diff($date);
@@ -285,7 +306,8 @@ class AppHelper extends Helper {
 //        return $result;
     }
 
-    function getKenaikanPangkat($date = null) {
+    function getKenaikanPangkat($date = null)
+    {
         $time = strtotime($date);
         $tmt_year = date("Y", $time);
         $curr_year = date("Y");
@@ -295,7 +317,8 @@ class AppHelper extends Helper {
         return ceil($curr_year - $tmt_year) / 4;
     }
 
-    function getKenaikanGaji($date = null) {
+    function getKenaikanGaji($date = null)
+    {
         $time = strtotime($date);
         $tmt_year = date("Y", $time);
         $curr_year = date("Y");
@@ -305,18 +328,21 @@ class AppHelper extends Helper {
         return ceil($curr_year - $tmt_year) / 2;
     }
 
-    function addYearsPangkat($date = null) {
+    function addYearsPangkat($date = null)
+    {
         $enddate = date("Y-m-d", strtotime(date("Y-m-d", strtotime($date)) . " + 4 year"));
         return $enddate;
     }
 
-    function addYearsGaji($date = null) {
+    function addYearsGaji($date = null)
+    {
         $enddate = date("Y-m-d", strtotime(date("Y-m-d", strtotime($date)) . " + 2 year"));
         return $enddate;
     }
 
     //http://stackoverflow.com/questions/11481737/how-to-calculate-time-ago-in-php
-    function getTimeago($ptime) {
+    function getTimeago($ptime)
+    {
         $etime = time() - $ptime;
 
         if ($etime < 1) {
@@ -340,9 +366,10 @@ class AppHelper extends Helper {
             }
         }
     }
-    
-    function getBulanInteger($name = null) {
-        if(!empty($name)) {
+
+    function getBulanInteger($name = null)
+    {
+        if (!empty($name)) {
             switch ($name) {
                 case "Januari":
                     return '01';
@@ -368,13 +395,14 @@ class AppHelper extends Helper {
                     return '11';
                 case "Desember":
                     return '12';
-            }                
+            }
         }
     }
-    
+
     // format date back to YYYY-mm-dd HH:ii:ss
-    function convertDateFormat($datetime = null) {
-        if(!empty($datetime)) {
+    function convertDateFormat($datetime = null)
+    {
+        if (!empty($datetime)) {
             $temp = explode(" - ", $datetime);
             $time = $temp[1];
             $temp2 = explode(" ", $temp[0]);
@@ -384,5 +412,11 @@ class AppHelper extends Helper {
             $month_in_integer = $this->getBulanInteger($temp2[1]);
             return "$year-$month_in_integer-$date $time";
         }
+    }
+
+    function convertDateFormatToDefault($input)
+    {
+        $dt = strtotime($input);
+        return date('Y-m-d H:i:s', $dt);
     }
 }

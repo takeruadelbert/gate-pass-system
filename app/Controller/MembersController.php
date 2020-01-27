@@ -135,11 +135,10 @@ class MembersController extends AppController
             } else {
                 $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
             }
-            $this->redirect(Router::url('/sync-data-member', true));
         } else {
             $this->Session->setFlash(__("Invalid Gate ID"), 'default', array(), 'warning');
-            $this->redirect(array('action' => 'admin_sync_data_member'));
         }
+        $this->redirect(Router::url('/sync-data-member', true));
     }
 
 //    function admin_sync_data_member_gate($gate_id = null)

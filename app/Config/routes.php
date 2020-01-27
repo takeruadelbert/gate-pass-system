@@ -91,6 +91,9 @@ Router::connect("/register", array("admin" => true, 'controller' => 'members', '
 Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
 Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'multi_add'));
 
+// Read History
+Router::connect("/read-history-device", array('admin' => true, 'controller' => 'histories', 'action' => 'read_data_history'));
+
 // Sync Data Member
 Router::connect("/sync-data-member", array("admin" => true, 'controller' => 'members', 'action' => 'sync_data_member'));
 

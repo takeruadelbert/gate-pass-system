@@ -50,10 +50,9 @@ class ApiController implements RestApi
     public static function apiDelete($url, $param = "")
     {
         $options = [
-            CURLOPT_HTTPHEADER => self::$apiHeader,
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
-            CURLOPT_POSTFIELDS => self::encodeDataParam($param)
+            CURLOPT_POSTFIELDS => self::encodeDataParam($param),
         ];
         return self::apiConnect($options);
     }
