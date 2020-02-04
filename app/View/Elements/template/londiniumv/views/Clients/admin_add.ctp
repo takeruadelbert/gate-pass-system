@@ -30,7 +30,7 @@
                                                 <div class="col-sm-9 col-md-8">
                                                     <select data-placeholder="- Pilih Gate -"
                                                             class="select-multiple" multiple="multiple" tabindex="2"
-                                                            name="data[Dummy][][gate_id]" required>
+                                                            name="data[Dummy][][gate_id]">
                                                         <?php
                                                         foreach ($gates as $type => $gate) {
                                                             ?>
