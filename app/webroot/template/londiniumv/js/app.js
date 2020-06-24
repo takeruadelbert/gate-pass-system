@@ -21,6 +21,13 @@ $(document).ready(function () {
     $(".required").siblings("label").addClass("label-required");
     reloadDatePicker();
     reloadStyled();
+    $('#formSubmit').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
 })
 
 function reloadDatePicker() {

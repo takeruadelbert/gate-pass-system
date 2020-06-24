@@ -78,11 +78,17 @@ class MembersController extends AppController
                 'fields' => [
                     'Gate.id',
                     'Gate.ip_address',
-                    'Gate.client_id'
+                    'Gate.client_id',
+                    'Gate.name',
+                    "Client.id",
+                    "Client.name"
                 ],
                 'recursive' => -1,
                 'conditions' => [
                     'Gate.id' => $gate_id
+                ],
+                "contain" => [
+                    "Client"
                 ]
             ]);
             $dataClient = ClassRegistry::init("Client")->find("all", [
@@ -129,7 +135,10 @@ class MembersController extends AppController
                     }
                 }
             }
-            $response = ApiController::apiPut($url, $param);
+            $header = [
+                sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['name'], $dataGate['Gate']['name'])
+            ];
+            $response = ApiController::apiPut($url, $param, $header);
             if ($response['http_response_code'] == 200) {
                 $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
             } else {
