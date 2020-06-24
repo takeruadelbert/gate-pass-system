@@ -44,7 +44,6 @@ class ApiController implements RestApi
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
             CURLOPT_URL => $url
         ];
-        debug($options);
         return self::apiConnect($options);
     }
 
@@ -70,13 +69,9 @@ class ApiController implements RestApi
             curl_setopt_array($ch, self::$curlDefaultOptions);
 
             $result = curl_exec($ch);
-            debug($result);
             $httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            debug($httpResponseCode);
 
             $err = curl_error($ch);
-            debug($err);
-            die;
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $header = substr($result, 0, $header_size);
             $body = substr($result, $header_size);
