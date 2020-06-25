@@ -17,9 +17,10 @@ class ApiController implements RestApi
     private static $HTTP_REQUEST_METHOD_DELETE = "DELETE";
     private static $HTTP_REQUEST_METHOD_PUT = "PUT";
 
-    public static function apiGet($url)
+    public static function apiGet($url, $header = [])
     {
         $options = [
+            CURLOPT_HTTPHEADER => self::setupHeader($header),
             CURLOPT_URL => $url
         ];
         return self::apiConnect($options);
@@ -100,9 +101,10 @@ class ApiController implements RestApi
         return !empty($data) ? json_encode($data) : null;
     }
 
-    private static function setupHeader($header) {
+    private static function setupHeader($header)
+    {
         $mergedHeader = self::$apiHeader;
-        if(!empty($header)) {
+        if (!empty($header)) {
             $mergedHeader = array_merge($mergedHeader, $header);
         }
         return $mergedHeader;

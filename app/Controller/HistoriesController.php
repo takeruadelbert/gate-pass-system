@@ -36,14 +36,22 @@ class HistoriesController extends AppController
                     ],
                     "fields" => [
                         "Gate.id",
-                        "Gate.ip_address"
+                        "Gate.ip_address",
+                        "Client.id",
+                        "Client.name"
                     ],
-                    "recursive" => -1
+                    "recursive" => -1,
+                    "contain" => [
+                        "Client"
+                    ]
                 ]);
                 if (!empty($dataGate)) {
                     $ip_address = $dataGate['Gate']['ip_address'];
                     $url = sprintf("%s%s", $ip_address, $this->readHistoryUrlApi);
-                    $response = ApiController::apiGet($url);
+                    $header = [
+                        sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['name'], $dataGate['Gate']['name'])
+                    ];
+                    $response = ApiController::apiGet($url, $header);
                     if ($response['http_response_code'] == 200) {
                         $helper = new HtmlHelper(new View());
 
