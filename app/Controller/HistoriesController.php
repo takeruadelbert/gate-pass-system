@@ -94,4 +94,26 @@ class HistoriesController extends AppController
             $this->redirect(Router::url('/read-history-device', true));
         }
     }
+
+    function admin_index()
+    {
+        $this->order = "History.datetime DESC";
+        $conds = [];
+        if (isset($this->request->query['start_date']) && !empty($this->request->query['start_date'])) {
+            $start_date = $this->request->query['start_date'];
+            $conds[] = [
+                "DATE_FORMAT(History.datetime, '%Y-%m-%d %H:%i:%s') >=" => $start_date
+            ];
+            unset($_GET['start_date']);
+        }
+        if (isset($this->request->query['end_date']) && !empty($this->request->query['end_date'])) {
+            $end_date = $this->request->query['end_date'];
+            $conds[] = [
+                "DATE_FORMAT(History.datetime, '%Y-%m-%d %H:%i:%s') <=" => $end_date
+            ];
+            unset($_GET['end_date']);
+        }
+        $this->conds = $conds;
+        parent::admin_index();
+    }
 }
