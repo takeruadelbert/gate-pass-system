@@ -45,6 +45,7 @@
                             <td width="1%" align="center" valign="middle" bgcolor="#feffc2">No</td>
                             <td width="20%" align="center" valign="middle" bgcolor="#feffc2">Card</td>
                             <td width="10%" align="center" valign="middle" bgcolor="#feffc2">Expired Date</td>
+                            <td width="1%" align="center" valign="middle" bgcolor="#feffc2">Status</td>
                             <td width="1%" align="center" valign="middle" bgcolor="#feffc2">Aksi</td>
                         </tr>
                         </thead>
@@ -66,6 +67,14 @@
                                     </div>
                                 </td>
                                 <td align="center">
+                                    <div class="false">
+                                        <?php
+                                        $style = $item['status'] === MemberCard::$statusBanned ? "danger" : "success";
+                                        ?>
+                                        <span class="label label-<?= $style ?>"><?= $item['status'] ?></span>
+                                    </div>
+                                </td>
+                                <td align="center">
                                     <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i
                                                 class="icon-remove3"></i></a>
                                 </td>
@@ -76,7 +85,7 @@
                         </tbody>
                         <tfoot>
                         <tr class="addrowborder">
-                            <td colspan="4" align="left"><a href="javascript:void(false)"
+                            <td colspan="5" align="left"><a href="javascript:void(false)"
                                                             onclick="addThisRow($(this), 'memberCard')" data-n="1"><i
                                             class="icon-plus-circle"></i></a></td>
                         </tr>

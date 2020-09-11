@@ -45,6 +45,7 @@
                                 <td width="1%" align="center" valign="middle" bgcolor="#feffc2">No</td>
                                 <td width="20%" align="center" valign="middle" bgcolor="#feffc2">Card</td>
                                 <td width="10%" align="center" valign="middle" bgcolor="#feffc2">Expired Date</td>
+                                <td width="1%" align="center" valign="middle" bgcolor="#feffc2">Status</td>
                             </tr>
                             </thead>
                             <tbody id="target-memberCard">
@@ -62,6 +63,14 @@
                                     <td>
                                         <div class="false">
                                             <?= $this->Form->input("MemberCard.$k.expired_dt", ['type' => 'text', 'div' => false, 'class' => 'form-control datepicker', 'label' => false, 'disabled']) ?>
+                                        </div>
+                                    </td>
+                                    <td align="center">
+                                        <div class="false">
+                                            <?php
+                                            $style = $item['status'] === MemberCard::$statusBanned ? "danger" : "success";
+                                            ?>
+                                            <span class="label label-<?= $style ?>"><?= $item['status'] ?></span>
                                         </div>
                                     </td>
                                 </tr>

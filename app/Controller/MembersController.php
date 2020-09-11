@@ -171,20 +171,25 @@ class MembersController extends AppController
                         }
                     }
                 }
+                $this->sync_member($url, $param, $dataGate['Client']['code'], $dataGate['Gate']['code'], $bannedMembers, $ipAddress);
             }
-            $header = [
-                sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['code'], $dataGate['Gate']['code'])
-            ];
-            $response = ApiController::apiPut($url, $param, $header);
-            if ($response['http_response_code'] == 200) {
-                $this->sync_banned_member($url, $header, $bannedMembers, $ipAddress);
-            } else {
-                $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
-            }
+
         } else {
             $this->Session->setFlash(__("Invalid Gate ID"), 'default', array(), 'warning');
         }
         $this->redirect(Router::url('/sync-data-member', true));
+    }
+
+    function sync_member($url, $param, $clientCode, $gateCode, $bannedMembers, $ipAddress) {
+        $header = [
+            sprintf("%s: %s/%s", "Sync-Target", $clientCode, $gateCode)
+        ];
+        $response = ApiController::apiPut($url, $param, $header);
+        if ($response['http_response_code'] == 200) {
+            $this->sync_banned_member($url, $header, $bannedMembers, $ipAddress);
+        } else {
+            $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+        }
     }
 
     function sync_banned_member($url, $header, $bannedMembers, $ipAddress) {
