@@ -137,7 +137,8 @@ class MembersController extends AppController
                             "fields" => [
                                 "MemberCard.id",
                                 "MemberCard.card_number",
-                                "MemberCard.expired_dt"
+                                "MemberCard.expired_dt",
+                                "MemberCard.status"
                             ]
                         ]
                     ]
@@ -152,15 +153,20 @@ class MembersController extends AppController
 
             // get data Member Card
             $param = [];
+            $bannedMembers = [];
             if (!empty($dataClient)) {
                 foreach ($dataClient as $client) {
                     if (!empty($client['Member'])) {
                         foreach ($client['Member'] as $member) {
                             foreach ($member['MemberCard'] as $detail) {
-                                $param[] = [
-                                    "code" => $detail['card_number'],
-                                    "expiration" => $detail['expired_dt']
-                                ];
+                                if($detail['status'] === MemberCard::$statusBanned) {
+                                   $bannedMembers[] = $detail['id'];
+                                } else {
+                                    $param[] = [
+                                        "code" => $detail['card_number'],
+                                        "expiration" => $detail['expired_dt']
+                                    ];
+                                }
                             }
                         }
                     }
@@ -171,7 +177,7 @@ class MembersController extends AppController
             ];
             $response = ApiController::apiPut($url, $param, $header);
             if ($response['http_response_code'] == 200) {
-                $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
+                $this->sync_banned_member($url, $header, $bannedMembers, $ipAddress);
             } else {
                 $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
             }
@@ -179,6 +185,17 @@ class MembersController extends AppController
             $this->Session->setFlash(__("Invalid Gate ID"), 'default', array(), 'warning');
         }
         $this->redirect(Router::url('/sync-data-member', true));
+    }
+
+    function sync_banned_member($url, $header, $bannedMembers, $ipAddress) {
+        if(!empty($bannedMembers)) {
+            $response = ApiController::apiDelete($url, $bannedMembers, $header);
+            if ($response['http_response_code'] == 200) {
+                $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
+            } else {
+                $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+            }
+        }
     }
 
     function admin_ban_card_member() {
@@ -203,7 +220,77 @@ class MembersController extends AppController
                     $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
                 }
             } else {
-                $this->Session->setFlash(__("Data Member Not Found."), 'default', array(), 'warning');
+                $this->Session->setFlash(__("Data Member Not Found."), 'default', array(), 'info');
+            }
+        }
+    }
+
+    function admin_list() {
+        $this->autoRender = false;
+        $conds = [];
+        if (isset($this->request->query['q'])) {
+            $q = $this->request->query['q'];
+            $conds[] = array(
+                "or" => array(
+                    "Member.name like" => "%$q%",
+                ));
+        }
+        $suggestions = ClassRegistry::init("Member")->find("all", array(
+            "conditions" => [
+                $conds,
+            ],
+            "recursive" => -1,
+            "limit" => 10,
+        ));
+        $result = [];
+        foreach ($suggestions as $item) {
+            if (!empty($item['Member'])) {
+                $result[] = [
+                    "id" => $item['Member']['id'],
+                    "name" => $item['Member']['name']
+                ];
+            }
+        }
+        return json_encode($result);
+    }
+
+    function admin_ban_member() {
+        if($this->request->is("POST")) {
+            $memberId = $this->data['Member']['id'];
+            if(empty($memberId)) {
+                $this->Session->setFlash(__("Invalid Member ID"), 'default', array(), 'info');
+                return;
+            }
+            $member = ClassRegistry::init("Member")->find('first', [
+                "conditions" => [
+                    "id" => $memberId
+                ],
+                "contain" => [
+                    "MemberCard"
+                ]
+            ]);
+            if(!empty($member['MemberCard'])) {
+                $bannedCardMember = [];
+                foreach ($member['MemberCard'] as $memberCard) {
+                    if($memberCard['status'] !== MemberCard::$statusBanned) {
+                        $bannedCardMember[] = [
+                            "id" => $memberCard['id'],
+                            "status" => MemberCard::$statusBanned
+                        ];
+                    }
+                }
+                if(!empty($bannedCardMember)) {
+                    try {
+                        ClassRegistry::init("MemberCard")->saveAll($bannedCardMember);
+                        $this->Session->setFlash(__("Berhasil Diban."), 'default', array(), 'success');
+                    } catch (Exception $ex) {
+                        $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
+                    }
+                } else {
+                    $this->Session->setFlash(__("Kartu Member Sudah Diban Semua."), 'default', array(), 'info');
+                }
+            } else {
+                $this->Session->setFlash(__("Data Kartu Member Tidak Ada."), 'default', array(), 'info');
             }
         }
     }

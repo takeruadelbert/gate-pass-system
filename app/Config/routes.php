@@ -91,6 +91,7 @@ Router::connect("/register", array("admin" => true, 'controller' => 'members', '
 Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
 Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'multi_add'));
 Router::connect("/ban-card-member", array('admin'=> true, 'controller' => 'members', 'action' => 'ban_card_member'));
+Router::connect("/ban-member", array('admin'=> true, 'controller' => 'members', 'action' => 'ban_member'));
 
 // Read History
 Router::connect("/read-history-device", array('admin' => true, 'controller' => 'histories', 'action' => 'read_data_history'));
