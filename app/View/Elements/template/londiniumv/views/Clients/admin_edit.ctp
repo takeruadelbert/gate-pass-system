@@ -61,6 +61,20 @@
                             </tr>
                             <tr>
                                 <td>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <?php
+                                                echo $this->Form->label("Client.code", __("Kode"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                                echo $this->Form->input("Client.code", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
                                     <div class="form-actions text-center">
                                         <input name="Button" type="button" onclick="history.go(-1);"
                                                class="btn btn-success" value="<?= __("Kembali") ?>">

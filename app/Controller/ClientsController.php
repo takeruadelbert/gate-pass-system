@@ -28,7 +28,7 @@ class ClientsController extends AppController
     function admin_add()
     {
         if ($this->request->is("post")) {
-            $gate_ids = array_column($this->data['Dummy'], 'gate_id');
+            $gate_ids = isset($this->data['Dummy']) ? array_column($this->data['Dummy'], 'gate_id') : null;
             $this->{Inflector::classify($this->name)}->set($this->data);
             if ($this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('validate' => 'only', "deep" => true))) {
                 $this->{Inflector::classify($this->name)}->saveAll($this->{Inflector::classify($this->name)}->data, array('deep' => true));

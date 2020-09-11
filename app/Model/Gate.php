@@ -20,6 +20,10 @@ class Gate extends AppModel
         "gate_type_id" => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
+        ),
+        "code" => array(
+            'Harus diisi' => array("rule" => "NotBlank"),
+            'Sudah Ada' => array("rule" => 'isUnique')
         )
     );
     public $belongsTo = array(

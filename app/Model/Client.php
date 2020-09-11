@@ -7,6 +7,10 @@ class Client extends AppModel
         'name' => array(
             'Harus diisi' => array("rule" => "NotBlank"),
             'Sudah Ada' => array("rule" => 'isUnique')
+        ),
+        'code' => array(
+            'Harus diisi' => array("rule" => "NotBlank"),
+            'Sudah Ada' => array("rule" => 'isUnique')
         )
     );
     public $belongsTo = array();
