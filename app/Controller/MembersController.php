@@ -19,6 +19,7 @@ class MembersController extends AppController
         $this->_setPageInfo("admin_index", "");
         $this->_setPageInfo("admin_add", "");
         $this->_setPageInfo("admin_edit", "");
+        $this->loadModel('MemberCard');
     }
 
     function _options()
@@ -203,7 +204,7 @@ class MembersController extends AppController
         }
     }
 
-    function admin_ban_card_member() {
+    function admin_blacklist_card_member() {
         if($this->request->is("POST")) {
             $memberCardId = $this->data['MemberCard']['id'];
             if(empty($memberCardId)) {
@@ -235,10 +236,11 @@ class MembersController extends AppController
         $conds = [];
         if (isset($this->request->query['q'])) {
             $q = $this->request->query['q'];
-            $conds[] = array(
-                "or" => array(
+            $conds[] = [
+                "or" => [
                     "Member.name like" => "%$q%",
-                ));
+                ]
+            ];
         }
         $suggestions = ClassRegistry::init("Member")->find("all", array(
             "conditions" => [
@@ -259,43 +261,38 @@ class MembersController extends AppController
         return json_encode($result);
     }
 
-    function admin_ban_member() {
+    function admin_blacklist_member() {
+        $this->update_status_member(MemberCard::$statusBanned);
+    }
+
+    function admin_whitelist_card_member() {
+        $this->update_status_member(MemberCard::$statusActive);
+    }
+
+    function update_status_member($status) {
         if($this->request->is("POST")) {
-            $memberId = $this->data['Member']['id'];
-            if(empty($memberId)) {
+            $memberCardId = $this->data['MemberCard']['id'];
+            if(empty($memberCardId)) {
                 $this->Session->setFlash(__("Invalid Member ID"), 'default', array(), 'info');
                 return;
             }
-            $member = ClassRegistry::init("Member")->find('first', [
+            $memberCard = ClassRegistry::init("MemberCard")->find('first', [
                 "conditions" => [
-                    "id" => $memberId
+                    "id" => $memberCardId
                 ],
-                "contain" => [
-                    "MemberCard"
-                ]
+                "recursive" => -1
             ]);
-            if(!empty($member['MemberCard'])) {
-                $bannedCardMember = [];
-                foreach ($member['MemberCard'] as $memberCard) {
-                    if($memberCard['status'] !== MemberCard::$statusBanned) {
-                        $bannedCardMember[] = [
-                            "id" => $memberCard['id'],
-                            "status" => MemberCard::$statusBanned
-                        ];
-                    }
-                }
-                if(!empty($bannedCardMember)) {
-                    try {
-                        ClassRegistry::init("MemberCard")->saveAll($bannedCardMember);
-                        $this->Session->setFlash(__("Berhasil Diban."), 'default', array(), 'success');
-                    } catch (Exception $ex) {
-                        $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
-                    }
-                } else {
-                    $this->Session->setFlash(__("Kartu Member Sudah Diban Semua."), 'default', array(), 'info');
+            if(!empty($memberCard)) {
+                $memberCard['MemberCard']['status'] = $status;
+                try {
+                    ClassRegistry::init("MemberCard")->save($memberCard);
+                    $message = $status === MemberCard::$statusBanned ? "Diblacklist" : "Diwhitelist";
+                    $this->Session->setFlash(__(sprintf("Berhasil %s.", $message)), 'default', array(), 'success');
+                } catch (Exception $ex) {
+                    $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
                 }
             } else {
-                $this->Session->setFlash(__("Data Kartu Member Tidak Ada."), 'default', array(), 'info');
+                $this->Session->setFlash(__("Data Member Not Found."), 'default', array(), 'info');
             }
         }
     }

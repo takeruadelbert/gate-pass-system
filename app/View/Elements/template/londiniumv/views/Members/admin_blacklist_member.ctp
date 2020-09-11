@@ -1,10 +1,10 @@
-<?php echo $this->Form->create("Member", array("class" => "form-horizontal form-separate", "action" => "ban_member", "id" => "formSubmit", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
+<?php echo $this->Form->create("Member", array("class" => "form-horizontal form-separate", "action" => "blacklist_member", "id" => "formSubmit", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="block-inner text-danger">
-                    <h6 class="heading-hr"><?= __("Ban Member") ?>
+                    <h6 class="heading-hr"><?= __("Blacklist Member") ?>
                     </h6>
                 </div>
                 <div class="table-responsive">

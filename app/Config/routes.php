@@ -90,8 +90,10 @@ Router::connect("/edit-client", array("admin" => true, 'controller' => 'clients'
 Router::connect("/register", array("admin" => true, 'controller' => 'members', 'action' => 'index'));
 Router::connect("/add-member", array("admin" => true, 'controller' => 'members', 'action' => 'add'));
 Router::connect("/add-multiple-member", array('admin' => true, 'controller' => 'members', 'action' => 'multi_add'));
-Router::connect("/ban-card-member", array('admin'=> true, 'controller' => 'members', 'action' => 'ban_card_member'));
-Router::connect("/ban-member", array('admin'=> true, 'controller' => 'members', 'action' => 'ban_member'));
+Router::connect("/blacklist-card-member", array('admin'=> true, 'controller' => 'members', 'action' => 'blacklist_card_member'));
+Router::connect("/blacklist-member", array('admin'=> true, 'controller' => 'members', 'action' => 'blacklist_member'));
+Router::connect("/whitelist-card-member", array('admin'=> true, 'controller' => 'members', 'action' => 'whitelist_card_member'));
+Router::connect("/whitelist-member", array('admin'=> true, 'controller' => 'members', 'action' => 'whitelist_member'));
 
 // Read History
 Router::connect("/read-history-device", array('admin' => true, 'controller' => 'histories', 'action' => 'read_data_history'));

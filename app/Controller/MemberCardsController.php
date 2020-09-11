@@ -8,20 +8,26 @@ class MemberCardsController extends AppController
     var $name = "MemberCards";
     var $disabledAction = array();
 
-    function admin_list() {
+    function beforeFilter()
+    {
+        parent::beforeFilter();
+        $this->loadModel('MemberCard');
+    }
+
+    function admin_list($isWhitelist = false) {
         $this->autoRender = false;
-        $conds = [];
+        $conds = !$isWhitelist ? ["MemberCard.status =" => MemberCard::$statusActive] : ["MemberCard.status" => MemberCard::$statusBanned];
         if (isset($this->request->query['q'])) {
             $q = $this->request->query['q'];
-            $conds[] = array(
-                "or" => array(
+            $conds[] = [
+                "or" => [
                     "MemberCard.card_number like" => "%$q%",
-                ));
+                ]
+            ];
         }
         $suggestions = ClassRegistry::init("MemberCard")->find("all", array(
             "conditions" => [
                 $conds,
-                "MemberCard.status !=" => MemberCard::$statusBanned
             ],
             "contain" => [
                 "Member",

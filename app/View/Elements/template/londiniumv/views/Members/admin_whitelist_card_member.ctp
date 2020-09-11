@@ -1,10 +1,10 @@
-<?php echo $this->Form->create("Member", array("class" => "form-horizontal form-separate", "action" => "ban", "id" => "formSubmit", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
+<?php echo $this->Form->create("Member", array("class" => "form-horizontal form-separate", "action" => "whitelist_card_member", "id" => "formSubmit", "inputDefaults" => array("error" => array("attributes" => array("wrap" => "label", "class" => "error"))))) ?>
 <div class="row">
     <div class="col-lg-12 col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="block-inner text-danger">
-                    <h6 class="heading-hr"><?= __("Ban Member") ?>
+                    <h6 class="heading-hr"><?= __("Whitelist Member") ?>
                     </h6>
                 </div>
                 <div class="table-responsive">
@@ -50,9 +50,9 @@
         var member = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('card_number'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: '<?= Router::url("/admin/member_cards/list", true) ?>',
+            prefetch: '<?= Router::url("/admin/member_cards/list/true", true) ?>',
             remote: {
-                url: '<?= Router::url("/admin/member_cards/list", true) ?>' + '?q=%QUERY',
+                url: '<?= Router::url("/admin/member_cards/list/true", true) ?>' + '?q=%QUERY',
                 wildcard: '%QUERY',
             }
         });
