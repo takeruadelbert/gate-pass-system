@@ -21,6 +21,7 @@ class MemberCardsController extends AppController
         $suggestions = ClassRegistry::init("MemberCard")->find("all", array(
             "conditions" => [
                 $conds,
+                "MemberCard.status !=" => MemberCard::$statusBanned
             ],
             "contain" => [
                 "Member",

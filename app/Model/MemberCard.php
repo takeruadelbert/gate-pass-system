@@ -19,5 +19,5 @@ class MemberCard extends AppModel
     public $hasOne = array();
     public $hasMany = array();
     public $virtualFields = array();
-
+    public static $statusBanned = "BANNED";
 }

@@ -12,7 +12,6 @@ class MembersController extends AppController
         "Client"
     );
     private $urlPath = "/api/member/";
-    private $STATUS_BANNED = "BANNED";
 
     function beforeFilter()
     {
@@ -182,34 +181,30 @@ class MembersController extends AppController
         $this->redirect(Router::url('/sync-data-member', true));
     }
 
-    function admin_ban() {
-        if ($this->request->is("post")) {
-            $this->admin_ban_card_member();
-        }
-    }
-
     function admin_ban_card_member() {
-        $memberCardId = $this->data['MemberCard']['id'];
-        if(empty($memberCardId)) {
-            $this->Session->setFlash(__("Invalid Member ID"), 'default', array(), 'info');
-            return;
-        }
-        $memberCard = ClassRegistry::init("MemberCard")->find('first', [
-            "conditions" => [
-                "id" => $memberCardId
-            ],
-            "recursive" => -1
-        ]);
-        if(!empty($memberCard)) {
-            $memberCard['MemberCard']['status'] = $this->STATUS_BANNED;
-            try {
-                ClassRegistry::init("MemberCard")->save($memberCard);
-                $this->Session->setFlash(__("Berhasil Diban."), 'default', array(), 'success');
-            } catch (Exception $ex) {
-                $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
+        if($this->request->is("POST")) {
+            $memberCardId = $this->data['MemberCard']['id'];
+            if(empty($memberCardId)) {
+                $this->Session->setFlash(__("Invalid Member ID"), 'default', array(), 'info');
+                return;
             }
-        } else {
-            $this->Session->setFlash(__("Data Member Not Found."), 'default', array(), 'warning');
+            $memberCard = ClassRegistry::init("MemberCard")->find('first', [
+                "conditions" => [
+                    "id" => $memberCardId
+                ],
+                "recursive" => -1
+            ]);
+            if(!empty($memberCard)) {
+                $memberCard['MemberCard']['status'] = MemberCard::$statusBanned;
+                try {
+                    ClassRegistry::init("MemberCard")->save($memberCard);
+                    $this->Session->setFlash(__("Berhasil Diban."), 'default', array(), 'success');
+                } catch (Exception $ex) {
+                    $this->Session->setFlash(__($ex->getMessage()), 'default', array(), 'warning');
+                }
+            } else {
+                $this->Session->setFlash(__("Data Member Not Found."), 'default', array(), 'warning');
+            }
         }
     }
 }
