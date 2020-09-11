@@ -16,12 +16,15 @@ class ApiController implements RestApi
     ];
     private static $HTTP_REQUEST_METHOD_DELETE = "DELETE";
     private static $HTTP_REQUEST_METHOD_PUT = "PUT";
+    private static $HTTP_REQUEST_METHOD_GET = "GET";
 
-    public static function apiGet($url, $header = [])
+    public static function apiGet($url, $header = [], $param = "{}")
     {
         $options = [
             CURLOPT_HTTPHEADER => self::setupHeader($header),
-            CURLOPT_URL => $url
+            CURLOPT_URL => $url,
+            CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_GET,
+            CURLOPT_POSTFIELDS => self::encodeDataParam($param),
         ];
         return self::apiConnect($options);
     }

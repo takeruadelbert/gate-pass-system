@@ -37,8 +37,10 @@ class HistoriesController extends AppController
                     "fields" => [
                         "Gate.id",
                         "Gate.ip_address",
+                        "Gate.code",
                         "Client.id",
-                        "Client.name"
+                        "Client.name",
+                        "Client.code"
                     ],
                     "recursive" => -1,
                     "contain" => [
@@ -49,7 +51,7 @@ class HistoriesController extends AppController
                     $ip_address = $dataGate['Gate']['ip_address'];
                     $url = sprintf("%s%s", $ip_address, $this->readHistoryUrlApi);
                     $header = [
-                        sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['name'], $dataGate['Gate']['name'])
+                        sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['code'], $dataGate['Gate']['code'])
                     ];
                     $response = ApiController::apiGet($url, $header);
                     if ($response['http_response_code'] == 200) {
@@ -60,7 +62,7 @@ class HistoriesController extends AppController
                             $response = ApiController::apiDelete($url);
                             if ($response['http_response_code'] == 200) {
                                 $saveData = [];
-                                $dataHistory = json_decode($result, true);
+                                $dataHistory = $result;
                                 foreach ($dataHistory as $history) {
                                     $saveData[] = [
                                         "History" => [
