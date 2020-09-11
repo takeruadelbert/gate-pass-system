@@ -97,6 +97,7 @@ Router::connect("/whitelist-member", array('admin'=> true, 'controller' => 'memb
 
 // Read History
 Router::connect("/read-history-device", array('admin' => true, 'controller' => 'histories', 'action' => 'read_data_history'));
+Router::connect("/history", array("admin" => true, 'controller' => 'histories', 'action_index'));
 
 // Sync Data Member
 Router::connect("/sync-data-member", array("admin" => true, 'controller' => 'members', 'action' => 'sync_data_member'));

@@ -26,8 +26,8 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                             <th width="50">No</th>
                             <th><?= __("UID") ?></th>
                             <th><?= __("Tangga/Waktu") ?></th>
-                            <th><?= __("Path Face") ?></th>
-                            <th><?= __("Path Plate") ?></th>
+                            <th><?= __("Image Face") ?></th>
+                            <th><?= __("Image Plate") ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,8 +48,30 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['History']['code'] ?></td>
                                     <td class="text-center"><?= $this->Html->cvtWaktu($item['History']['datetime']) ?></td>
-                                    <td class="text-center"><?= @$item['History']['path_face'] ?></td>
-                                    <td class="text-center"><?= @$item['History']['path_plate'] ?></td>
+                                    <td class="text-center">
+                                        <?php
+                                        $imageFace = @$item['History']['image_face'];
+                                        if($imageFace !== null) {
+                                            echo '<img src="data:image/jpeg;base64,'.base64_encode($imageFace) .'" width=200 height=150 />';
+                                        } else {
+                                         ?>
+                                            <img src="<?= Router::url("/img/no_image.jpg", true) ?>"/>
+                                            <?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php
+                                        $imagePlate = @$item['History']['image_plate'];
+                                        if($imagePlate !== null) {
+                                            echo '<img src="data:image/jpeg;base64,'.base64_encode($imagePlate) .'" />';
+                                        } else {
+                                            ?>
+                                            <img src="<?= Router::url("/img/no_image.jpg", true) ?>" width="100" height="100" />
+                                            <?php
+                                        }
+                                        ?>
+                                    </td>
                                 </tr>
                                 <?php
                                 $i++;

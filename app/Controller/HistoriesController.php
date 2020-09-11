@@ -68,8 +68,8 @@ class HistoriesController extends AppController
                                         "History" => [
                                             "code" => $history['code'],
                                             "datetime" => $helper->convertDateFormatToDefault($history['time']),
-                                            "path_face" => $history['path_face'],
-                                            "path_plate" => $history['path_plate'],
+                                            "image_face" => !empty($history['path_face']) ? file_get_contents($history['path_face']) : null,
+                                            "image_plate" => !empty($history['path_plate']) ? file_get_contents($history['path_plate']) : null,
                                             "gate_id" => $gate_id
                                         ]
                                     ];
