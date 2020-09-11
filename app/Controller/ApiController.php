@@ -59,18 +59,16 @@ class ApiController implements RestApi
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
         ];
+        debug($options);
         return self::apiConnect($options);
     }
 
-    private static function apiConnect($options)
+    private static function apiConnect($options = [])
     {
         try {
-            if (!empty($options)) {
-                self::$curlDefaultOptions += $options;
-            }
 
             $ch = curl_init();
-            curl_setopt_array($ch, self::$curlDefaultOptions);
+            curl_setopt_array($ch, self::$curlDefaultOptions + $options);
 
             $result = curl_exec($ch);
             $httpResponseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
