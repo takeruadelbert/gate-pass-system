@@ -59,7 +59,7 @@ class HistoriesController extends AppController
 
                         $result = json_decode($response['body_response'], true);
                         if (!empty($result)) {
-                            $response = ApiController::apiDelete($url);
+                            $response = ApiController::apiDelete($url, "{}",$header);
                             if ($response['http_response_code'] == 200) {
                                 $saveData = [];
                                 $dataHistory = $result;
