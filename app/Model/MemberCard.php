@@ -13,7 +13,9 @@ class MemberCard extends AppModel
             'message' => 'Harus Diisi.'
         ),
     );
-    public $belongsTo = array();
+    public $belongsTo = array(
+        "Member"
+    );
     public $hasOne = array();
     public $hasMany = array();
     public $virtualFields = array();

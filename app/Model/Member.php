@@ -6,7 +6,7 @@ class Member extends AppModel {
         'client_id' => array(
             'rule' => 'NotBlank',
             'message' => 'Harus Dipilih.'
-        )
+        ),
     );
     public $belongsTo = array(
         "Client"
