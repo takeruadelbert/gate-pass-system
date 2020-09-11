@@ -80,8 +80,10 @@ class MembersController extends AppController
                     'Gate.ip_address',
                     'Gate.client_id',
                     'Gate.name',
+                    'Gate.code',
                     "Client.id",
-                    "Client.name"
+                    "Client.name",
+                    "Client.code"
                 ],
                 'recursive' => -1,
                 'conditions' => [
@@ -136,7 +138,7 @@ class MembersController extends AppController
                 }
             }
             $header = [
-                sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['name'], $dataGate['Gate']['name'])
+                sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['code'], $dataGate['Gate']['code'])
             ];
             $response = ApiController::apiPut($url, $param, $header);
             if ($response['http_response_code'] == 200) {

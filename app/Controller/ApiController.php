@@ -76,7 +76,6 @@ class ApiController implements RestApi
             $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
             $header = substr($result, 0, $header_size);
             $body = substr($result, $header_size);
-
             curl_close($ch);
 
             if ($result === false || !empty($err)) {
@@ -98,7 +97,7 @@ class ApiController implements RestApi
 
     private static function encodeDataParam($data)
     {
-        return !empty($data) ? json_encode($data) : null;
+        return !empty($data) ? json_encode($data) : "[]";
     }
 
     private static function setupHeader($header)
