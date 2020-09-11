@@ -24,8 +24,22 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <?php
+                                                echo $this->Form->label("Gate.code", __("Kode"), array("class" => "col-sm-3 col-md-4 control-label"));
+                                                echo $this->Form->input("Gate.code", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "form-control"));
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <?php
                                                 echo $this->Form->label("Gate.client_id", __("Client"), array("class" => "col-sm-3 col-md-4 control-label"));
-                                                echo $this->Form->input("Gate.client_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => '- Pilih Client -', 'required'));
+                                                echo $this->Form->input("Gate.client_id", array("div" => array("class" => "col-sm-9 col-md-8"), "label" => false, "class" => "select-full", 'empty' => '', 'placeholder' => '- Pilih Client -'));
                                                 ?>
                                             </div>
                                         </div>
