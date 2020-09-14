@@ -201,6 +201,8 @@ class MembersController extends AppController
             } else {
                 $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
             }
+        } else {
+            $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
         }
     }
 
