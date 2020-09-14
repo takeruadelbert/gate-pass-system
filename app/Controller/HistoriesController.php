@@ -67,6 +67,7 @@ class HistoriesController extends AppController
                                     $saveData[] = [
                                         "History" => [
                                             "code" => $history['code'],
+                                            "name" => $this->findMemberByCode($history['code']),
                                             "datetime" => $helper->convertDateFormatToDefault($history['time']),
                                             "image_face" => !empty($history['path_face']) ? file_get_contents($history['path_face']) : null,
                                             "image_plate" => !empty($history['path_plate']) ? file_get_contents($history['path_plate']) : null,
@@ -93,6 +94,23 @@ class HistoriesController extends AppController
             }
             $this->redirect(Router::url('/read-history-device', true));
         }
+    }
+
+    private function findMemberByCode($code) {
+        if(!empty($code)) {
+            $dataMember = ClassRegistry::init("MemberCard")->find("first",[
+                "conditions" => [
+                    "MemberCard.card_number" => $code,
+                ],
+                "contain" => [
+                    "Member"
+                ]
+            ]);
+            if(!empty($dataMember)) {
+                return $dataMember['Member']['name'];
+            }
+        }
+        return null;
     }
 
     function admin_index()

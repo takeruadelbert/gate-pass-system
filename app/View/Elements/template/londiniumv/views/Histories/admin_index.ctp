@@ -15,6 +15,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                         <tr>
                             <th width="50">No</th>
                             <th><?= __("UID Card") ?></th>
+                            <th><?= __("Nama") ?></th>
                             <th><?= __("Tangga/Waktu") ?></th>
                             <th><?= __("Image Face") ?></th>
                             <th><?= __("Image Plate") ?></th>
@@ -28,7 +29,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                         if (empty($data['rows'])) {
                             ?>
                             <tr>
-                                <td class = "text-center" colspan = 5>Tidak Ada Data</td>
+                                <td class = "text-center" colspan = 6>Tidak Ada Data</td>
                             </tr>
                             <?php
                         } else {
@@ -37,6 +38,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['History']['code'] ?></td>
+                                    <td class="text-center"><?= $item['History']['name'] ?></td>
                                     <td class="text-center"><?= $this->Html->cvtWaktu($item['History']['datetime']) ?></td>
                                     <td class="text-center">
                                         <?php
