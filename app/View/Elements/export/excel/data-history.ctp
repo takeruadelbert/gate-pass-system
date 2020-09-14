@@ -2,7 +2,7 @@
     <div style="font-size:11px;font-weight: bold; font-family:Tahoma, Geneva, sans-serif;">
         Data History
     </div>
-    <div style="font-size:11px;font-style: italic; font-family:Tahoma, Geneva, sans-serif;">Periode : <?= $this->Echo->laporanPeriodeBulan(@$periodeLaporanStartDate, @$periodeLaporanEndDate) ?></div>
+    <div style="font-size:11px;font-style: italic; font-family:Tahoma, Geneva, sans-serif;">Periode : <?= $this->Echo->laporanPeriodeTanggalWaktu(@$start_date, @$end_date) ?></div>
 </div>
 <br>
 <table width="100%" class="table-data">

@@ -172,4 +172,29 @@ class EchoHelper extends HtmlHelper
         }
     }
 
+    function laporanPeriodeTanggalWaktu($awal, $akhir) {
+        if (empty($awal) || empty($akhir)) {
+            return "-";
+        }
+
+        $tglAwal = date("d", strtotime($awal));
+        $bulanAwal = $this->getNamaBulan(date("m", strtotime($awal)));
+        $tahunAwal = date("Y", strtotime($awal));
+        $jamAwal = date("H", strtotime($awal));
+        $menitAwal = date("i", strtotime($awal));
+        $detikAwal = date("s", strtotime($awal));
+
+        $tglAkhir = date("d", strtotime($akhir));
+        $bulanAkhir = $this->getNamaBulan(date("m", strtotime($akhir)));
+        $tahunAkhir = date("Y", strtotime($akhir));
+        $jamAkhir = date("H", strtotime($akhir));
+        $menitAkhir = date("i", strtotime($akhir));
+        $detikAkhir = date("s", strtotime($akhir));
+
+        if (strtotime($awal) == strtotime($akhir)) {
+            return "$tglAwal $bulanAwal $tahunAwal";
+        } else {
+            return "$tglAwal $bulanAwal $tahunAwal $jamAwal:$menitAwal:$detikAwal - $tglAkhir $bulanAkhir $tahunAkhir $jamAkhir:$menitAkhir:$detikAkhir";
+        }
+    }
 }

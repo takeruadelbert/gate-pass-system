@@ -53,7 +53,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                             echo '<img src="data:image/jpeg;base64,'.base64_encode($imageFace) .'" width=200 height=150 />';
                                         } else {
                                          ?>
-                                            <img src="<?= Router::url("/img/no_image.jpg", true) ?>"/>
+                                            <img src="<?= Router::url("/img/no_image.jpg", true) ?>" width="100" height="100"/>
                                             <?php
                                         }
                                         ?>

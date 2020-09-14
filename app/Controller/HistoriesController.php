@@ -124,6 +124,7 @@ class HistoriesController extends AppController
                 "DATE_FORMAT(History.datetime, '%Y-%m-%d %H:%i:%s') >=" => $start_date
             ];
             unset($_GET['start_date']);
+            $this->set(compact('start_date'));
         }
         if (isset($this->request->query['end_date']) && !empty($this->request->query['end_date'])) {
             $end_date = $this->request->query['end_date'];
@@ -131,6 +132,7 @@ class HistoriesController extends AppController
                 "DATE_FORMAT(History.datetime, '%Y-%m-%d %H:%i:%s') <=" => $end_date
             ];
             unset($_GET['end_date']);
+            $this->set(compact('end_date'));
         }
         $this->conds = $conds;
         parent::admin_index();
