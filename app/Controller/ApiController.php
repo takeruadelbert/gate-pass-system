@@ -13,6 +13,7 @@ class ApiController implements RestApi
         CURLINFO_HEADER_OUT => true,
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_SSL_VERIFYHOST => false,
+        CURLOPT_TIMEOUT => _TIMEOUT,
     ];
     private static $HTTP_REQUEST_METHOD_DELETE = "DELETE";
     private static $HTTP_REQUEST_METHOD_PUT = "PUT";
@@ -59,14 +60,12 @@ class ApiController implements RestApi
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
         ];
-        debug($options);
         return self::apiConnect($options);
     }
 
     private static function apiConnect($options = [])
     {
         try {
-
             $ch = curl_init();
             curl_setopt_array($ch, self::$curlDefaultOptions + $options);
 
