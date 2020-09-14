@@ -115,6 +115,7 @@ class HistoriesController extends AppController
 
     function admin_index()
     {
+        $this->_activePrint(func_get_args(), "data-history");
         $this->order = "History.datetime DESC";
         $conds = [];
         if (isset($this->request->query['start_date']) && !empty($this->request->query['start_date'])) {

@@ -5,6 +5,12 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
     <div class="panel-body">
         <div class="block-inner text-danger">
             <h6 class="heading-hr"><?= __("DATA HISTORY") ?>
+                <div class="pull-right">
+                    <button class="btn btn-xs btn-default" type="button" onclick="exp('excel', '<?php echo Router::url("index/excel?" . $_SERVER['QUERY_STRING'], true) ?>')">
+                        <i class="icon-file-excel"></i>
+                        Excel
+                    </button>&nbsp;
+                </div>
                 <small class="display-block"></small>
             </h6>
         </div>
@@ -38,7 +44,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['History']['code'] ?></td>
-                                    <td class="text-center"><?= $item['History']['name'] ?></td>
+                                    <td class="text-center"><?= $this->Echo->empty_strip(@$item['History']['name']) ?></td>
                                     <td class="text-center"><?= $this->Html->cvtWaktu($item['History']['datetime']) ?></td>
                                     <td class="text-center">
                                         <?php
