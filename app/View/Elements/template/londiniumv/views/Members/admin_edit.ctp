@@ -51,6 +51,7 @@
                         </thead>
                         <tbody id="target-memberCard">
                         <?php
+                        $number = 0;
                         foreach ($this->data["MemberCard"] as $k => $item) {
                             ?>
                             <tr>
@@ -75,18 +76,18 @@
                                     </div>
                                 </td>
                                 <td align="center">
-                                    <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i
-                                                class="icon-remove3"></i></a>
+                                    <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i class="icon-remove3"></i></a>
                                 </td>
                             </tr>
                             <?php
+                            $number++;
                         }
                         ?>
                         </tbody>
                         <tfoot>
                         <tr class="addrowborder">
                             <td colspan="5" align="left"><a href="javascript:void(false)"
-                                                            onclick="addThisRow($(this), 'memberCard')" data-n="1"><i
+                                                            onclick="addThisRow($(this), 'memberCard')" data-n="<?= $number ?>"><i
                                             class="icon-plus-circle"></i></a></td>
                         </tr>
                         </tfoot>
@@ -146,6 +147,7 @@
     <td>
     <input name="data[MemberCard][{{n}}][expired_dt]" class="form-control datepicker" type="text" id="MemberExpiredDate{{n}}" required>
     </td>
+    <td></td>
     <td align="center">
     <a href="javascript:void(false)" onclick="deleteThisRow($(this))"><i class="icon-remove3"></i></a>
     </td>
