@@ -71,11 +71,10 @@ class MembersController extends AppController
                     $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
                     if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
                         if (!is_null($id)) {
-                            $clientId = $this->{ Inflector::classify($this->name) }->data['Member']['client_id'];
                             ClassRegistry::init('Member')->editDataMember($this->{ Inflector::classify($this->name) }->data);
                             $this->{ Inflector::classify($this->name) }->_deleteableHasmany();
                             $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
-                            ClassRegistry::init('Member')->getUpdateDataMember($clientId, $id);
+                            ClassRegistry::init('Member')->getUpdateDataMember($id);
                             $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
                             $this->redirect(array('action' => 'admin_index'));
                         }

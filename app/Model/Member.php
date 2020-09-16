@@ -56,7 +56,7 @@ class Member extends AppModel {
         }
     }
 
-    public function getUpdateDataMember($clientId, $memberId) {
+    public function getUpdateDataMember($memberId) {
         if($this->autoSyncIsEnabled()) {
             $this->getDataCardMember($memberId, _HTTP_REQUEST_METHOD_POST);
         }
@@ -96,13 +96,25 @@ class Member extends AppModel {
             ]);
             if(!empty($dataClient)) {
                 foreach ($dataClient['Gate'] as $gate) {
-                    $data = [
-                        "DataSync" => [
-                            "request_method" => $requestMethod,
-                            "data" => json_encode($payload),
-                            "url" => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER)
-                        ]
-                    ];
+                    if($requestMethod === _HTTP_REQUEST_METHOD_POST) {
+                        $data = [
+                            "DataSync" => [
+                                "request_method" => $requestMethod,
+                                "data" => json_encode($payload),
+                                "url" => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER),
+                                "header" => sprintf("%s: %s/%s", "Sync-Target", $dataClient['Client']['code'], $gate['code'])
+                            ]
+                        ];
+                    } else {
+                        $data = [
+                            "DataSync" => [
+                                "request_method" => $requestMethod,
+                                "data" => "{}",
+                                "url" => sprintf("%s%s%s/%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER, $payload['code']),
+                                "header" => sprintf("%s: %s/%s", "Sync-Target", $dataClient['Client']['code'], $gate['code'])
+                            ]
+                        ];
+                    }
                     ClassRegistry::init('DataSync')->create();
                     ClassRegistry::init("DataSync")->save($data);
                 }

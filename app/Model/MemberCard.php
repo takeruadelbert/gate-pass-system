@@ -39,13 +39,25 @@ class MemberCard extends AppModel
                             'code' => !$isFromDataMember ? $dataMemberCard['MemberCard']['card_number'] : $dataMemberCard['card_number'],
                             'expiration' => !$isFromDataMember ? $dataMemberCard['MemberCard']['expired_dt'] : $dataMemberCard['expired_dt']
                         ];
-                        $dataSync = [
-                            'DataSync' => [
-                                'request_method' => $requestMethod,
-                                'data' => json_encode($payload),
-                                'url' => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER)
-                            ]
-                        ];
+                        if($requestMethod === _HTTP_REQUEST_METHOD_POST) {
+                            $dataSync = [
+                                'DataSync' => [
+                                    'request_method' => $requestMethod,
+                                    'data' => json_encode($payload),
+                                    'url' => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER),
+                                    'header' => sprintf("%s: %s/%s", "Sync-Target", $dataClient['Client']['code'], $gate['code'])
+                                ]
+                            ];
+                        } else {
+                            $dataSync = [
+                                'DataSync' => [
+                                    'request_method' => $requestMethod,
+                                    'data' => "{}",
+                                    'url' => sprintf("%s%s%s/%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER, $payload['code']),
+                                    'header' => sprintf("%s: %s/%s", "Sync-Target", $dataClient['Client']['code'], $gate['code'])
+                                ]
+                            ];
+                        }
                         ClassRegistry::init('DataSync')->create();
                         ClassRegistry::init('DataSync')->save($dataSync);
                     }
