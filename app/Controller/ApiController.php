@@ -36,7 +36,8 @@ class ApiController implements RestApi
             CURLOPT_HTTPHEADER => self::setupHeader($header),
             CURLOPT_POST => true,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
-            CURLOPT_URL => $url
+            CURLOPT_URL => $url,
+            CURLOPT_FOLLOWLOCATION => true,
         ];
         return self::apiConnect($options);
     }
