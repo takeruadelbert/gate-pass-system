@@ -66,19 +66,24 @@ class MembersController extends AppController
             throw new NotFoundException(__('Data tidak ditemukan'));
         } else {
             if ($this->request->is("post") || $this->request->is("put")) {
-                $this->{ Inflector::classify($this->name) }->set($this->data);
-                $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
-                if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
-                    if (!is_null($id)) {
-                        ClassRegistry::init('Member')->editDataMember($this->{ Inflector::classify($this->name) }->data);
-                        $this->{ Inflector::classify($this->name) }->_deleteableHasmany();
-                        $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
-                        ClassRegistry::init('Member')->getUpdateDataMember($id);
-                        $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
-                        $this->redirect(array('action' => 'admin_index'));
+                if(isset($this->data['MemberCard']) && !empty($this->data['MemberCard'])) {
+                    $this->{ Inflector::classify($this->name) }->set($this->data);
+                    $this->{ Inflector::classify($this->name) }->data[Inflector::classify($this->name)]['id'] = $id;
+                    if ($this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('validate' => 'only', "deep" => true))) {
+                        if (!is_null($id)) {
+                            $clientId = $this->{ Inflector::classify($this->name) }->data['Member']['client_id'];
+                            ClassRegistry::init('Member')->editDataMember($this->{ Inflector::classify($this->name) }->data);
+                            $this->{ Inflector::classify($this->name) }->_deleteableHasmany();
+                            $this->{ Inflector::classify($this->name) }->saveAll($this->{ Inflector::classify($this->name) }->data, array('deep' => true));
+                            ClassRegistry::init('Member')->getUpdateDataMember($clientId, $id);
+                            $this->Session->setFlash(__("Data berhasil diubah"), 'default', array(), 'success');
+                            $this->redirect(array('action' => 'admin_index'));
+                        }
+                    } else {
+                        $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
                     }
                 } else {
-                    $this->validationErrors = $this->{ Inflector::classify($this->name) }->validationErrors;
+                    $this->Session->setFlash(__("Nomor Kartu Harus Diisi."), 'default', array(), 'info');
                 }
             } else {
                 $rows = $this->{ Inflector::classify($this->name) }->find("first", array(
@@ -263,15 +268,17 @@ class MembersController extends AppController
             }
             $memberCard = ClassRegistry::init("MemberCard")->find('first', [
                 "conditions" => [
-                    "id" => $memberCardId
+                    "MemberCard.id" => $memberCardId
                 ],
-                "recursive" => -1
+                "contain" => [
+                    'Member'
+                ]
             ]);
             if(!empty($memberCard)) {
                 $memberCard['MemberCard']['status'] = $status;
                 try {
                     $requestMethod = $status === MemberCard::$statusActive ? _HTTP_REQUEST_METHOD_POST : _HTTP_REQUEST_METHOD_DELETE;
-                    ClassRegistry::init('MemberCard')->sendToDataSync($memberCard, $requestMethod);
+                    ClassRegistry::init('MemberCard')->sendToDataSync($memberCard['Member']['client_id'], $memberCard, $requestMethod);
                     ClassRegistry::init("MemberCard")->save($memberCard);
                     $message = $status === MemberCard::$statusBanned ? "Diblacklist" : "Diwhitelist";
                     $this->Session->setFlash(__(sprintf("Berhasil %s.", $message)), 'default', array(), 'success');
@@ -293,7 +300,7 @@ class MembersController extends AppController
             }
             $member = ClassRegistry::init("Member")->find('first', [
                 "conditions" => [
-                    "id" => $memberId
+                    "Member.id" => $memberId
                 ],
                 "contain" => [
                     "MemberCard"
@@ -309,7 +316,7 @@ class MembersController extends AppController
                             "status" => $status
                         ];
                     }
-                    ClassRegistry::init("MemberCard")->sendToDataSync($memberCard, $requestMethod, true);
+                    ClassRegistry::init("MemberCard")->sendToDataSync($member['Member']['client_id'], $memberCard, $requestMethod, true);
                 }
                 if(!empty($bannedCardMember)) {
                     try {

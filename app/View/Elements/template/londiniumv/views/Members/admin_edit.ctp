@@ -52,7 +52,8 @@
                         <tbody id="target-memberCard">
                         <?php
                         $number = 0;
-                        foreach ($this->data["MemberCard"] as $k => $item) {
+                        if(!empty($this->data['MemberCard'])) {
+                            foreach ($this->data["MemberCard"] as $k => $item) {
                             ?>
                             <tr>
                                 <?= $this->Form->hidden("MemberCard.$k.id") ?>
@@ -80,7 +81,8 @@
                                 </td>
                             </tr>
                             <?php
-                            $number++;
+                                $number++;
+                            }
                         }
                         ?>
                         </tbody>

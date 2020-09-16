@@ -5,8 +5,8 @@ class MemberCard extends AppModel
 
     public $validate = array(
         'card_number' => array(
-            'rule' => 'NotBlank',
-            'message' => 'Harus Diisi.'
+            'Harus diisi' => array("rule" => "NotBlank"),
+            'Sudah Ada' => array("rule" => 'isUnique')
         ),
         'expired_dt' => array(
             'rule' => 'NotBlank',
@@ -22,20 +22,35 @@ class MemberCard extends AppModel
     public static $statusBanned = "BANNED";
     public static $statusActive = "ACTIVE";
 
-    public function sendToDataSync($dataMemberCard, $requestMethod, $isFromDataMember = false) {
-        $payload = [
-            'code' => !$isFromDataMember ? $dataMemberCard['MemberCard']['card_number'] : $dataMemberCard['card_number'],
-            'expiration' => !$isFromDataMember ? $dataMemberCard['MemberCard']['expired_dt'] : $dataMemberCard['expired_dt']
-        ];
-        $dataSync = [
-            'DataSync' => [
-                'request_method' => $requestMethod,
-                'data' => json_encode($payload)
-            ]
-        ];
+    public function sendToDataSync($clientId, $dataMemberCard, $requestMethod, $isFromDataMember = false) {
         try {
-            ClassRegistry::init('DataSync')->create();
-            ClassRegistry::init('DataSync')->save($dataSync);
+            $dataClient = ClassRegistry::init('Client')->find('first',[
+                'conditions' => [
+                    'Client.id' => $clientId
+                ],
+                'contain' => [
+                    'Gate'
+                ]
+            ]);
+            if(!empty($dataClient)) {
+                if(!empty($dataClient['Gate'])) {
+                    foreach ($dataClient['Gate'] as $gate) {
+                        $payload = [
+                            'code' => !$isFromDataMember ? $dataMemberCard['MemberCard']['card_number'] : $dataMemberCard['card_number'],
+                            'expiration' => !$isFromDataMember ? $dataMemberCard['MemberCard']['expired_dt'] : $dataMemberCard['expired_dt']
+                        ];
+                        $dataSync = [
+                            'DataSync' => [
+                                'request_method' => $requestMethod,
+                                'data' => json_encode($payload),
+                                'url' => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER)
+                            ]
+                        ];
+                        ClassRegistry::init('DataSync')->create();
+                        ClassRegistry::init('DataSync')->save($dataSync);
+                    }
+                }
+            }
         } catch (Exception $ex) {
             debug('Error occurred whilst saving data sync : ', $ex);
         }

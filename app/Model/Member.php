@@ -34,7 +34,7 @@ class Member extends AppModel {
                     'code' => $memberCard['card_number'],
                     'expiration' => $memberCard['expired_dt']
                 ];
-                $this->saveDataMemberToDataSync($payload, _HTTP_REQUEST_METHOD_POST);
+                $this->saveDataMemberToDataSync($data['Member']['client_id'], $payload, _HTTP_REQUEST_METHOD_POST);
             }
         }
     }
@@ -56,7 +56,7 @@ class Member extends AppModel {
         }
     }
 
-    public function getUpdateDataMember($memberId) {
+    public function getUpdateDataMember($clientId, $memberId) {
         if($this->autoSyncIsEnabled()) {
             $this->getDataCardMember($memberId, _HTTP_REQUEST_METHOD_POST);
         }
@@ -78,22 +78,35 @@ class Member extends AppModel {
                         'code' => $memberCard['card_number'],
                         'expiration' => $memberCard['expired_dt']
                     ];
-                    $this->saveDataMemberToDataSync($payload, $requestMethod);
+                    $this->saveDataMemberToDataSync($dataMember['Member']['client_id'], $payload, $requestMethod);
                 }
             }
         }
     }
 
-    private function saveDataMemberToDataSync($payload, $requestMethod) {
+    private function saveDataMemberToDataSync($clientId, $payload, $requestMethod) {
         try {
-            $data = [
-                "DataSync" => [
-                    "request_method" => $requestMethod,
-                    "data" => json_encode($payload)
+            $dataClient = ClassRegistry::init('Client')->find('first',[
+                'conditions' => [
+                    'Client.id' => $clientId
+                ],
+                'contain' => [
+                    'Gate'
                 ]
-            ];
-            ClassRegistry::init('DataSync')->create();
-            ClassRegistry::init("DataSync")->save($data);
+            ]);
+            if(!empty($dataClient)) {
+                foreach ($dataClient['Gate'] as $gate) {
+                    $data = [
+                        "DataSync" => [
+                            "request_method" => $requestMethod,
+                            "data" => json_encode($payload),
+                            "url" => sprintf("%s%s%s", _HTTP_PROTOCOL, $gate['ip_address'], _URL_API_MEMBER)
+                        ]
+                    ];
+                    ClassRegistry::init('DataSync')->create();
+                    ClassRegistry::init("DataSync")->save($data);
+                }
+            }
         } catch (Exception $ex) {
             debug($ex);
             debug("Error Occurred when saving data sync : ", $ex->getMessage());
