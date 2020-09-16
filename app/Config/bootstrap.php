@@ -108,6 +108,10 @@ define("_DEVELOPER_EMAIL", "takeru_adelbert@hotmail.com");
 
 define("_PRIVATE_DIR", "Asset");
 define("_TIMEOUT", 5); // in second
+define("_HTTP_REQUEST_METHOD_POST", "POST");
+define("_HTTP_REQUEST_METHOD_PUT", "PUT");
+define("_HTTP_REQUEST_METHOD_DELETE", "DELETE");
+
 /**
  * Configures default file logging options
  */
