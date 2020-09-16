@@ -11,24 +11,18 @@ class Member extends AppModel {
     public $belongsTo = array(
         "Client"
     );
-    public $hasOne = array(
-    );
+    public $hasOne = array();
     public $hasMany = array(
         "MemberCard" => [
             "dependent" => TRUE
         ]
     );
-    public $virtualFields = array(
-    );
+    public $virtualFields = array();
 
-    function beforeSave($options = array())
-    {
-        $dataConfiguration = ClassRegistry::init('EntityConfiguration')->find("first");
-        if(!empty($dataConfiguration)) {
-            if($dataConfiguration['EntityConfiguration']['enable_auto_sync']) {
-                if(empty($this->data[$this->alias]['id'])) { // ADD
-                    $this->addNewMember($this->data);
-                }
+    function beforeSave($options = array()) {
+        if($this->autoSyncIsEnabled()) {
+            if(empty($this->data[$this->alias]['id'])) { // ADD
+                $this->addNewMember($this->data);
             }
         }
     }
@@ -45,14 +39,27 @@ class Member extends AppModel {
         }
     }
 
+    private function autoSyncIsEnabled() {
+        $dataConfiguration = ClassRegistry::init('EntityConfiguration')->find("first");
+        if(!empty($dataConfiguration)) {
+            return (boolean)$dataConfiguration['EntityConfiguration']['enable_auto_sync'];
+        } else {
+            return false;
+        }
+    }
+
     public function editDataMember($data) {
-        if(isset($data['MemberCard']) && !empty($data['MemberCard'])) {
-            $this->getDataCardMember($data['Member']['id'], _HTTP_REQUEST_METHOD_DELETE);
+        if($this->autoSyncIsEnabled()) {
+            if(isset($data['MemberCard']) && !empty($data['MemberCard'])) {
+                $this->getDataCardMember($data['Member']['id'], _HTTP_REQUEST_METHOD_DELETE);
+            }
         }
     }
 
     public function getUpdateDataMember($memberId) {
-        $this->getDataCardMember($memberId, _HTTP_REQUEST_METHOD_POST);
+        if($this->autoSyncIsEnabled()) {
+            $this->getDataCardMember($memberId, _HTTP_REQUEST_METHOD_POST);
+        }
     }
 
     private function getDataCardMember($memberId, $requestMethod) {
@@ -92,5 +99,10 @@ class Member extends AppModel {
             debug("Error Occurred when saving data sync : ", $ex->getMessage());
             die;
         }
+    }
+
+    function beforeDelete($cascade = true)
+    {
+
     }
 }
