@@ -103,6 +103,8 @@ class Member extends AppModel {
 
     function beforeDelete($cascade = true)
     {
-
+        foreach ($this->data['Member']['checkbox'] as $deletedId) {
+            $this->getDataCardMember($deletedId, _HTTP_REQUEST_METHOD_DELETE);
+        }
     }
 }
