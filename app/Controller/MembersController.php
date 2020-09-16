@@ -270,6 +270,8 @@ class MembersController extends AppController
             if(!empty($memberCard)) {
                 $memberCard['MemberCard']['status'] = $status;
                 try {
+                    $requestMethod = $status === MemberCard::$statusActive ? _HTTP_REQUEST_METHOD_POST : _HTTP_REQUEST_METHOD_DELETE;
+                    ClassRegistry::init('MemberCard')->sendToDataSync($memberCard, $requestMethod);
                     ClassRegistry::init("MemberCard")->save($memberCard);
                     $message = $status === MemberCard::$statusBanned ? "Diblacklist" : "Diwhitelist";
                     $this->Session->setFlash(__(sprintf("Berhasil %s.", $message)), 'default', array(), 'success');
@@ -299,6 +301,7 @@ class MembersController extends AppController
             ]);
             if(!empty($member['MemberCard'])) {
                 $bannedCardMember = [];
+                $requestMethod = $status === MemberCard::$statusActive ? _HTTP_REQUEST_METHOD_POST : _HTTP_REQUEST_METHOD_DELETE;
                 foreach ($member['MemberCard'] as $memberCard) {
                     if($memberCard['status'] !== $status) {
                         $bannedCardMember[] = [
@@ -306,6 +309,7 @@ class MembersController extends AppController
                             "status" => $status
                         ];
                     }
+                    ClassRegistry::init("MemberCard")->sendToDataSync($memberCard, $requestMethod, true);
                 }
                 if(!empty($bannedCardMember)) {
                     try {
