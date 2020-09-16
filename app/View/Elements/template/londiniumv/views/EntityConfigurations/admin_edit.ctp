@@ -61,6 +61,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="col-sm-3 col-md-4 control-label">
+                                        <label>Enabled Auto Sync</label>
+                                    </div>
+                                    <div class="col-sm-9 col-md-8">
+                                        <input type="checkbox" class="switch" data-on="success" data-off="warning" name="data[EntityConfiguration][enable_auto_sync]" <?= $this->data['EntityConfiguration']['enable_auto_sync'] === TRUE ? "checked" : "" ?>>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
