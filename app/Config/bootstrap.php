@@ -108,7 +108,7 @@ define("_DEVELOPER_EMAIL", "takeru_adelbert@hotmail.com");
 
 define("_PRIVATE_DIR", "Asset");
 
-define("_TIMEOUT", 5); // in second
+define("_TIMEOUT", 1); // in second
 define("_HTTP_PROTOCOL", "http://");
 define("_URL_API_MEMBER", "/api/member");
 define("_HTTP_REQUEST_METHOD_POST", "POST");
