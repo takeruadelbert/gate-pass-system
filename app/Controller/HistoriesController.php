@@ -104,7 +104,8 @@ class HistoriesController extends AppController
                 ],
                 "contain" => [
                     "Member"
-                ]
+                ],
+                "recursive" => -1
             ]);
             if(!empty($dataMember)) {
                 return $dataMember['Member']['name'];
