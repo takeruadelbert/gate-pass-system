@@ -49,43 +49,7 @@ class HistoriesController extends AppController
                 ]);
                 if (!empty($dataGate)) {
                     $ip_address = $dataGate['Gate']['ip_address'];
-                    $url = sprintf("%s%s", $ip_address, $this->readHistoryUrlApi);
-                    $header = [
-                        sprintf("%s: %s/%s", "Sync-Target", $dataGate['Client']['code'], $dataGate['Gate']['code'])
-                    ];
-                    $response = ApiController::apiGet($url, $header);
-                    if ($response['http_response_code'] == 200) {
-                        $helper = new HtmlHelper(new View());
-
-                        $result = json_decode($response['body_response'], true);
-                        if (!empty($result)) {
-                            $response = ApiController::apiDelete($url, "{}",$header);
-                            if ($response['http_response_code'] == 200) {
-                                $saveData = [];
-                                $dataHistory = $result;
-                                foreach ($dataHistory as $history) {
-                                    $saveData[] = [
-                                        "History" => [
-                                            "code" => $history['code'],
-                                            "name" => $this->findMemberByCode($history['code']),
-                                            "datetime" => $helper->convertDateFormatToDefault($history['time']),
-                                            "image_face" => !empty($history['path_face']) ? file_get_contents($history['path_face']) : null,
-                                            "image_plate" => !empty($history['path_plate']) ? file_get_contents($history['path_plate']) : null,
-                                            "gate_id" => $gate_id
-                                        ]
-                                    ];
-                                }
-                                $this->{Inflector::classify($this->name)}->saveAll($saveData, ['deep' => true]);
-                                $this->Session->setFlash(__("Read Data History {$ip_address} Success."), 'default', array(), 'success');
-                            } else {
-                                $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
-                            }
-                        } else {
-                            $this->Session->setFlash(__("No Data History found."), 'default', array(), 'info');
-                        }
-                    } else {
-                        $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
-                    }
+                    $this->fetchHistoryPerGate($ip_address, $dataGate['Client']['code'], $dataGate['Gate']['code'], $gate_id);
                 } else {
                     $this->Session->setFlash(__("Gate Not Found."), 'default', array(), 'danger');
                 }
@@ -105,13 +69,54 @@ class HistoriesController extends AppController
                 "contain" => [
                     "Member"
                 ],
-                "recursive" => -1
+                'recursive' => -1
             ]);
             if(!empty($dataMember)) {
                 return $dataMember['Member']['name'];
             }
         }
         return null;
+    }
+
+    private function fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId) {
+        $url = sprintf("%s%s", $ipAddress, $this->readHistoryUrlApi);
+        $header = [
+            sprintf("%s: %s/%s", "Sync-Target", $clientCode, $gateCode)
+        ];
+        $response = ApiController::apiGet($url, $header);
+        if ($response['http_response_code'] == 200) {
+            $helper = new HtmlHelper(new View());
+
+            $result = json_decode($response['body_response'], true);
+            if (!empty($result)) {
+                $response = ApiController::apiDelete($url, "{}", $header);
+                if ($response['http_response_code'] == 200) {
+                    $saveData = [];
+                    $dataHistory = $result;
+                    foreach ($dataHistory as $history) {
+                        $saveData[] = [
+                            "History" => [
+                                "code" => $history['code'],
+                                "name" => $this->findMemberByCode($history['code']),
+                                "datetime" => $helper->convertDateFormatToDefault($history['time']),
+                                "image_face" => !empty($history['path_face']) ? file_get_contents($history['path_face']) : null,
+                                "image_plate" => !empty($history['path_plate']) ? file_get_contents($history['path_plate']) : null,
+                                "gate_id" => $gateId
+                            ]
+                        ];
+                    }
+                    $this->{Inflector::classify($this->name)}->saveAll($saveData, ['deep' => true]);
+                    $this->Session->setFlash(__("Read Data History {$ipAddress} Success."), 'default', array(), 'success');
+                } else {
+                    $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+                }
+            } else {
+                debug('aa');
+                $this->Session->setFlash(__("No Data History found."), 'default', array(), 'info');
+            }
+        } else {
+            $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+        }
     }
 
     function admin_index()
@@ -137,5 +142,32 @@ class HistoriesController extends AppController
         }
         $this->conds = $conds;
         parent::admin_index();
+    }
+
+    function api_auto_fetch_history() {
+        $this->autoRender = false;
+        $dataGate = ClassRegistry::init('Gate')->find('all',[
+            'contain' => [
+                'Client'
+            ],
+            'recursive' => -1,
+            "fields" => [
+                "Gate.id",
+                "Gate.ip_address",
+                "Gate.code",
+                "Client.id",
+                "Client.name",
+                "Client.code"
+            ]
+        ]);
+        if(!empty($dataGate)) {
+            foreach ($dataGate as $gate) {
+                $ipAddress = $gate['Gate']['ip_address'];
+                $clientCode = $gate['Client']['code'];
+                $gateCode = $gate['Gate']['code'];
+                $gateId = $gate['Gate']['id'];
+                $this->fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId);
+            }
+        }
     }
 }

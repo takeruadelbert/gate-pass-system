@@ -14,12 +14,15 @@ class DataSyncsController extends AppController
             "conditions" => [
                 "DataSync.has_synced" => false
             ],
-            "limit" => $this->MAX_LIMIT_SYNC
+            "limit" => $this->MAX_LIMIT_SYNC,
+            "recursive" => -1,
         ]);
         if(!empty($dataSync)) {
             foreach ($dataSync as $data) {
                 $this->sendDataApi($data['DataSync']['request_method'], $data['DataSync']['url'], $data['DataSync']['data'], [$data['DataSync']['header']], $data);
             }
+        } else {
+            debug('No Data Sync.');
         }
     }
 
@@ -44,6 +47,7 @@ class DataSyncsController extends AppController
                 }
                 break;
             default:
+                debug("Invalid HTTP Request Method : {$requestMethod}");
                 break;
         }
     }

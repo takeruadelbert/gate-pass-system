@@ -104,6 +104,8 @@ Router::connect("/sync-data-member", array("admin" => true, 'controller' => 'mem
 
 // API
 Router::connect("/api/access", array("api" => true, 'controller' => "members", 'action' => 'check_validity'));
+Router::connect("/cron/auto-fetch-history", array("api" => true, "controller" => "histories", "action" => "auto_fetch_history"));
+Router::connect("/cron/auto-sync-member", array("api" => true, "controller" => "data_syncs", "action" => "sync"));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
