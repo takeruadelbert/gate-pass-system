@@ -32,7 +32,7 @@ class DataSyncsController extends AppController
             case _HTTP_REQUEST_METHOD_POST:
                 $response = ApiController::apiPost($url, $decodedPayload, $header);
                 debug($response);
-                if($response['http_response_code'] === 201) {
+                if($response['http_response_code'] === 201 || $response['http_response_code'] === 409) {
                     $this->updateSyncedData($syncData);
                 } else {
                     debug($response['body_response']);
