@@ -78,7 +78,7 @@ class HistoriesController extends AppController
         return null;
     }
 
-    private function fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId) {
+    private function fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId, $isCron = false) {
         $url = sprintf("%s%s", $ipAddress, $this->readHistoryUrlApi);
         $header = [
             sprintf("%s: %s/%s", "Sync-Target", $clientCode, $gateCode)
@@ -106,16 +106,21 @@ class HistoriesController extends AppController
                         ];
                     }
                     $this->{Inflector::classify($this->name)}->saveAll($saveData, ['deep' => true]);
-                    $this->Session->setFlash(__("Read Data History {$ipAddress} Success."), 'default', array(), 'success');
+                    $this->renderFlashMessage("Read Data History {$ipAddress} Success.", 'success', $isCron);
                 } else {
-                    $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+                    $this->renderFlashMessage($response['body_response'], 'warning', $isCron);
                 }
             } else {
-                debug('aa');
-                $this->Session->setFlash(__("No Data History found."), 'default', array(), 'info');
+                $this->renderFlashMessage("No Data History found.", 'info', $isCron);
             }
         } else {
-            $this->Session->setFlash(__($response['body_response']), 'default', array(), 'warning');
+            $this->renderFlashMessage($response['body_response'], 'warning', $isCron);
+        }
+    }
+
+    private function renderFlashMessage($message, $type, $isCron = false) {
+        if(!$isCron) {
+            $this->Session->setFlash(__($message), 'default', array(), $type);
         }
     }
 
@@ -166,7 +171,7 @@ class HistoriesController extends AppController
                 $clientCode = $gate['Client']['code'];
                 $gateCode = $gate['Gate']['code'];
                 $gateId = $gate['Gate']['id'];
-                $this->fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId);
+                $this->fetchHistoryPerGate($ipAddress, $clientCode, $gateCode, $gateId, true);
             }
         }
     }
