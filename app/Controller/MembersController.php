@@ -99,6 +99,10 @@ class MembersController extends AppController
     function admin_index()
     {
         $this->_activePrint(func_get_args(), "data-member");
+        $this->contain = [
+            "Client",
+            "MemberCard"
+        ];
         parent::admin_index();
     }
 

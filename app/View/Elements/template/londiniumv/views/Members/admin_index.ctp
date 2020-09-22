@@ -16,12 +16,6 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                     </button>&nbsp;
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/delete") ?>
                     <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/add") ?>
-<!--                    <a href="--><?//= Router::url("/add-multiple-member", true) ?><!--">-->
-<!--                        <button class="btn btn-xs btn-success" type="button">-->
-<!--                            <i class="icon-users"></i>-->
-<!--                            --><?//= __("Tambah Multi Data") ?>
-<!--                        </button>-->
-<!--                    </a>-->
                 </div>
                 <small class="display-block"></small>
             </h6>
@@ -35,6 +29,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                             <th width="50">No</th>
                             <th><?= __("Nama") ?></th>
                             <th><?= __("Client") ?></th>
+                            <th><?= __("Nomor Kartu") ?></th>
                             <th width="100"><?= __("Aksi") ?></th>
                         </tr>
                     </thead>
@@ -46,7 +41,7 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                         if (empty($data['rows'])) {
                             ?>
                             <tr>
-                                <td class = "text-center" colspan = 5>Tidak Ada Data</td>
+                                <td class = "text-center" colspan = 6>Tidak Ada Data</td>
                             </tr>
                             <?php
                         } else {
@@ -57,6 +52,19 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/member");
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $item['Member']['name'] ?></td>
                                     <td class="text-center"><?= $item['Client']['name'] ?></td>
+                                    <td>
+                                        <ul>
+                                            <?php
+                                            if(!empty($item['MemberCard'])) {
+                                                foreach ($item['MemberCard'] as $card) {
+                                                    ?>
+                                            <li><?= sprintf("%s (exp %s)", $card['card_number'], $this->Html->cvtHariTanggal($card['expired_dt'])) ?></li>
+                                            <?php
+                                                }
+                                            }
+                                            ?>
+                                        </ul>
+                                    </td>
                                     <td class="text-center">
                                         <?= $this->element(_TEMPLATE_DIR . "/{$template}/roleaccess/edit", ["editUrl" => Router::url("/admin/{$this->params['controller']}/edit/{$item[Inflector::classify($this->params['controller'])]['id']}")]) ?>
                                         <a href="<?= Router::url("/admin/members/view/{$item['Member']['id']}", true) ?>"><button type="button" class="btn btn-default btn-xs btn-icon tip" title="View Data"><i class="icon-eye"></i></button></a>
