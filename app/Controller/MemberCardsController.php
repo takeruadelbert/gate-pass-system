@@ -40,7 +40,8 @@ class MemberCardsController extends AppController
                 $result[] = [
                     "id" => $item['MemberCard']['id'],
                     "card_number" => $item['MemberCard']['card_number'],
-                    "name" => $item['Member']['name']
+                    "name" => $item['Member']['name'],
+                    "member_id" => $item['Member']['id']
                 ];
             }
         }

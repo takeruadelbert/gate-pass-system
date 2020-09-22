@@ -103,6 +103,16 @@ class MembersController extends AppController
             "Client",
             "MemberCard"
         ];
+        $cond = [];
+        if(isset($this->request->query['memberId']) && !empty($this->request->query['memberId']) && isset($this->request->query['cardNumber']) && !empty($this->request->query['cardNumber'])) {
+            $memberId = $this->request->query['memberId'];
+            $cond = [
+                "Member.id" => $memberId
+            ];
+            unset($_GET['memberId']);
+            unset($_GET['cardNumber']);
+        }
+        $this->conds = $cond;
         parent::admin_index();
     }
 
