@@ -205,7 +205,7 @@ class MembersController extends AppController
         $header = [
             sprintf("%s: %s/%s", "Sync-Target", $clientCode, $gateCode)
         ];
-        $response = ApiController::apiPut($url, $param, $header);
+        $response = ApiController::apiPut($url, $param, $header, _PRIMARY_TIMEOUT);
         if ($response['http_response_code'] == 200) {
             $this->sync_banned_member($url, $header, $bannedMembers, $ipAddress);
         } else {
@@ -215,7 +215,7 @@ class MembersController extends AppController
 
     function sync_banned_member($url, $header, $bannedMembers, $ipAddress) {
         if(!empty($bannedMembers)) {
-            $response = ApiController::apiDelete($url, $bannedMembers, $header);
+            $response = ApiController::apiDelete($url, $bannedMembers, $header, _PRIMARY_TIMEOUT);
             if ($response['http_response_code'] == 200) {
                 $this->Session->setFlash(__("Sync to {$ipAddress} Success."), 'default', array(), 'success');
             } else {

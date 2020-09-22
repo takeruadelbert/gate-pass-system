@@ -13,24 +13,24 @@ class ApiController implements RestApi
         CURLINFO_HEADER_OUT => true,
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_SSL_VERIFYHOST => false,
-        CURLOPT_TIMEOUT => _TIMEOUT,
     ];
     private static $HTTP_REQUEST_METHOD_DELETE = "DELETE";
     private static $HTTP_REQUEST_METHOD_PUT = "PUT";
     private static $HTTP_REQUEST_METHOD_GET = "GET";
 
-    public static function apiGet($url, $header = [], $param = "{}")
+    public static function apiGet($url, $header = [], $param = "{}", $timeout = _DEFAULT_TIMEOUT)
     {
         $options = [
             CURLOPT_HTTPHEADER => self::setupHeader($header),
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_GET,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
+            CURLOPT_TIMEOUT => $timeout,
         ];
         return self::apiConnect($options);
     }
 
-    public static function apiPost($url, $param = "", $header = [])
+    public static function apiPost($url, $param = "", $header = [], $timeout = _DEFAULT_TIMEOUT)
     {
         $options = [
             CURLOPT_HTTPHEADER => self::setupHeader($header),
@@ -38,28 +38,31 @@ class ApiController implements RestApi
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
             CURLOPT_URL => $url,
             CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_TIMEOUT => $timeout,
         ];
         return self::apiConnect($options);
     }
 
-    public static function apiPut($url, $param = "", $header = [])
+    public static function apiPut($url, $param = "", $header = [], $timeout = _DEFAULT_TIMEOUT)
     {
         $options = [
             CURLOPT_HTTPHEADER => self::setupHeader($header),
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_PUT,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
-            CURLOPT_URL => $url
+            CURLOPT_URL => $url,
+            CURLOPT_TIMEOUT => $timeout,
         ];
         return self::apiConnect($options);
     }
 
-    public static function apiDelete($url, $param = "", $header = [])
+    public static function apiDelete($url, $param = "", $header = [], $timeout = _DEFAULT_TIMEOUT)
     {
         $options = [
             CURLOPT_HTTPHEADER => self::setupHeader($header),
             CURLOPT_URL => $url,
             CURLOPT_CUSTOMREQUEST => self::$HTTP_REQUEST_METHOD_DELETE,
             CURLOPT_POSTFIELDS => self::encodeDataParam($param),
+            CURLOPT_TIMEOUT => $timeout,
         ];
         return self::apiConnect($options);
     }

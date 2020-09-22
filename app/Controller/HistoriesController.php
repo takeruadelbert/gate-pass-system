@@ -83,13 +83,13 @@ class HistoriesController extends AppController
         $header = [
             sprintf("%s: %s/%s", "Sync-Target", $clientCode, $gateCode)
         ];
-        $response = ApiController::apiGet($url, $header);
+        $response = ApiController::apiGet($url, $header, "{}", _PRIMARY_TIMEOUT);
         if ($response['http_response_code'] == 200) {
             $helper = new HtmlHelper(new View());
 
             $result = json_decode($response['body_response'], true);
             if (!empty($result)) {
-                $response = ApiController::apiDelete($url, "{}", $header);
+                $response = ApiController::apiDelete($url, "{}", $header, _PRIMARY_TIMEOUT);
                 if ($response['http_response_code'] == 200) {
                     $saveData = [];
                     $dataHistory = $result;
