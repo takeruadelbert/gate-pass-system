@@ -1,6 +1,15 @@
 <?php
 echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
 ?>
+<style>
+    .previewImage {
+        width: 200px;
+        height: 150px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
 <div class="panel panel-default">
     <div class="panel-body">
         <div class="block-inner text-danger">
@@ -50,7 +59,14 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                         <?php
                                         $imageFace = @$item['History']['image_face'];
                                         if($imageFace !== null) {
-                                            echo '<img src="data:image/jpeg;base64,'.base64_encode($imageFace) .'" width=200 height=150 />';
+                                            $image = "data:image/jpeg;base64,". base64_encode($imageFace);
+                                            ?>
+                                        <div class="thumbnail thumbnail-boxed previewImage">
+                                            <a href="<?= $image ?>" class="thumb-zoom lightbox" title="<?= $item['History']['name'] ?>">
+                                                <img src="<?= $image ?>" width="200" height="150" />
+                                            </a>
+                                        </div>
+                                            <?php
                                         } else {
                                          ?>
                                             <img src="<?= Router::url("/img/no_image.jpg", true) ?>" width="100" height="100"/>
@@ -62,7 +78,14 @@ echo $this->element(_TEMPLATE_DIR . "/{$template}/filter/history");
                                         <?php
                                         $imagePlate = @$item['History']['image_plate'];
                                         if($imagePlate !== null) {
-                                            echo '<img src="data:image/jpeg;base64,'.base64_encode($imagePlate) .'" />';
+                                            $image = "data:image/jpeg;base64,". base64_encode($imagePlate);
+                                            ?>
+                                            <div class="thumbnail thumbnail-boxed previewImage">
+                                                <a href="<?= $image ?>" class="thumb-zoom lightbox" title="<?= $item['History']['name'] ?>">
+                                                    <img src="<?= $image ?>" width="200" height="150" />
+                                                </a>
+                                            </div>
+                                                <?php
                                         } else {
                                             ?>
                                             <img src="<?= Router::url("/img/no_image.jpg", true) ?>" width="100" height="100" />
