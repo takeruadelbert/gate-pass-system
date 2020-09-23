@@ -101,6 +101,7 @@ Router::connect("/history", array("admin" => true, 'controller' => 'histories', 
 
 // Sync Data Member
 Router::connect("/sync-data-member", array("admin" => true, 'controller' => 'members', 'action' => 'sync_data_member'));
+Router::connect("/data-sync", array("admin" => true, "controller" => 'data_syncs', 'action' => 'index'));
 
 // API
 Router::connect("/api/access", array("api" => true, 'controller' => "members", 'action' => 'check_validity'));

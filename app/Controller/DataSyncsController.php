@@ -5,7 +5,11 @@ App::import('Controller', 'Api');
 class DataSyncsController extends AppController
 {
     var $name = "DataSyncs";
-    var $disabledAction = array();
+    var $disabledAction = array(
+        "admin_add",
+        "admin_edit",
+        "admin_delete"
+    );
     private $MAX_LIMIT_SYNC = 20;
 
     function api_sync() {
@@ -61,5 +65,29 @@ class DataSyncsController extends AppController
         } catch (Exception $ex) {
             debug('Error occurred when updating sync data', $ex);
         }
+    }
+
+    public function admin_index()
+    {
+        $conds = [];
+        if (isset($this->request->query['start_date']) && !empty($this->request->query['start_date'])) {
+            $start_date = $this->request->query['start_date'];
+            $conds[] = [
+                "DATE_FORMAT(DataSync.created, '%Y-%m-%d %H:%i:%s') >=" => $start_date
+            ];
+            unset($_GET['start_date']);
+            $this->set(compact('start_date'));
+        }
+        if (isset($this->request->query['end_date']) && !empty($this->request->query['end_date'])) {
+            $end_date = $this->request->query['end_date'];
+            $conds[] = [
+                "DATE_FORMAT(DataSync.created, '%Y-%m-%d %H:%i:%s') <=" => $end_date
+            ];
+            unset($_GET['end_date']);
+            $this->set(compact('end_date'));
+        }
+        $this->order = "DataSync.created DESC";
+        $this->conds = $conds;
+        parent::admin_index();
     }
 }
